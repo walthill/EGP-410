@@ -41,7 +41,7 @@ Steering* SeekSteering::getSteering()
 	{
 		diff = mTargetLoc - pOwner->getPositionComponent()->getPosition();
 	}
-	else
+	else //FLEE?
 	{
 		diff = pOwner->getPositionComponent()->getPosition() - mTargetLoc;
 	}
