@@ -34,14 +34,10 @@ Steering* AlignSteering::getSteering()
 	//get angle to target
 	direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
 	targetFacing = atan2(direction.getY(), direction.getX());
-
 	rotation = targetFacing - pOwner->getFacing();
 	
-	//rotation - map rotation to (-pi, pi)
-	//TEST THIS
-	convertRotation = fmod((rotation), mTWO_PI) - PI;
-//	std::cout << convertRotation << std::endl;
-	rotationSize = abs(convertRotation); //TODO: what is rotation direction?
+	convertRotation = mapToRange(rotation);
+	rotationSize = abs(convertRotation); 
 
 	if (rotationSize < mTARGET_RADIUS)
 		return nullptr;
@@ -53,7 +49,7 @@ Steering* AlignSteering::getSteering()
 
 	targetRotation *= rotation / rotationSize;
 
-	physicsData.rotAcc = targetRotation - physicsData.rotAcc;
+	physicsData.rotAcc = targetRotation - physicsData.rotVel;
 	physicsData.rotAcc /= mTIME_TO_TARGET;
 
 	float angularAcceleration = abs(physicsData.rotAcc);
@@ -63,10 +59,20 @@ Steering* AlignSteering::getSteering()
 		physicsData.rotAcc *= physicsData.maxRotAcc;
 	}
 
-	std::cout << physicsData.rotAcc << std::endl;
-//	physicsData.acc = 0;
 	this->mData = physicsData;
 
 	return this;
 }
 
+float AlignSteering::mapToRange(float rotationInRadians)
+{
+	float convertedRotation;
+
+	convertedRotation = fmod((rotationInRadians), mTWO_PI);
+	if (convertedRotation > PI)
+		convertedRotation = (convertedRotation - PI) * -1.0f;
+	else if (convertedRotation < -PI)
+		convertedRotation = (convertedRotation + PI) * -1.0f;
+
+	return convertedRotation;
+}
