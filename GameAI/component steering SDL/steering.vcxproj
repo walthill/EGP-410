@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AlignSteering.h" />
     <ClInclude Include="ArriveSteering.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
@@ -36,6 +37,7 @@
     <ClInclude Include="UnitManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AlignSteering.cpp" />
     <ClCompile Include="ArriveSteering.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
