@@ -11,13 +11,10 @@ ArriveSteering::ArriveSteering(const UnitID& ownerID, const Vector2D& targetLoc,
 	: Steering()
 {
 	if (shouldFlee)
-	{
-		mType = Steering::FLEE;
-	}
+		mType = FLEE;
 	else
-	{
-		mType = Steering::SEEK;
-	}
+		mType = ARRIVE;
+	
 	setOwnerID(ownerID);
 	setTargetID(targetID);
 	setTargetLoc(targetLoc);
@@ -25,13 +22,11 @@ ArriveSteering::ArriveSteering(const UnitID& ownerID, const Vector2D& targetLoc,
 
 Steering* ArriveSteering::getSteering()
 {
-	//pOwner is character & pTarget is target
 	float targetSpeed, distance;
-	
-	Vector2D direction;
+	Vector2D direction, targetVelocity;
+
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
-	PhysicsData physicsData;
-	//are we seeking a location or a unit?
+	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
 
 	if (mTargetID != INVALID_UNIT_ID) //target data
 	{
@@ -41,29 +36,45 @@ Steering* ArriveSteering::getSteering()
 		mTargetLoc = pTarget->getPositionComponent()->getPosition();
 	}
 
-	direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
+	if(mType == ARRIVE)
+		direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
+	else
+		direction = pOwner->getPositionComponent()->getPosition() - mTargetLoc;
+
 	distance = direction.getLength();
 
-	if (distance < mTargetRadius) //check if arrived
+	if (distance < mTARGET_RADIUS) //check if arrived
 		return nullptr;
 
-	if (distance > mSlowRadius) //if outside zone go max speed
+	if (distance > mSLOW_RADIUS) //if outside zone go max speed
 		targetSpeed = pOwner->getMaxSpeed();
 	else					    //if inside, scale speed
-		targetSpeed = pOwner->getMaxSpeed() * distance / mSlowRadius;
+		targetSpeed = pOwner->getMaxSpeed() * distance / mSLOW_RADIUS;
 
 	//combine speed and direction
-	Vector2D targetVelocity = pOwner->getFacing();
+	targetVelocity = direction; 
 	targetVelocity.normalize();
-	targetVelocity += targetSpeed;
+	targetVelocity *= targetSpeed;
 
-	pOwner->getPhysicsComponent()->setData() = targetVelocity - pOwner->getPhysicsComponent()->getData().vel;
-	//pOwner->getPositionComponent()->setPosition(targetVelocity - pOwner->getPositionComponent().get)
+	//need char velocity
+	physicsData.acc = targetVelocity - physicsData.vel;
+	physicsData.acc /= mTIME_TO_TARGET;
 
-	if()
+//	pOwner->getPhysicsComponent()->setData()
 
-	pOwner->getPositionComponent()->setFacing = 0;
+	//clamp acceleration
+	if (physicsData.acc.getLengthSquared() > pOwner->getMaxAcc()*pOwner->getMaxAcc())
+	{
+		physicsData.acc.normalize();
+		physicsData.acc *= pOwner->getMaxAcc();
+	}
+
+//	this->mData.rotVel = 0;
+	this->mData = physicsData;
+//	this->mData.rotAcc = 0;
+//	pOwner->getPhysicsComponent()->setData();
 
 	return this;
 }
 
+	
