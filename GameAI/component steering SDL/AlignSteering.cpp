@@ -16,11 +16,10 @@ AlignSteering::AlignSteering(const UnitID& ownerID, const Vector2D& targetLoc, c
 	setTargetLoc(targetLoc);
 }
 
-//TODO: integrate align into steering component
 Steering* AlignSteering::getSteering()
 {
-	float rotation, rotationSize, convertRotation, targetRotation;
-
+	float rotation, rotationSize, convertRotation, targetRotation, targetFacing;
+	Vector2D direction;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
 
@@ -30,16 +29,19 @@ Steering* AlignSteering::getSteering()
 		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
 		assert(pTarget != NULL);
 		mTargetLoc = pTarget->getPositionComponent()->getPosition();
-		targetRotation = pTarget->getFacing();
 	}
 
-	rotation = targetRotation - pOwner->getFacing();
+	//get angle to target
+	direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
+	targetFacing = atan2(direction.getY(), direction.getX());
+
+	rotation = targetFacing - pOwner->getFacing();
 	
 	//rotation - map rotation to (-pi, pi)
 	//TEST THIS
-	convertRotation = (int)(rotation + mTWO_PI) % (int)floor(mTWO_PI);
-
-	rotationSize = abs(rotationDirection); //TODO: what is rotation direction?
+	convertRotation = fmod((rotation), mTWO_PI) - PI;
+//	std::cout << convertRotation << std::endl;
+	rotationSize = abs(convertRotation); //TODO: what is rotation direction?
 
 	if (rotationSize < mTARGET_RADIUS)
 		return nullptr;
@@ -51,18 +53,18 @@ Steering* AlignSteering::getSteering()
 
 	targetRotation *= rotation / rotationSize;
 
-	physicsData.rotAcc = targetRotation - pOwner->getPhysicsComponent()->getRotationalAcceleration();
+	physicsData.rotAcc = targetRotation - physicsData.rotAcc;
 	physicsData.rotAcc /= mTIME_TO_TARGET;
 
 	float angularAcceleration = abs(physicsData.rotAcc);
-	
 	if (angularAcceleration > physicsData.maxRotAcc) //normalize scalar
 	{
 		physicsData.rotAcc /= angularAcceleration;
 		physicsData.rotAcc *= physicsData.maxRotAcc;
 	}
 
-	physicsData.acc = 0;
+	std::cout << physicsData.rotAcc << std::endl;
+//	physicsData.acc = 0;
 	this->mData = physicsData;
 
 	return this;
