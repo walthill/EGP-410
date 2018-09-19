@@ -1,8 +1,11 @@
+#include <cassert>
 #include "ComponentManager.h"
 #include "SteeringComponent.h"
 #include "ArriveSteering.h"
 #include "SeekSteering.h"
 #include "AlignSteering.h"
+#include "FaceSteering.h"
+#include "WanderSteering.h"
 
 SteeringComponent::SteeringComponent(const ComponentID& id, const ComponentID& physicsComponentID) 
 	:Component(id)
@@ -55,15 +58,24 @@ void SteeringComponent::setData(const SteeringData& data)
 			mpSteering = new ArriveSteering(data.ownerID, data.targetLoc, data.targetID, false);
 			break;
 		}
-		case Steering::ALIGN:
+		case Steering::FACE:
 		{
 			delete mpSteering;
-			mpSteering = new AlignSteering(data.ownerID, data.targetLoc, data.targetID, false);
+			mpSteering = new FaceSteering(data.ownerID, data.targetLoc, data.targetID, false);
 			break;
 		}
+		case Steering::WANDER:
+		{
+			delete mpSteering;
+			mpSteering = new WanderSteering(data.ownerID, data.targetLoc, data.targetID, false);
+			break;
+		}
+		case Steering::ALIGN:
+			std::cerr << "DOES NOT EXIST IN THE STEERING COMPONENT. USE FACE" << std::endl;
+			assert(data.type != Steering::ALIGN);
+			break;
 		default:
 		{
-
 		}
 	};
 }

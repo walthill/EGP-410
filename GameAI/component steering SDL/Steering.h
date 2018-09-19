@@ -20,7 +20,8 @@ public:
 		FLEE,
 		ARRIVE, 
 		ALIGN,
-		FACE
+		FACE,
+		WANDER
 	};
 
 	//constructors and destructors

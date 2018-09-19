@@ -18,7 +18,7 @@ AlignSteering::AlignSteering(const UnitID& ownerID, const Vector2D& targetLoc, c
 
 Steering* AlignSteering::getSteering()
 {
-	float rotation, rotationSize, convertRotation, targetRotation, targetFacing;
+	float rotation, rotationSize, convertRotation, targetRotation;
 	Vector2D direction;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
@@ -32,9 +32,7 @@ Steering* AlignSteering::getSteering()
 	}
 
 	//get angle to target
-	direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
-	targetFacing = atan2(direction.getY(), direction.getX());
-	rotation = targetFacing - pOwner->getFacing();
+	rotation = mTargetFacing - pOwner->getFacing();
 	
 	convertRotation = mapToRange(rotation);
 	rotationSize = abs(convertRotation); 
