@@ -44,7 +44,11 @@ Steering* ArriveSteering::getSteering()
 	distance = direction.getLength();
 
 	if (distance < mTARGET_RADIUS) //check if arrived
+	{
+		this->mData.vel = 0;
+		this->mData.acc = 0;
 		return nullptr;
+	}
 
 	if (distance > mSLOW_RADIUS) //if outside zone go max speed
 		targetSpeed = pOwner->getMaxSpeed();

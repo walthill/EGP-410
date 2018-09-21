@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include <sstream>
 #include <time.h>
 #include <SDL.h>
 
 #include "Game.h"
 #include "GraphicsSystem.h"
 #include "GraphicsBuffer.h"
+#include "MouseEvent.h"
+#include "EventSystem.h"
 #include "Font.h"
 #include "GraphicsBufferManager.h"
 #include "GameMessageManager.h"
@@ -24,8 +25,9 @@ const int WIDTH = 1024;
 const int HEIGHT = 768;
 const Uint32 MAX_UNITS = 100;
 
-Game::Game()
-	:mpGraphicsSystem(NULL)
+Game::Game() 
+	:EventListener(nullptr)
+	,mpGraphicsSystem(NULL)
 	,mpGraphicsBufferManager(NULL)
 	,mpSpriteManager(NULL)
 	,mpLoopTimer(NULL)
@@ -33,7 +35,7 @@ Game::Game()
 	,mpFont(NULL)
 	,mShouldExit(false)
 	,mBackgroundBufferID("")
-	,mpMessageManager(NULL)
+	//,mpMessageManager(NULL)
 	,mpComponentManager(NULL)
 	,mpUnitManager(NULL)
 {
@@ -65,8 +67,12 @@ bool Game::init()
 	mpGraphicsBufferManager = new GraphicsBufferManager(mpGraphicsSystem);
 	mpSpriteManager = new SpriteManager();
 
+	EventSystem::initInstance(); 
+	mpInputSystem = new InputSystem;//init event system
+	mpInputSystem->initInputSystem();
+	installListeners();
 
-	mpMessageManager = new GameMessageManager();
+	//mpMessageManager = new GameMessageManager();
 	mpComponentManager = new ComponentManager(MAX_UNITS);
 	mpUnitManager = new UnitManager(MAX_UNITS);
 
@@ -110,16 +116,25 @@ bool Game::init()
 	pUnit->setSteering(Steering::ARRIVE, ZERO_VECTOR2D);
 
 	//create 2 enemies
-/*	pUnit = mpUnitManager->createUnit(*pEnemyArrow, true, PositionData(Vector2D((float)gpGame->getGraphicsSystem()->getWidth()-1, 0.0f), 0.0f));
+	pUnit = mpUnitManager->createUnit(*pEnemyArrow, true, PositionData(Vector2D((float)gpGame->getGraphicsSystem()->getWidth()-1, 0.0f), 0.0f));
 	pUnit->setShowTarget(true);
 	pUnit->setSteering(Steering::WANDER, ZERO_VECTOR2D, PLAYER_UNIT_ID);
-	*/
+	
 /*	pUnit = mpUnitManager->createUnit(*pEnemyArrow, true, PositionData(Vector2D(0.0f, (float)gpGame->getGraphicsSystem()->getHeight()-1), 0.0f));
 	pUnit->setShowTarget(false);
 	pUnit->setSteering(Steering::WANDER, ZERO_VECTOR2D, PLAYER_UNIT_ID);
 	*/
 
 	return true;
+}
+
+void Game::installListeners()
+{
+	EventSystem::getInstance()->addListener(QUIT, this);
+	EventSystem::getInstance()->addListener(SPAWN, this);
+	EventSystem::getInstance()->addListener(MOVE_PLAYER, this);
+	EventSystem::getInstance()->addListener(DELETE_UNIT, this);
+	EventSystem::getInstance()->addListener(MOUSE_MOTION, this);
 }
 
 void Game::cleanup()
@@ -141,12 +156,15 @@ void Game::cleanup()
 	mpGraphicsBufferManager = NULL;
 	delete mpSpriteManager;
 	mpSpriteManager = NULL;
-	delete mpMessageManager;
-	mpMessageManager = NULL;
+	//delete mpMessageManager;
+//	mpMessageManager = NULL;
 	delete mpUnitManager;
 	mpUnitManager = NULL;
 	delete mpComponentManager;
 	mpComponentManager = NULL;
+	delete mpInputSystem;
+	mpInputSystem = NULL;
+	EventSystem::cleanupInstance();
 }
 
 void Game::beginLoop()
@@ -169,37 +187,30 @@ void Game::processLoop()
 	//draw units
 	mpUnitManager->drawAll();
 
-	SDL_PumpEvents();
-	int x, y;
-	SDL_GetMouseState(&x, &y);
-
-	//create mouse text
-	std::stringstream mousePos;
-	mousePos << x << ":" << y;
-
 	//write text at mouse position
-	mpGraphicsSystem->writeText(*mpFont, (float)x, (float)y, mousePos.str(), BLACK_COLOR);
+	mpGraphicsSystem->writeText(*mpFont, (float)mouseX, (float)mouseY, mouseText, BLACK_COLOR);
 
 	//test of fill region
-	mpGraphicsSystem->fillRegion(*pDest, Vector2D(300, 300), Vector2D(500, 500), RED_COLOR);
+	//mpGraphicsSystem->fillRegion(*pDest, Vector2D(300, 300), Vector2D(500, 500), RED_COLOR);
 	mpGraphicsSystem->swap();
 
-	mpMessageManager->processMessagesForThisframe();
+	//mpMessageManager->processMessagesForThisframe();
+	mpInputSystem->update(TARGET_ELAPSED_MS);
 
 	//get input - should be moved someplace better
-	SDL_PumpEvents();
+	//SDL_PumpEvents();
 
-	if( SDL_GetMouseState(&x,&y) & SDL_BUTTON(SDL_BUTTON_LEFT) )
+	/*if( SDL_GetMouseState(&x,&y) & SDL_BUTTON(SDL_BUTTON_LEFT) )
 	{
 		Vector2D pos( x, y );
 		GameMessage* pMessage = new PlayerMoveToMessage( pos );
 		MESSAGE_MANAGER->addMessage( pMessage, 0 );
-	}
+	}*/
 
 
 	
 	//all this should be moved to InputManager!!!
-	{
+	/*{
 		//get keyboard state
 		const Uint8 *state = SDL_GetKeyboardState(NULL);
 
@@ -208,7 +219,7 @@ void Game::processLoop()
 		{
 			mShouldExit = true;
 		}
-	}
+	}*/
 	/*Unit* pUnit = mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID));
 	if (pUnit == NULL)
 	{
@@ -235,3 +246,47 @@ float genRandomFloat()
 	return r;
 }
 
+void Game::handleEvent(const Event& theEvent)
+{
+	mEventType = theEvent.getType();
+
+	switch (mEventType)
+	{
+		case MOUSE_MOTION:
+		{
+			const MouseEvent& mouseEvent = static_cast<const MouseEvent&>(theEvent);
+			//create mouse text
+			std::stringstream mousePos;
+			mouseX = mouseEvent.getX();
+			mouseY = mouseEvent.getY();
+			mouseText = to_string(mouseX) + ":" + to_string(mouseY);
+			break;
+		}
+		case QUIT:
+			mShouldExit = true;
+			break;
+		case SPAWN:
+			mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID));
+			break;
+		case DELETE_UNIT:
+			//if (mpUnitHandle == NULL)
+		{
+			mpUnitManager->deleteRandomUnit();
+			break;
+		}
+		
+		case MOVE_PLAYER:
+		{	
+			const MouseEvent& mouseEvent = static_cast<const MouseEvent&>(theEvent);
+			Unit* pPlayer = gpGame->getUnitManager()->getPlayerUnit();
+			Vector2D pos(mouseEvent.getX(), mouseEvent.getY());
+			pPlayer->setSteering(Steering::ARRIVE_FACE, pos);
+
+			//int x, y;
+			/*Vector2D pos(mouseEvent.getX(), mouseEvent.getY());
+			GameMessage* pMessage = new PlayerMoveToMessage(pos);
+			MESSAGE_MANAGER->addMessage(pMessage, 0);*/
+			break;
+		}
+	}
+}

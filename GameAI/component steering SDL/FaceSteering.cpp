@@ -32,7 +32,7 @@ Steering* FaceSteering::getSteering()
 
 	//get angle to target
 	direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
-	if (direction.getLength() == 0)
+	if (direction.getLength() <= mTARGET_RADIUS)
 		return this;
 
 	targetFacing = atan2(direction.getY(), direction.getX());

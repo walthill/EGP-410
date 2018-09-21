@@ -3,7 +3,10 @@
 #include "Trackable.h"
 #include "PerformanceTracker.h"
 #include "Defines.h"
+#include "EventListener.h"
+#include "InputSystem.h"
 #include <string>
+#include <sstream>
 
 class GraphicsSystem;
 class GraphicsBuffer;
@@ -11,9 +14,9 @@ class Font;
 class GraphicsBufferManager;
 class SpriteManager;
 class KinematicUnit;
-class GameMessageManager;
 class Timer;
 class ComponentManager;
+class Unit;
 class UnitManager;
 
 const IDType BACKGROUND_SPRITE_ID = 0;
@@ -23,7 +26,7 @@ const IDType TARGET_SPRITE_ID = 3;
 
 const float LOOP_TARGET_TIME = 33.3f;//how long should each frame of execution take? 30fps = 33.3ms/frame
 
-class Game:public Trackable
+class Game: public EventListener
 {
 public:
 	Game();
@@ -40,17 +43,26 @@ public:
 	inline GraphicsSystem* getGraphicsSystem() const { return mpGraphicsSystem; };
 	inline GraphicsBufferManager* getGraphicsBufferManager() const { return mpGraphicsBufferManager; };
 	inline SpriteManager* getSpriteManager() const { return mpSpriteManager; };
-	inline GameMessageManager* getMessageManager() { return mpMessageManager; };
+	//inline GameMessageManager* getMessageManager() { return mpMessageManager; };
 	inline ComponentManager* getComponentManager() { return mpComponentManager; };
 	inline UnitManager* getUnitManager() { return mpUnitManager; };
 	inline Timer* getMasterTimer() const { return mpMasterTimer; };
 	inline double getCurrentTime() const { return mpMasterTimer->getElapsedTime(); };
+	inline void handleEvent(const Event& theEvent);
+	inline void installListeners();
 
 private:
 	GraphicsSystem* mpGraphicsSystem;
 	GraphicsBufferManager* mpGraphicsBufferManager;
+	
+	InputSystem* mpInputSystem;
+	EventType mEventType;
+	//Unit* mpUnitHandle; 
+	int mouseX, mouseY;//used in input system
+	string mouseText; //display mouse pos
+
 	SpriteManager* mpSpriteManager;
-	GameMessageManager* mpMessageManager;
+//	GameMessageManager* mpMessageManager;
 	ComponentManager* mpComponentManager;
 	UnitManager* mpUnitManager;
 	Font* mpFont;
