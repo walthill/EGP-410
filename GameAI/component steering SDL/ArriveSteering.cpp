@@ -36,7 +36,7 @@ Steering* ArriveSteering::getSteering()
 		mTargetLoc = pTarget->getPositionComponent()->getPosition();
 	}
 
-	if(mType == ARRIVE)
+	if(mType == ARRIVE || mType == ARRIVE_FACE)
 		direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
 	else
 		direction = pOwner->getPositionComponent()->getPosition() - mTargetLoc;

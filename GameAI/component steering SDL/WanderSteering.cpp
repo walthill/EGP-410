@@ -9,7 +9,7 @@
 
 
 WanderSteering::WanderSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee /*= false*/)
-	: FaceSteering(ownerID, targetLoc, targetID, shouldFlee)
+	: Steering(), mFaceSteering(ownerID, targetLoc, targetID, shouldFlee)
 {
 	mType = WANDER;
 	setOwnerID(ownerID);
@@ -26,26 +26,31 @@ Steering* WanderSteering::getSteering()
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
 
-	if (mTargetID != INVALID_UNIT_ID) //target data
+	/*if (mTargetID != INVALID_UNIT_ID) //target data
 	{
 		//seeking unit
 		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
 		assert(pTarget != NULL);
 		mTargetLoc = pTarget->getPositionComponent()->getPosition();
-	}
+	}*/
 
 	mWanderFacing += genRandomBinomial() * mWANDER_RATE;
 
 	mTargetFacing = mWanderFacing + pOwner->getFacing();
 
 	Vector2D ownerFacingVector = makeVector(pOwner->getFacing());
-	mTargetLoc = pOwner->getPositionComponent()->getPosition() + mWANDER_OFFSET * ownerFacingVector.getLength();//pOwner->getFacing().asVector();
+	ownerFacingVector.normalize();
 
-	mTargetLoc += mWANDER_RADIUS * makeVector(mTargetFacing).getLength();
+	mTargetLoc = pOwner->getPositionComponent()->getPosition() + ownerFacingVector * mWANDER_OFFSET;//pOwner->getFacing().asVector();
+	mTargetLoc += makeVector(mTargetFacing) * mWANDER_RADIUS;
+	mFaceSteering.setTargetLoc(mTargetLoc);  
 
-	FaceSteering::getSteering();
+	Steering* faceData = mFaceSteering.getSteering();
+	
+	if(faceData != NULL) 
+		physicsData.rotAcc = faceData->getData().rotAcc;
 
-	physicsData.acc = pOwner->getPhysicsComponent()->getData().maxAccMagnitude * ownerFacingVector.getLength();
+	physicsData.acc = ownerFacingVector * pOwner->getMaxAcc();
 
 	this->mData = physicsData;
 	return this;
@@ -55,8 +60,8 @@ Steering* WanderSteering::getSteering()
 Vector2D WanderSteering::makeVector(float radiansToConvert)
 {
 	Vector2D convertedValue;
-	convertedValue.setX(cosf(radiansToConvert));
-	convertedValue.setY(sinf(radiansToConvert));
-	convertedValue.normalize();
+	convertedValue.setX(cos(radiansToConvert));
+	convertedValue.setY(sin(radiansToConvert));
+	//convertedValue.normalize();
 	return convertedValue;
 }

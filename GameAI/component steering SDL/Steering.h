@@ -21,7 +21,8 @@ public:
 		ARRIVE, 
 		ALIGN,
 		FACE,
-		WANDER
+		WANDER,
+		ARRIVE_FACE
 	};
 
 	//constructors and destructors
@@ -37,6 +38,7 @@ public:
 	//void setData(const PhysicsData& data) { mData = data; };
 	const PhysicsData& getData() const { return mData; };
 	void update();
+	virtual Steering* getSteering() { return this; };//overridden by sub-classes
 protected:
 	SteeringType mType;
 	Vector2D mTargetLoc;
@@ -44,6 +46,6 @@ protected:
 	UnitID mOwnerID;
 	PhysicsData mData;
 
-	virtual Steering* getSteering() { return this; };//overridden by sub-classes
+	
 
 };

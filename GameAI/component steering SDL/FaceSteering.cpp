@@ -22,13 +22,13 @@ Steering* FaceSteering::getSteering()
 	Vector2D direction;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	
-	if (mTargetID != INVALID_UNIT_ID) //target data
+	/*if (mTargetID != INVALID_UNIT_ID) //target data
 	{
 		//seeking unit
 		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
 		assert(pTarget != NULL);
 		mTargetLoc = pTarget->getPositionComponent()->getPosition();
-	}
+	}*/
 
 	//get angle to target
 	direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
