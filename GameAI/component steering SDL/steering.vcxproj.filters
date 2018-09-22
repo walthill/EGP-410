@@ -88,6 +88,9 @@
     <ClCompile Include="Event.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WanderChase.cpp">
+      <Filter>Source Files\Steering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsBuffer.h">
@@ -176,6 +179,9 @@
     </ClInclude>
     <ClInclude Include="MouseEvent.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WanderChase.h">
+      <Filter>Header Files\Steering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

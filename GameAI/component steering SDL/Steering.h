@@ -22,7 +22,8 @@ public:
 		ALIGN,
 		FACE,
 		WANDER,
-		ARRIVE_FACE
+		ARRIVE_FACE,
+		WANDER_CHASE
 	};
 
 	//constructors and destructors

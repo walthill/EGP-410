@@ -13,6 +13,4 @@ protected:
 	const float mSLOW_RADIUS = 0.5; //this should be bigger than target radius
 	const float mTIME_TO_TARGET = 0.1f;
 	const float mTWO_PI = 2.0f*PI;
-
-	
 };
