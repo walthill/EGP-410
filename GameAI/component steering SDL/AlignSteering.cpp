@@ -32,6 +32,7 @@ Steering* AlignSteering::getSteering()
 	if (rotationSize < mTARGET_RADIUS)
 	{
 		physicsData.rotAcc = 0;
+		physicsData.rotVel = 0;
 		this->mData = physicsData;
 		return this;
 	}

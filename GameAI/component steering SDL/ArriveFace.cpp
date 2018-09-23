@@ -26,22 +26,19 @@ Steering* ArriveFaceSteering::getSteering() //TODO: rotates to slow? bigger issu
  	mArriveSteeringData = ArriveSteering::getSteering();
 	mFaceSteeringData = mFaceSteering.getSteering();
 
-	if (mFaceSteeringData != NULL)
-		physicsData.rotAcc = mFaceSteeringData->getData().rotAcc;
+	//set rotation only when arrive data is used
+	if (mArriveSteeringData != NULL)
+	{
+		physicsData.acc = mArriveSteeringData->getData().acc;
+		if(mFaceSteeringData != NULL)
+			physicsData.rotAcc = mFaceSteeringData->getData().rotAcc;
+	}
 	else
 	{
 		physicsData.acc = 0;
+		physicsData.vel = 0;
 		physicsData.rotAcc = 0;
 		physicsData.rotVel = 0;
-	}
-
-	if (mArriveSteeringData != NULL)
-		physicsData.acc = mArriveSteeringData->getData().acc;
-	else
-	{
-		physicsData.acc = 0;
-		physicsData.rotAcc = 0; 
-		physicsData.vel = 0;
 	}
 	
 	this->mData = physicsData;
