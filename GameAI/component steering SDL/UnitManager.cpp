@@ -63,23 +63,29 @@ Unit* UnitManager::createPlayerUnit(const Sprite& sprite, bool shouldWrap /*= tr
 	return createUnit(sprite, shouldWrap, posData, physicsData, PLAYER_UNIT_ID);
 }
 
-
 Unit* UnitManager::createRandomUnit(const Sprite& sprite)
 {
-	/*	pUnit = mpUnitManager->createUnit(*pEnemyArrow, true, PositionData(Vector2D(0.0f, (float)gpGame->getGraphicsSystem()->getHeight()-1), 0.0f));
-	pUnit->setShowTarget(false);
-	pUnit->setSteering(Steering::WANDER, ZERO_VECTOR2D, PLAYER_UNIT_ID);
-	*/
 	int posX = rand() % gpGame->getGraphicsSystem()->getWidth();
 	int posY = rand() % gpGame->getGraphicsSystem()->getHeight();
-	int velX = rand() % 50 - 25;
-	int velY = rand() % 40 - 20;
-	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0));//d , PhysicsData(Vector2D(velX, velY), Vector2D(0.1f, 0.1f), 0.1f, 0.05f));
+
+	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0));
+
 	if (pUnit != NULL)
-	{
-		//pUnit->setSteering(Steering::SEEK, Vector2D(rand() % gpGame->getGraphicsSystem()->getWidth(), rand() % gpGame->getGraphicsSystem()->getHeight()));
-		pUnit->setSteering(Steering::WANDER, Vector2D(gpGame->getGraphicsSystem()->getWidth()/2, gpGame->getGraphicsSystem()->getHeight()/2));
-	}
+		pUnit->setSteering(Steering::WANDER_CHASE, Vector2D(gpGame->getGraphicsSystem()->getWidth() / 2, gpGame->getGraphicsSystem()->getHeight() / 2));
+
+	return pUnit;
+}
+
+Unit* UnitManager::createRandomUnit(const Sprite& sprite, const UnitID& targetId)
+{
+	int posX = rand() % gpGame->getGraphicsSystem()->getWidth();
+	int posY = rand() % gpGame->getGraphicsSystem()->getHeight();
+
+	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0));
+
+	if (pUnit != NULL)
+		pUnit->setSteering(Steering::WANDER_CHASE, Vector2D(gpGame->getGraphicsSystem()->getWidth()/2, gpGame->getGraphicsSystem()->getHeight()/2), targetId);
+	
 	return pUnit;
 }
 

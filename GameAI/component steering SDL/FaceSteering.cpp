@@ -7,7 +7,7 @@
 #include "Unit.h"
 
 
-FaceSteering::FaceSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee /*= false*/)
+FaceSteering::FaceSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee)
 	: AlignSteering(ownerID, targetLoc, targetID, shouldFlee)
 {
 	mType = FACE;
@@ -21,16 +21,7 @@ Steering* FaceSteering::getSteering()
 	float targetFacing;
 	Vector2D direction;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
-	
-	/*if (mTargetID != INVALID_UNIT_ID) //target data
-	{
-		//seeking unit
-		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
-		assert(pTarget != NULL);
-		mTargetLoc = pTarget->getPositionComponent()->getPosition();
-	}*/
 
-	//get angle to target
 	direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
 	if (direction.getLength() <= mTARGET_RADIUS)
 		return this;

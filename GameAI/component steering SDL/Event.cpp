@@ -21,7 +21,7 @@ void Event::setType(EventType type)
 
 const string& Event::getEventName() const
 {
-	if( mType > INVALID_EVENT_TYPE && mType < NUM_EVENT_TYPES )
+	if (mType > INVALID_EVENT_TYPE && mType < NUM_EVENT_TYPES)
 	{
 		return EVENT_NAMES[mType];
 	}
@@ -31,23 +31,3 @@ const string& Event::getEventName() const
 		return nullString;
 	}
 }
-/*
-void Event::setX(int xPos)
-{
-	x = xPos;
-}
-
-void Event::setY(int yPos)
-{
-	y = yPos;
-}
-
-int Event::getX() const
-{
-	return x;
-}
-
-int Event::getY() const
-{
-	return y;
-}*/

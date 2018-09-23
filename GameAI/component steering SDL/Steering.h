@@ -1,4 +1,5 @@
-#pragma once
+#ifndef STEERING_H
+#define STEERING_H
 
 /*Steering - implementation of Steering class from "Artificial Intelligence for Games" - Millington and Funge
 */
@@ -10,7 +11,7 @@
 
 
 
-class Steering: public Trackable
+class Steering : public Trackable
 {
 public:
 	enum SteeringType
@@ -18,7 +19,7 @@ public:
 		INVALID_TYPE = -1,
 		SEEK,
 		FLEE,
-		ARRIVE, 
+		ARRIVE,
 		ALIGN,
 		FACE,
 		WANDER,
@@ -27,8 +28,8 @@ public:
 	};
 
 	//constructors and destructors
-	Steering( SteeringType type = INVALID_TYPE ):mType(type), mTargetLoc(ZERO_VECTOR2D), mTargetID(INVALID_UNIT_ID), mOwnerID(INVALID_UNIT_ID), mData(ZERO_PHYSICS_DATA) {};
-	virtual ~Steering(){};
+	Steering(SteeringType type = INVALID_TYPE) :mType(type), mTargetLoc(ZERO_VECTOR2D), mTargetID(INVALID_UNIT_ID), mOwnerID(INVALID_UNIT_ID), mData(ZERO_PHYSICS_DATA) {};
+	virtual ~Steering() {};
 
 	//accessors
 	void setTargetLoc(const Vector2D& loc) { mTargetLoc = loc; };
@@ -47,6 +48,8 @@ protected:
 	UnitID mOwnerID;
 	PhysicsData mData;
 
-	
+
 
 };
+
+#endif // !STEERING_H

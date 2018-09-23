@@ -10,10 +10,7 @@
 ArriveSteering::ArriveSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee /*= false*/)
 	: Steering()
 {
-	if (shouldFlee)
-		mType = FLEE;
-	else
-		mType = ARRIVE;
+	mType = ARRIVE;
 	
 	setOwnerID(ownerID);
 	setTargetID(targetID);
@@ -37,8 +34,6 @@ Steering* ArriveSteering::getSteering()
 
 	if(mType == ARRIVE || mType == ARRIVE_FACE)
 		direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
-	else
-		direction = pOwner->getPositionComponent()->getPosition() - mTargetLoc;
 
 	distance = direction.getLength();
 

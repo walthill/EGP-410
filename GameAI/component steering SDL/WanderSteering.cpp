@@ -8,7 +8,7 @@
 #include "Unit.h"
 
 
-WanderSteering::WanderSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee /*= false*/)
+WanderSteering::WanderSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee)
 	: Steering(), mFaceSteering(ownerID, targetLoc, targetID, shouldFlee)
 {
 	mType = WANDER;
@@ -22,18 +22,9 @@ WanderSteering::WanderSteering(const UnitID& ownerID, const Vector2D& targetLoc,
 
 Steering* WanderSteering::getSteering()
 {
-	Vector2D direction;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
 	
-	/*if (mTargetID != INVALID_UNIT_ID) //target data
-	{
-		//seeking unit
-		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
-		assert(pTarget != NULL);
-		mTargetLoc = pTarget->getPositionComponent()->getPosition();
-	}*/
-
 	mWanderFacing += genRandomBinomial() * mWANDER_RATE;
 
 	mTargetFacing = mWanderFacing + pOwner->getFacing();
@@ -41,7 +32,7 @@ Steering* WanderSteering::getSteering()
 	Vector2D ownerFacingVector = makeVector(pOwner->getFacing());
 	ownerFacingVector.normalize();
 
-	mTargetLoc = pOwner->getPositionComponent()->getPosition() + ownerFacingVector * mWANDER_OFFSET;//pOwner->getFacing().asVector();
+	mTargetLoc = pOwner->getPositionComponent()->getPosition() + ownerFacingVector * mWANDER_OFFSET;
 	mTargetLoc += makeVector(mTargetFacing) * mWANDER_RADIUS;
 	mFaceSteering.setTargetLoc(mTargetLoc);
 
@@ -62,6 +53,5 @@ Vector2D WanderSteering::makeVector(float radiansToConvert)
 	Vector2D convertedValue;
 	convertedValue.setX(cos(radiansToConvert));
 	convertedValue.setY(sin(radiansToConvert));
-	//convertedValue.normalize();
 	return convertedValue;
 }

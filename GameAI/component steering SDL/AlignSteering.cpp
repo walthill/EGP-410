@@ -23,14 +23,6 @@ Steering* AlignSteering::getSteering()
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
 
-/*	if (mTargetID != INVALID_UNIT_ID) //target data
-	{
-		//seeking unit
-		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
-		assert(pTarget != NULL);
-		mTargetLoc = pTarget->getPositionComponent()->getPosition();
-	}*/
-
 	//get angle to target
 	rotation = mTargetFacing - pOwner->getFacing();
 	
@@ -53,8 +45,9 @@ Steering* AlignSteering::getSteering()
 	physicsData.rotAcc = targetRotation - physicsData.rotVel;
 	physicsData.rotAcc /= mTIME_TO_TARGET;
 
+	//clamp acceleration
 	float angularAcceleration = abs(physicsData.rotAcc);
-	if (angularAcceleration > physicsData.maxRotAcc) //normalize scalar
+	if (angularAcceleration > physicsData.maxRotAcc) 
 	{
 		physicsData.rotAcc /= angularAcceleration;
 		physicsData.rotAcc *= physicsData.maxRotAcc;
