@@ -8,8 +8,8 @@ public:
 //	Vector2D makeVector(float radiansToConvert);
 protected:
 	FaceSteering mFaceSteering;
-	Steering* arriveSteeringData;
-	Steering* faceSteeringData;
+	Steering* mArriveSteeringData;
+	Steering* mFaceSteeringData;
 //	float mWanderFacing;
 //	float mTargetFacing;
 

@@ -5,7 +5,7 @@ class SeekSteering : public Steering
 {
 public:
 	SeekSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID = INVALID_UNIT_ID, bool shouldFlee = false);
+	virtual Steering* getSteering(); //overrides parent function
 
 protected:
-	virtual Steering* getSteering(); //overrides parent function
 };

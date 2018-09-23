@@ -1,7 +1,9 @@
 #include <cassert>
 
 #include "AlignSteering.h"
+#include "SeekSteering.h"
 #include "FaceSteering.h"
+#include "WanderSteering.h"
 #include "WanderChase.h"
 #include "Game.h"
 #include "UnitManager.h"
@@ -9,48 +11,64 @@
 
 
 WanderChaseSteering::WanderChaseSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee /*= false*/)
-	: Steering(), mFaceSteering(ownerID, targetLoc, targetID, shouldFlee)
+	: WanderSteering(ownerID, targetLoc, targetID, shouldFlee), mSeekSteering(ownerID, targetLoc, targetID, shouldFlee)
 {
 	mType = WANDER_CHASE;
 	setOwnerID(ownerID);
 	setTargetID(targetID);
 	setTargetLoc(targetLoc);
 
-	mWanderFacing = 0;
-	mTargetFacing = 0;
+//	mWanderFacing = 0;
+//	mTargetFacing = 0;
 }
 
 Steering* WanderChaseSteering::getSteering()
 {
 	Vector2D direction;
+	float directionToPlayer; 
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
+	//mSeekSteeringData = mSeekSteering.getSteering();
+	//mWanderSteeringData = WanderSteering::getSteering();
 
-	/*if (mTargetID != INVALID_UNIT_ID) //target data
+	/*
+	if(distanceToTarget < 300)
 	{
-		//seeking unit
-		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
-		assert(pTarget != NULL);
-		mTargetLoc = pTarget->getPositionComponent()->getPosition();
-	}*/
+		mTargetLoc = playerLoc;
+		steering* newsteering = mpSeekSteering->getsteering;
+		data = newsteering->getData();
+	}
+	else
+	{
 
-	mWanderFacing += genRandomBinomial() * mWANDER_RATE;
+	}
+	/**/
 
-	mTargetFacing = mWanderFacing + pOwner->getFacing();
+	mSteeringData = NULL;
+	direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
+	directionToPlayer = direction.getLength();
 
-	Vector2D ownerFacingVector = makeVector(pOwner->getFacing());
-	ownerFacingVector.normalize();
+	if (mTargetID == INVALID_UNIT_ID && directionToPlayer < mSEEK_RADIUS)
+	{
+		mSeekSteering.setTargetLoc(mTargetLoc);
+		mSteeringData = mSeekSteering.getSteering();
+		
+		mFaceSteering.setTargetLoc(mTargetLoc);
+		mFaceSteeringData = mFaceSteering.getSteering();
+		
+		if(mFaceSteeringData != NULL)
+			physicsData.rotAcc = mFaceSteering.getSteering()->getData().rotAcc;
+	}
+	else
+	{
+		mSteeringData = WanderSteering::getSteering();
+	
+		if(mSteeringData != NULL)
+			physicsData.rotAcc = mSteeringData->getData().rotAcc; 
+	}
+	
+	physicsData.acc = mSteeringData->getData().acc;
 
-	mTargetLoc = pOwner->getPositionComponent()->getPosition() + ownerFacingVector * mWANDER_OFFSET;//pOwner->getFacing().asVector();
-	mTargetLoc += makeVector(mTargetFacing) * mWANDER_RADIUS;
-	mFaceSteering.setTargetLoc(mTargetLoc);
-
-	Steering* faceData = mFaceSteering.getSteering();
-
-	if (faceData != NULL)
-		physicsData.rotAcc = faceData->getData().rotAcc;
-
-	physicsData.acc = ownerFacingVector * pOwner->getMaxAcc();
 
 	this->mData = physicsData;
 	return this;

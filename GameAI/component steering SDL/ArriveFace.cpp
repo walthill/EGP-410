@@ -23,11 +23,11 @@ Steering* ArriveFaceSteering::getSteering() //TODO: rotates to slow? bigger issu
 {
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
- 	arriveSteeringData = ArriveSteering::getSteering();
-	faceSteeringData = mFaceSteering.getSteering();
+ 	mArriveSteeringData = ArriveSteering::getSteering();
+	mFaceSteeringData = mFaceSteering.getSteering();
 
-	if (faceSteeringData != NULL)
-		physicsData.rotAcc = faceSteeringData->getData().rotAcc;
+	if (mFaceSteeringData != NULL)
+		physicsData.rotAcc = mFaceSteeringData->getData().rotAcc;
 	else
 	{
 		physicsData.acc = 0;
@@ -35,8 +35,8 @@ Steering* ArriveFaceSteering::getSteering() //TODO: rotates to slow? bigger issu
 		physicsData.rotVel = 0;
 	}
 
-	if (arriveSteeringData != NULL)
-		physicsData.acc = arriveSteeringData->getData().acc;
+	if (mArriveSteeringData != NULL)
+		physicsData.acc = mArriveSteeringData->getData().acc;
 	else
 	{
 		physicsData.acc = 0;
