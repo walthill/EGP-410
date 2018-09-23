@@ -38,8 +38,11 @@ Steering* AlignSteering::getSteering()
 	rotationSize = abs(convertRotation); 
 
 	if (rotationSize < mTARGET_RADIUS)
-		return nullptr;
-
+	{
+		physicsData.rotAcc = 0;
+		this->mData = physicsData;
+		return this;
+	}
 	if (rotationSize > mSLOW_RADIUS)
 		targetRotation = pOwner->getMaxRotAcc();
 	else

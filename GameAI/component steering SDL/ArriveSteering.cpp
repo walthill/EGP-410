@@ -28,9 +28,8 @@ Steering* ArriveSteering::getSteering()
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
 
-	if (mTargetID != INVALID_UNIT_ID) //target data
+	if (mTargetID != INVALID_UNIT_ID) //updates target data
 	{
-		//seeking unit
 		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
 		assert(pTarget != NULL);
 		mTargetLoc = pTarget->getPositionComponent()->getPosition();

@@ -25,7 +25,7 @@ Steering* WanderSteering::getSteering()
 	Vector2D direction;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
-
+	
 	/*if (mTargetID != INVALID_UNIT_ID) //target data
 	{
 		//seeking unit
@@ -43,7 +43,7 @@ Steering* WanderSteering::getSteering()
 
 	mTargetLoc = pOwner->getPositionComponent()->getPosition() + ownerFacingVector * mWANDER_OFFSET;//pOwner->getFacing().asVector();
 	mTargetLoc += makeVector(mTargetFacing) * mWANDER_RADIUS;
-	mFaceSteering.setTargetLoc(mTargetLoc);  
+	mFaceSteering.setTargetLoc(mTargetLoc);
 
 	Steering* faceData = mFaceSteering.getSteering();
 	

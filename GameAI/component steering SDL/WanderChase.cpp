@@ -18,8 +18,6 @@ WanderChaseSteering::WanderChaseSteering(const UnitID& ownerID, const Vector2D& 
 	setTargetID(targetID);
 	setTargetLoc(targetLoc);
 
-//	mWanderFacing = 0;
-//	mTargetFacing = 0;
 }
 
 Steering* WanderChaseSteering::getSteering()
@@ -28,58 +26,35 @@ Steering* WanderChaseSteering::getSteering()
 	float directionToPlayer; 
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
-	//mSeekSteeringData = mSeekSteering.getSteering();
-	//mWanderSteeringData = WanderSteering::getSteering();
-
-	/*
-	if(distanceToTarget < 300)
+	
+	if (mTargetID != INVALID_UNIT_ID) //updates target location
 	{
-		mTargetLoc = playerLoc;
-		steering* newsteering = mpSeekSteering->getsteering;
-		data = newsteering->getData();
+		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
+		assert(pTarget != NULL);
+		mTargetLoc = pTarget->getPositionComponent()->getPosition();
 	}
-	else
-	{
-
-	}
-	/**/
-
+	
 	mSteeringData = NULL;
 	direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
 	directionToPlayer = direction.getLength();
 
-	if (mTargetID == INVALID_UNIT_ID && directionToPlayer < mSEEK_RADIUS)
+	if (direction.getLength() < mSEEK_RADIUS)
 	{
-		mSeekSteering.setTargetLoc(mTargetLoc);
 		mSteeringData = mSeekSteering.getSteering();
 		
 		mFaceSteering.setTargetLoc(mTargetLoc);
 		mFaceSteeringData = mFaceSteering.getSteering();
-		
-		if(mFaceSteeringData != NULL)
-			physicsData.rotAcc = mFaceSteering.getSteering()->getData().rotAcc;
+
+		physicsData.rotAcc = mFaceSteeringData->getData().rotAcc;
 	}
 	else
 	{
 		mSteeringData = WanderSteering::getSteering();
-	
-		if(mSteeringData != NULL)
-			physicsData.rotAcc = mSteeringData->getData().rotAcc; 
+		physicsData.rotAcc = mSteeringData->getData().rotAcc; 
 	}
 	
 	physicsData.acc = mSteeringData->getData().acc;
 
-
 	this->mData = physicsData;
 	return this;
-}
-
-
-Vector2D WanderChaseSteering::makeVector(float radiansToConvert)
-{
-	Vector2D convertedValue;
-	convertedValue.setX(cos(radiansToConvert));
-	convertedValue.setY(sin(radiansToConvert));
-	//convertedValue.normalize();
-	return convertedValue;
 }
