@@ -14,6 +14,7 @@
     <ClInclude Include="AlignSteering.h" />
     <ClInclude Include="ArriveFace.h" />
     <ClInclude Include="ArriveSteering.h" />
+    <ClInclude Include="CohesionSteering.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentManager.h" />
@@ -33,6 +34,7 @@
     <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SeekSteering.h" />
+    <ClInclude Include="SeparationSteering.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="Steering.h" />
@@ -46,6 +48,7 @@
     <ClCompile Include="AlignSteering.cpp" />
     <ClCompile Include="ArriveFace.cpp" />
     <ClCompile Include="ArriveSteering.cpp" />
+    <ClCompile Include="CohesionSteering.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentManager.cpp" />
@@ -65,6 +68,7 @@
     <ClCompile Include="PositionComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SeekSteering.cpp" />
+    <ClCompile Include="SeparationSteering.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="Steering.cpp" />
