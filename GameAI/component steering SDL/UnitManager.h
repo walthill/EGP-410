@@ -33,6 +33,8 @@ public:
 
 	void drawAll() const;
 	void updateAll(float elapsedTime);
+	int size();
+
 
 	Unit* getPlayerUnit() const { return getUnit(PLAYER_UNIT_ID); };
 

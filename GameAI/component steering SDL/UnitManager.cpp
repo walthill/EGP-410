@@ -162,3 +162,8 @@ void UnitManager::updateAll(float elapsedTime)
 		it->second->update(elapsedTime);
 	}
 }
+
+int UnitManager::size()
+{
+	return mUnitMap.size();
+}

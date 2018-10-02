@@ -24,7 +24,9 @@ public:
 		FACE,
 		WANDER,
 		ARRIVE_FACE,
-		WANDER_CHASE
+		WANDER_CHASE,
+		SEPARATION,
+		COHESION
 	};
 
 	//constructors and destructors
