@@ -234,8 +234,11 @@ void Game::handleEvent(const Event& theEvent)
 			break;
 		case SPAWN:
 		{
-			Unit * pPlayer = gpGame->getUnitManager()->getPlayerUnit();
-			mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID), pPlayer->getSteeringComponent()->getOwnerID());
+			for (int i = 0; i < 10; i++)
+			{
+				Unit * pPlayer = gpGame->getUnitManager()->getPlayerUnit();
+				mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID), pPlayer->getSteeringComponent()->getOwnerID());
+			}
 			break;
 		}
 		case DELETE_UNIT:

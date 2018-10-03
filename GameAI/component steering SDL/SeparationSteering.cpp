@@ -6,7 +6,6 @@
 #include "UnitManager.h"
 #include "Unit.h"
 
-//TODO: pass in a list of targets?
 SeparationSteering::SeparationSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee /*= false*/)
 	: Steering()
 {
@@ -24,16 +23,17 @@ Steering* SeparationSteering::getSteering()
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
 
 	for (int i = 0; i < gpGame->getUnitManager()->size(); i++)
-	{
+	{	
+		mTargetLoc = gpGame->getUnitManager()->getUnit(i)->getPositionComponent()->getPosition();
 		direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
 		distance = direction.getLength();
 
-		if (direction < THRESHOLD)
+		if (distance < THRESHOLD)
 		{
 			strength = fmin(DECAY / (distance*distance), pOwner->getMaxAcc()); //inverse square
 
 			direction.normalize();
-			physicsData.acc += strength * direction;
+			physicsData.acc += direction * strength;
 		}
 	}
 

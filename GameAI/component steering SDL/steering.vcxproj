@@ -14,6 +14,7 @@
     <ClInclude Include="AlignSteering.h" />
     <ClInclude Include="ArriveFace.h" />
     <ClInclude Include="ArriveSteering.h" />
+    <ClInclude Include="BlendedSteering.h" />
     <ClInclude Include="CohesionSteering.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
@@ -23,11 +24,13 @@
     <ClInclude Include="EventListener.h" />
     <ClInclude Include="EventSystem.h" />
     <ClInclude Include="FaceSteering.h" />
+    <ClInclude Include="FlockSteering.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GraphicsBuffer.h" />
     <ClInclude Include="GraphicsBufferManager.h" />
     <ClInclude Include="GraphicsSystem.h" />
+    <ClInclude Include="GroupAlign.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="PhysicsComponent.h" />
@@ -48,6 +51,7 @@
     <ClCompile Include="AlignSteering.cpp" />
     <ClCompile Include="ArriveFace.cpp" />
     <ClCompile Include="ArriveSteering.cpp" />
+    <ClCompile Include="BlendedSteering.cpp" />
     <ClCompile Include="CohesionSteering.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -56,11 +60,13 @@
     <ClCompile Include="EventListener.cpp" />
     <ClCompile Include="EventSystem.cpp" />
     <ClCompile Include="FaceSteering.cpp" />
+    <ClCompile Include="FlockSteering.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GraphicsBuffer.cpp" />
     <ClCompile Include="GraphicsBufferManager.cpp" />
     <ClCompile Include="GraphicsSystem.cpp" />
+    <ClCompile Include="GroupAlign.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MouseEvent.cpp" />

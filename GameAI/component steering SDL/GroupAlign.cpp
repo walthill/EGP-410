@@ -2,41 +2,45 @@
 
 #include "Steering.h"
 #include "Game.h"
-#include "SeekSteering.h"
-#include "CohesionSteering.h"
+#include "GroupAlign.h"
 #include "UnitManager.h"
 #include "Unit.h"
 
-CohesionSteering::CohesionSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee /*= false*/)
-	: Steering(), mSeekSteering(ownerID, targetLoc, targetID, shouldFlee)
+GroupAlignSteering::GroupAlignSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee /*= false*/)
+	: AlignSteering(ownerID, targetLoc, targetID, shouldFlee)
 {
-	mType = COHESION;
+	mType = GROUP_ALIGN;
 	setOwnerID(ownerID);
 	setTargetID(targetID);
 	setTargetLoc(targetLoc);
 }
 
-Steering* CohesionSteering::getSteering()
+Steering* GroupAlignSteering::getSteering()
 {
 	int i;
-	float distance, strength;
+	float distance;
 	Vector2D direction, centerMassLoc;
+	//int closestIndex;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
+//	Steering* alignData;
 
 	for (i = 0; i < gpGame->getUnitManager()->size(); i++)
 	{
 		mTargetLoc += gpGame->getUnitManager()->getUnit(i)->getPositionComponent()->getPosition();
 	}
 
-	centerMassLoc = mTargetLoc * (1 / (i + 1));
+	centerMassLoc = mTargetLoc * (1.0f / (i + 1.0f));
+
 	direction = centerMassLoc - pOwner->getPositionComponent()->getPosition();
 	distance = direction.getLength();
 
-	//TODO: add seek
-	if (distance > THRESHOLD) //if target is within cohesion radius, pull towards center of mass
+	if (distance < THRESHOLD)
 	{
-		physicsData = mSeekSteering.getSteering()->getData();
+		float targetOrientation = atan2(direction.getY(), direction.getX());
+		mTargetFacing = targetOrientation;
+
+		physicsData = AlignSteering::getSteering()->getData();
 	}
 
 	this->mData = physicsData;

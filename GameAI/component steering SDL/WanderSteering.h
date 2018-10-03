@@ -3,6 +3,7 @@
 
 #include <Trackable.h>
 #include "Steering.h"
+#include "FaceSteering.h"
 
 class WanderSteering : public Steering
 {

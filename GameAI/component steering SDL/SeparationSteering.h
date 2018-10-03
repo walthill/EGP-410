@@ -11,8 +11,8 @@ class SeparationSteering : public Steering
 
 	protected:
 		virtual Steering* getSteering(); //overrides parent function
-		const float THRESHOLD = 1.0f; //minimum distance at which separation occurs
-		const float DECAY = 1.0f; //how fast seperation strength decays over distance
+		const float THRESHOLD = 20.0f; //minimum distance at which separation occurs
+		const float DECAY = 5.0f; //how fast seperation strength decays over distance
 };
 
 #endif // !SEPARATE_H

@@ -10,6 +10,8 @@
 #include "WanderChase.h"
 #include "SeparationSteering.h"
 #include "CohesionSteering.h"
+#include "GroupAlign.h"
+#include "FlockSteering.h"
 
 SteeringComponent::SteeringComponent(const ComponentID& id, const ComponentID& physicsComponentID) 
 	:Component(id)
@@ -96,6 +98,18 @@ void SteeringComponent::setData(const SteeringData& data)
 		{
 			delete mpSteering;
 			mpSteering = new CohesionSteering(data.ownerID, data.targetLoc, data.targetID, false);
+			break;
+		}
+		case Steering::GROUP_ALIGN:
+		{
+			delete mpSteering;
+			mpSteering = new GroupAlignSteering(data.ownerID, data.targetLoc, data.targetID, false);
+			break;
+		}
+		case Steering::FLOCK:
+		{
+			delete mpSteering;
+			mpSteering = new FlockSteering(data.ownerID, data.targetLoc, data.targetID, false);
 			break;
 		}
 		case Steering::ALIGN:

@@ -26,7 +26,9 @@ public:
 		ARRIVE_FACE,
 		WANDER_CHASE,
 		SEPARATION,
-		COHESION
+		COHESION,
+		GROUP_ALIGN,
+		FLOCK
 	};
 
 	//constructors and destructors
