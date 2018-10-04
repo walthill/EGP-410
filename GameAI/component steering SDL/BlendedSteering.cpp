@@ -25,8 +25,8 @@ Steering* BlendedSteering::getSteering()
 	for (unsigned int i =0; i < behaviorList.size(); i++)
 	{
 		BehaviorAndWeight tmp = behaviorList[i];
-		weightedAcc += tmp.behavior.getSteering()->getData().acc * tmp.weight;
-		weightedRotAcc += tmp.behavior.getSteering()->getData().rotAcc * tmp.weight;
+		weightedAcc += tmp.behavior->getSteering()->getData().acc * tmp.weight;
+		weightedRotAcc += tmp.behavior->getSteering()->getData().rotAcc * tmp.weight;
 	}
 
 	if (weightedAcc.getLength() > physicsData.maxAccMagnitude)
@@ -46,10 +46,8 @@ Steering* BlendedSteering::getSteering()
 	return this;
 }
 
-void BlendedSteering::setBehaviorList(Steering behavior, float weight)
+void BlendedSteering::setBehaviorList(Steering *behavior, float weight)
 {
-
-
 	BehaviorAndWeight itemToAdd;
 	itemToAdd.behavior = behavior;
 	itemToAdd.weight = weight;

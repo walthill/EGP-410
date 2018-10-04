@@ -13,7 +13,7 @@ class GroupAlignSteering: public AlignSteering
 	protected:
 		
 		//float closestNeighbor = INVALID_UNIT_ID;
-		const float THRESHOLD = 50.0f;
+		const float THRESHOLD = 100.0f;
 };
 
 #endif // !GROUP_ALIGN_H

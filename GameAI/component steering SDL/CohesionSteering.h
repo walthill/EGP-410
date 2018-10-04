@@ -13,7 +13,7 @@ class CohesionSteering : public Steering
 	protected:
 		SeekSteering mSeekSteering;
 		virtual Steering* getSteering(); //overrides parent functions
-		const float THRESHOLD = 100.0f; 
+		const float THRESHOLD = 150.0f; 
 		//const float DECAY = 1.0f; 
 
 };

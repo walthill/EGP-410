@@ -9,14 +9,14 @@ class BlendedSteering : public Steering
 {
 	public:	
 		BlendedSteering::BlendedSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee /*= false*/);
-		void BlendedSteering::setBehaviorList(Steering behavior, float weight);
+		void BlendedSteering::setBehaviorList(Steering *behavior, float weight);
 		virtual Steering* getSteering(); //overrides parent functions
 
 
 	protected:
 		struct BehaviorAndWeight
 		{
-			Steering behavior;
+			Steering* behavior;
 			float weight; //value less than one
 		};
 

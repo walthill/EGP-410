@@ -82,7 +82,7 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite, const UnitID& targetId
 	int posY = rand() % gpGame->getGraphicsSystem()->getHeight();
 
 	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0));
-	pUnit->setShowTarget(true);
+	//pUnit->setShowTarget(true);
 	if (pUnit != NULL)
 		pUnit->setSteering(Steering::FLOCK, Vector2D(gpGame->getGraphicsSystem()->getWidth()/2, gpGame->getGraphicsSystem()->getHeight()/2), targetId);
 	

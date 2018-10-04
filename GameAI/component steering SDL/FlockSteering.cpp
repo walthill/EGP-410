@@ -18,9 +18,9 @@ FlockSteering::FlockSteering(const UnitID& ownerID, const Vector2D& targetLoc, c
 	setTargetID(targetID);
 	setTargetLoc(targetLoc);
 
-	mBlendSteering.setBehaviorList(mGroupAlignSteering, 0.1f);
-	mBlendSteering.setBehaviorList(mCohesionSteering, 0.4f);
-	mBlendSteering.setBehaviorList(mSeparationSteering, 0.5f);
+	mBlendSteering.setBehaviorList(&mGroupAlignSteering, 0.1f);
+	mBlendSteering.setBehaviorList(&mCohesionSteering, 0.4f);
+	mBlendSteering.setBehaviorList(&mSeparationSteering, 0.5f);
 }
 
 Steering* FlockSteering::getSteering()
