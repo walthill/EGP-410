@@ -13,28 +13,48 @@ SeparationSteering::SeparationSteering(const UnitID& ownerID, const Vector2D& ta
 	setOwnerID(ownerID);
 	setTargetID(targetID);
 	setTargetLoc(targetLoc);
+	unitManangerHandle = gpGame->getUnitManager();
 }
 
 Steering* SeparationSteering::getSteering()
 {
+	int neighborCount = 0;
 	float distance, strength;
-	Vector2D direction;
-	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
+	Vector2D direction = Vector2D();
+	pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
+	unitMapSize = unitManangerHandle->size();
 
-	for (int i = 0; i < gpGame->getUnitManager()->size(); i++)
+	physicsData.acc = 0;
+	physicsData.vel = 0;
+
+	for (int i = 1; i < unitMapSize + 1; i++)
 	{	
-		mTargetLoc = gpGame->getUnitManager()->getUnit(i)->getPositionComponent()->getPosition();
-		direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
-		distance = direction.getLength();
-
-		if (distance < THRESHOLD)
+		currentUnit = unitManangerHandle->getUnit(i);
+		
+		if (pOwner != currentUnit && currentUnit != NULL)
 		{
-			strength = fmin(DECAY / (distance*distance), pOwner->getMaxAcc()); //inverse square
+			
+			direction = currentUnit->getPositionComponent()->getPosition() - pOwner->getPositionComponent()->getPosition();
+			distance = direction.getLength();
 
-			direction.normalize();
-			physicsData.acc += direction * strength;
+			if (distance < mTHRESHOLD)
+			{
+				strength = min(mDECAY / (distance*distance), pOwner->getMaxAcc()); //inverse square
+				
+				direction *= -1;
+				direction.normalize();
+				physicsData.acc += (direction * strength);
+
+				++neighborCount;
+			}
 		}
+	}
+
+	if (neighborCount == 0)
+	{
+		physicsData.acc = 0;
+		physicsData.vel = 0;
 	}
 
 	this->mData = physicsData;

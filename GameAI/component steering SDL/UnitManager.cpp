@@ -71,7 +71,7 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite)
 	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0));
 
 	if (pUnit != NULL)
-		pUnit->setSteering(Steering::WANDER_CHASE, Vector2D(gpGame->getGraphicsSystem()->getWidth() / 2, gpGame->getGraphicsSystem()->getHeight() / 2));
+		pUnit->setSteering(Steering::FLOCK, Vector2D(gpGame->getGraphicsSystem()->getWidth() / 2, gpGame->getGraphicsSystem()->getHeight() / 2));
 
 	return pUnit;
 }
@@ -84,7 +84,7 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite, const UnitID& targetId
 	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0));
 	//pUnit->setShowTarget(true);
 	if (pUnit != NULL)
-		pUnit->setSteering(Steering::FLOCK, Vector2D(gpGame->getGraphicsSystem()->getWidth()/2, gpGame->getGraphicsSystem()->getHeight()/2), targetId);
+		pUnit->setSteering(Steering::FLOCK, Vector2D(gpGame->getGraphicsSystem()->getWidth()/2, gpGame->getGraphicsSystem()->getHeight()/2));
 	
 	return pUnit;
 }
@@ -130,12 +130,18 @@ void UnitManager::deleteRandomUnit()
 {
 	if (mUnitMap.size() >= 1)
 	{
+		Uint32 cnt = 0;
 		Uint32 target = rand() % mUnitMap.size();
-		if (target == 0)//don't allow the 0th element to be deleted as it is the player unit
+		if (target == 0 && mUnitMap.size() == 1) //handle deleting last unit w/o player
+		{
+			target = 1;
+			cnt = 1;
+		}
+		else if (target == 0)//don't allow the 0th element to be deleted as it is the player unit
 		{
 			target = 1;
 		}
-		Uint32 cnt = 0;
+
 		for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it, cnt++)
 		{
 			if (cnt == target)

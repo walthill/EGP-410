@@ -9,6 +9,7 @@ class WanderSteering : public Steering
 {
 	public:
 		WanderSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID = INVALID_UNIT_ID, bool shouldFlee = false);
+		virtual Steering* getSteering(); //overrides parent function
 		Vector2D makeVector(float radiansToConvert);
 	protected:
 		FaceSteering mFaceSteering;
@@ -20,7 +21,6 @@ class WanderSteering : public Steering
 		const float mWANDER_RADIUS = 80;
 		const float mWANDER_RATE = 2 * PI; //sets amount of circle used to find next target
 
-		virtual Steering* getSteering(); //overrides parent function
 };
 
 #endif // !WANDER_H

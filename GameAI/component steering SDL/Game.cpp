@@ -110,10 +110,10 @@ bool Game::init()
 	}
 
 	//setup units
-	Unit* pUnit = mpUnitManager->createPlayerUnit(*pArrowSprite);
+	/*Unit* pUnit = mpUnitManager->createPlayerUnit(*pArrowSprite);
 	pUnit->setShowTarget(true);
 	pUnit->setSteering(Steering::ARRIVE_FACE, ZERO_VECTOR2D);
-
+	*/
 	//create 2 enemies
 /*	pUnit = mpUnitManager->createUnit(*pEnemyArrow, true, PositionData(Vector2D((float)gpGame->getGraphicsSystem()->getWidth()-1, 0.0f), 0.0f));
 	pUnit->setShowTarget(true);
@@ -237,7 +237,7 @@ void Game::handleEvent(const Event& theEvent)
 			for (int i = 0; i < 10; i++)
 			{
 				Unit * pPlayer = gpGame->getUnitManager()->getPlayerUnit();
-				mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID), pPlayer->getSteeringComponent()->getOwnerID());
+				mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID));
 			}
 			break;
 		}
@@ -246,11 +246,11 @@ void Game::handleEvent(const Event& theEvent)
 			break;
 		case MOVE_PLAYER:
 		{	
-			const MouseEvent& mouseEvent = static_cast<const MouseEvent&>(theEvent);
+			/*const MouseEvent& mouseEvent = static_cast<const MouseEvent&>(theEvent);
 			Unit* pPlayer = gpGame->getUnitManager()->getPlayerUnit();
 			Vector2D pos(mouseEvent.getX(), mouseEvent.getY());
 			pPlayer->setSteering(Steering::ARRIVE_FACE, pos);
-			break;
+			*/break;
 		}
 	}
 }

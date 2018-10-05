@@ -4,6 +4,8 @@
 #include <Trackable.h>
 #include "Steering.h"
 
+using namespace std;
+
 class SeparationSteering : public Steering
 {
 	public:
@@ -11,8 +13,13 @@ class SeparationSteering : public Steering
 
 	protected:
 		virtual Steering* getSteering(); //overrides parent function
-		const float THRESHOLD = 50.0f; //minimum distance at which separation occurs
-		const float DECAY = 35.0f; //how fast seperation strength decays over distance
+		const float mTHRESHOLD = 75.0f; //minimum distance at which separation occurs
+		const float mDECAY = 100000.0f; //how fast seperation strength decays over distance
+		
+		UnitManager* unitManangerHandle;
+		Unit* currentUnit;
+		Unit* pOwner;
+		int unitMapSize; 
 };
 
 #endif // !SEPARATE_H

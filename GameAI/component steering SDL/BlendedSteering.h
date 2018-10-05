@@ -20,8 +20,6 @@ class BlendedSteering : public Steering
 			float weight; //value less than one
 		};
 
-		Vector2D weightedAcc = (0.0f, 0.0f);
-		float weightedRotAcc = 0;
 		std::vector<BehaviorAndWeight> behaviorList;
 };
 

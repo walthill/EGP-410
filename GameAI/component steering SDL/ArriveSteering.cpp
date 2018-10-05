@@ -58,8 +58,6 @@ Steering* ArriveSteering::getSteering()
 	physicsData.acc = targetVelocity - physicsData.vel;
 	physicsData.acc /= mTIME_TO_TARGET;
 
-//	pOwner->getPhysicsComponent()->setData()
-
 	//clamp acceleration
 	if (physicsData.acc.getLengthSquared() > pOwner->getMaxAcc()*pOwner->getMaxAcc())
 	{
@@ -67,10 +65,7 @@ Steering* ArriveSteering::getSteering()
 		physicsData.acc *= pOwner->getMaxAcc();
 	}
 
-//	this->mData.rotVel = 0;
 	this->mData = physicsData;
-//	this->mData.rotAcc = 0;
-//	pOwner->getPhysicsComponent()->setData();
 
 	return this;
 }

@@ -1,46 +1,65 @@
 #include <cassert>
 
 #include "Steering.h"
+#include "AlignSteering.h"
+#include "FaceSteering.h"
 #include "Game.h"
 #include "GroupAlign.h"
 #include "UnitManager.h"
 #include "Unit.h"
 
 GroupAlignSteering::GroupAlignSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee /*= false*/)
-	: AlignSteering(ownerID, targetLoc, targetID, shouldFlee)
+	: FaceSteering(ownerID, targetLoc, targetID, shouldFlee)
 {
 	mType = GROUP_ALIGN;
 	setOwnerID(ownerID);
 	setTargetID(targetID);
 	setTargetLoc(targetLoc);
+	unitManangerHandle = gpGame->getUnitManager();
 }
 
 Steering* GroupAlignSteering::getSteering()
 {
-	int i;
-	float distance;
+	int neighborCount = 0;
+	float distance = 0, averageRotation = 0;
 	Vector2D direction, centerMassLoc;
-	//int closestIndex;
-	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
+	pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
-//	Steering* alignData;
+	unitMapSize = unitManangerHandle->size();
 
-	for (i = 0; i < gpGame->getUnitManager()->size(); i++)
+
+	//skip 0 - thats the player id
+	for (int i = 1; i < unitMapSize+1; i++)
 	{
-		mTargetLoc += gpGame->getUnitManager()->getUnit(i)->getPositionComponent()->getPosition();
+		currentUnit = unitManangerHandle->getUnit(i);
+	
+		if (pOwner != currentUnit && currentUnit != NULL)
+		{
+
+			direction = currentUnit->getPositionComponent()->getPosition() - pOwner->getPositionComponent()->getPosition();
+			distance = direction.getLength();
+
+			if (distance < mTHRESHOLD)
+			{
+				averageRotation += currentUnit->getFacing();
+				++neighborCount;
+			}
+
+		}
 	}
 
-	centerMassLoc = mTargetLoc * (1.0f / (i + 1.0f));
 
-	direction = centerMassLoc - pOwner->getPositionComponent()->getPosition();
-	distance = direction.getLength();
-
-	if (distance < THRESHOLD)
+	if (neighborCount > 0)
 	{
-		float targetOrientation = atan2(direction.getY(), direction.getX());
-		mTargetFacing = targetOrientation;
-
-		physicsData = AlignSteering::getSteering()->getData();
+		averageRotation /= neighborCount;
+		mapToRange(averageRotation);
+		mTargetFacing = averageRotation;
+		physicsData.rotAcc = AlignSteering::getSteering()->getData().rotAcc;
+	}
+	else
+	{
+		physicsData.rotAcc = 0;
+		physicsData.rotVel = 0;
 	}
 
 	this->mData = physicsData;

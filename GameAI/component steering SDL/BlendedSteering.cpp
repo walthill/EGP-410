@@ -17,30 +17,32 @@ BlendedSteering::BlendedSteering(const UnitID& ownerID, const Vector2D& targetLo
 
 Steering* BlendedSteering::getSteering()
 {
-	Vector2D direction;
-
+	Vector2D direction, weightedAcc = (0.0f, 0.0f);
+	float weightedRotAcc = 0;
+	BehaviorAndWeight tmpBehaviorData;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
+	Steering* behaviorSteering;
+	
+	physicsData.acc = 0;
+	physicsData.rotAcc = 0;
 
 	for (unsigned int i =0; i < behaviorList.size(); i++)
 	{
-		BehaviorAndWeight tmp = behaviorList[i];
-		weightedAcc += tmp.behavior->getSteering()->getData().acc * tmp.weight;
-		weightedRotAcc += tmp.behavior->getSteering()->getData().rotAcc * tmp.weight;
+		tmpBehaviorData = behaviorList[i];
+		behaviorSteering = tmpBehaviorData.behavior->getSteering();
+		physicsData.acc += (behaviorSteering->getData().acc * tmpBehaviorData.weight);
+		physicsData.rotAcc += (behaviorSteering->getData().rotAcc * tmpBehaviorData.weight);
 	}
 
-	if (weightedAcc.getLength() > physicsData.maxAccMagnitude)
+
+	physicsData.acc.normalize();
+	physicsData.acc *= pOwner->getMaxAcc();
+
+	if (physicsData.rotAcc > pOwner->getMaxRotAcc())
 	{
-		weightedAcc = physicsData.maxAccMagnitude;
+		physicsData.rotAcc = pOwner->getMaxRotAcc();
 	}
-
-	if (weightedRotAcc> physicsData.maxRotAcc)
-	{
-		weightedAcc = physicsData.maxAccMagnitude;
-	}
-
-	physicsData.acc = weightedAcc;
-	physicsData.rotAcc = weightedRotAcc;
 
 	this->mData = physicsData;
 	return this;

@@ -3,6 +3,7 @@
 
 #include <Trackable.h>
 #include "Steering.h"
+#include "AlignSteering.h"
 
 class FaceSteering : public AlignSteering
 {
