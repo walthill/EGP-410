@@ -30,7 +30,7 @@ void PhysicsComponent::integrate(PositionComponent& posComponent, float elapsedT
 		}
 		if (mData.rotAcc > mData.maxRotAcc)
 		{
-			mData.maxRotAcc = mData.maxRotAcc;
+			mData.rotAcc = mData.maxRotAcc;
 		}
 		else if (mData.rotAcc < -mData.maxRotAcc)
 		{
