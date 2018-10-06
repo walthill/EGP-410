@@ -1,4 +1,4 @@
-# EGP-410
+# EGP-410- AI for Games
 Template projects for base code for EGP 410 assignments.
 
 
