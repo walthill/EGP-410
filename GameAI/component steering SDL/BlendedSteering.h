@@ -5,11 +5,15 @@
 #include <vector>
 #include "Steering.h"
 #include "GroupAlign.h"
+
+enum BehaviorType { WANDER, GROUP_ALIGN, COHESION, SEPARATION };
+
 class BlendedSteering : public Steering
 {
 	public:	
 		BlendedSteering::BlendedSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee /*= false*/);
-		void BlendedSteering::setBehaviorList(Steering *behavior, float weight);
+		void setBehaviorList(Steering *behavior, float weight);
+		void setWeight(BehaviorType behvaiorType, float weight);
 		virtual Steering* getSteering(); //overrides parent functions
 
 
@@ -17,9 +21,10 @@ class BlendedSteering : public Steering
 		struct BehaviorAndWeight
 		{
 			Steering* behavior;
-			float weight; //value less than one
+			float weight;
 		};
-
+		
+		std::vector<Unit*> unitList; //container
 		std::vector<BehaviorAndWeight> behaviorList;
 };
 

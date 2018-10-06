@@ -18,28 +18,29 @@ GroupAlignSteering::GroupAlignSteering(const UnitID& ownerID, const Vector2D& ta
 	unitManangerHandle = gpGame->getUnitManager();
 }
 
-Steering* GroupAlignSteering::getSteering()
+Steering* GroupAlignSteering::getSteering() { return this; }
+
+
+Steering* GroupAlignSteering::getSteering(std::vector<Unit*> unitList)
 {
 	int neighborCount = 0;
 	float distance = 0, averageRotation = 0;
 	Vector2D direction, centerMassLoc;
 	pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
-	unitMapSize = unitManangerHandle->size();
+	unitMapSize = unitList.size();
 
-
-	//skip 0 - thats the player id
-	for (int i = 1; i < unitMapSize+1; i++)
+	for (int i = 0; i < unitMapSize; i++)
 	{
-		currentUnit = unitManangerHandle->getUnit(i);
-	
+		currentUnit = unitList[i];
+
 		if (pOwner != currentUnit && currentUnit != NULL)
 		{
 
 			direction = currentUnit->getPositionComponent()->getPosition() - pOwner->getPositionComponent()->getPosition();
 			distance = direction.getLength();
 
-			if (distance < mTHRESHOLD)
+			if (distance < mThreshold)
 			{
 				averageRotation += currentUnit->getFacing();
 				++neighborCount;

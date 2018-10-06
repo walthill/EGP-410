@@ -1,4 +1,5 @@
 #include <map>
+#include <vector>
 
 #include "UnitManager.h"
 #include "Unit.h"
@@ -73,6 +74,9 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite)
 	if (pUnit != NULL)
 		pUnit->setSteering(Steering::FLOCK, Vector2D(gpGame->getGraphicsSystem()->getWidth() / 2, gpGame->getGraphicsSystem()->getHeight() / 2));
 
+	mIsNewUnit = true;
+	mCallCount = 0; //track unit creation for flocking
+
 	return pUnit;
 }
 
@@ -87,6 +91,27 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite, const UnitID& targetId
 		pUnit->setSteering(Steering::FLOCK, Vector2D(gpGame->getGraphicsSystem()->getWidth()/2, gpGame->getGraphicsSystem()->getHeight()/2));
 	
 	return pUnit;
+}
+
+vector<Unit*> UnitManager::getAllUnits()
+{
+	vector<Unit*> returnVector;
+	mCallCount++;
+
+	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
+	{
+		returnVector.push_back(it->second);
+	}
+
+	if (mCallCount > returnVector.size()) //no more new units being added
+		mIsNewUnit = false;
+
+	return returnVector;
+}
+
+bool UnitManager::hasNewUnit()
+{
+	return mIsNewUnit;
 }
 
 Unit* UnitManager::getUnit(const UnitID& id) const

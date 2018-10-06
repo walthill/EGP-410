@@ -50,6 +50,23 @@ public:
 	inline double getCurrentTime() const { return mpMasterTimer->getElapsedTime(); };
 	inline void handleEvent(const Event& theEvent);
 	inline void installListeners();
+	
+	void loadGameData();
+	void saveGameData();
+	
+	bool checkRadiusChange();
+	void setRadiusChange(bool radiusChanged);
+	bool checkWeightChange();
+	void setWeightChange(bool weightChanged);
+
+	struct FlockData
+	{
+		float wanderWeight, seaparationWeight, groupAlignWeight, cohesionWeight;
+		float separationRadius, cohesionRadius, groupAlignRadius;
+	} mFlockData;
+	
+	FlockData getFlockData() const { return mFlockData; };
+
 
 private:
 	GraphicsSystem* mpGraphicsSystem;
@@ -57,7 +74,6 @@ private:
 	
 	InputSystem* mpInputSystem;
 	EventType mEventType;
-	//Unit* mpUnitHandle; 
 	int mouseX, mouseY;//used in input system
 	string mouseText; //display mouse pos
 
@@ -76,6 +92,10 @@ private:
 	GraphicsBufferID mEnemyIconBufferID = "enemy";
 	GraphicsBufferID mTargetBufferID = "target";
 
+	const string mINI_FILE = "data.ini";
+	const float mWEIGHT_CHANGE_VALUE = 0.1f;
+	const float mRADIUS_CHANGE_VALUE = 10.0f;
+	bool mDoWeightChange = false, mDoRadiusChange = false;
 };
 
 float genRandomBinomial();//range -1:1 from "Artificial Intelligence for Games", Millington and Funge

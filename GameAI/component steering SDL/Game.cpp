@@ -3,7 +3,7 @@
 
 #include <time.h>
 #include <SDL.h>
-
+#include "simpleini-4.17/SimpleIni.h"
 #include "Game.h"
 #include "GraphicsSystem.h"
 #include "GraphicsBuffer.h"
@@ -71,6 +71,7 @@ bool Game::init()
 	mpInputSystem = new InputSystem;
 	mpInputSystem->initInputSystem();
 	installListeners();
+	loadGameData();
 
 	mpComponentManager = new ComponentManager(MAX_UNITS);
 	mpUnitManager = new UnitManager(MAX_UNITS);
@@ -134,6 +135,69 @@ void Game::installListeners()
 	EventSystem::getInstance()->addListener(MOVE_PLAYER, this);
 	EventSystem::getInstance()->addListener(DELETE_UNIT, this);
 	EventSystem::getInstance()->addListener(MOUSE_MOTION, this);
+	
+	EventSystem::getInstance()->addListener(SEP_RADIUS_DOWN, this);
+	EventSystem::getInstance()->addListener(SEP_RADIUS_UP, this);
+	EventSystem::getInstance()->addListener(COH_RADIUS_DOWN, this);
+	EventSystem::getInstance()->addListener(COH_RADIUS_UP, this);
+	EventSystem::getInstance()->addListener(GROUP_RADIUS_DOWN, this);
+	EventSystem::getInstance()->addListener(GROUP_RADIUS_UP, this);
+
+	EventSystem::getInstance()->addListener(GROUP_ALIGN_UP, this);
+	EventSystem::getInstance()->addListener(GROUP_ALIGN_DOWN, this);
+	EventSystem::getInstance()->addListener(SEPARATION_UP, this);
+	EventSystem::getInstance()->addListener(SEPARATION_DOWN, this);
+	EventSystem::getInstance()->addListener(COHESION_DOWN, this);
+	EventSystem::getInstance()->addListener(COHESION_UP, this);
+	EventSystem::getInstance()->addListener(WANDER_UP, this);
+	EventSystem::getInstance()->addListener(WANDER_DOWN, this);
+}
+
+void Game::loadGameData()
+{
+	cout << "Loading game data from " + mINI_FILE << endl;
+	//"section", "key",	default, "filename"
+	CSimpleIniA ini;
+	ini.SetUnicode();
+	ini.LoadFile(mINI_FILE.c_str());
+
+	const char * iniWanderWeight = ini.GetValue("VALUES", "ww", "default");
+	const char * iniCohesionWeight = ini.GetValue("VALUES", "cw", "default");
+	const char * iniGroupAlignWeight = ini.GetValue("VALUES", "gaw", "default");
+	const char * iniSeparationWeight = ini.GetValue("VALUES", "sw", "default");
+	const char * iniCohesionRadius = ini.GetValue("VALUES", "cr", "default");
+	const char * iniGroupAlignRadius = ini.GetValue("VALUES", "gar", "default");
+	const char * iniSeparationRadius = ini.GetValue("VALUES", "sr", "default");
+
+	mFlockData.wanderWeight = (float)atof(iniWanderWeight);
+	mFlockData.cohesionWeight = (float)atof(iniCohesionWeight);
+	mFlockData.seaparationWeight = (float)atof(iniSeparationWeight);
+	mFlockData.groupAlignWeight = (float)atof(iniGroupAlignWeight);
+	mFlockData.cohesionRadius = (float)atof(iniCohesionRadius);
+	mFlockData.separationRadius= (float)atof(iniSeparationRadius);
+	mFlockData.groupAlignRadius = (float)atof(iniGroupAlignRadius);
+}
+
+void Game::saveGameData()
+{
+	cout << "Saving game data to" + mINI_FILE << endl;
+
+	CSimpleIniA ini;
+	ini.LoadFile(mINI_FILE.c_str());
+
+	// overwrite last save - deleting an entire section and all keys in it
+	ini.Delete("VALUES", NULL);
+
+	ini.SetDoubleValue("VALUES", "ww", mFlockData.wanderWeight);
+	ini.SetDoubleValue("VALUES", "cw", mFlockData.cohesionWeight);
+	ini.SetDoubleValue("VALUES", "gaw", mFlockData.groupAlignWeight);
+	ini.SetDoubleValue("VALUES", "sw", mFlockData.seaparationWeight);
+	ini.SetDoubleValue("VALUES", "cr", mFlockData.cohesionRadius);
+	ini.SetDoubleValue("VALUES", "gar", mFlockData.groupAlignRadius);
+	ini.SetDoubleValue("VALUES", "sr", mFlockData.separationRadius);
+
+	ini.SaveFile(mINI_FILE.c_str());
+	cout << "SAVED!" << endl;
 }
 
 void Game::cleanup()
@@ -199,6 +263,10 @@ bool Game::endLoop()
 {
 	//mpMasterTimer->start();
 	mpLoopTimer->sleepUntilElapsed( LOOP_TARGET_TIME );
+	
+	if(mShouldExit)
+		saveGameData();
+
 	return mShouldExit;
 }
 
@@ -211,6 +279,28 @@ float genRandomFloat()
 {
 	float r = (float)rand()/(float)RAND_MAX;
 	return r;
+}
+
+void Game::setRadiusChange(bool radiusChanged)
+{
+	mDoRadiusChange = radiusChanged;
+}
+
+
+bool Game::checkRadiusChange()
+{
+	return mDoRadiusChange;
+}
+
+void Game::setWeightChange(bool weightChanged)
+{
+	mDoWeightChange = weightChanged;
+}
+
+
+bool Game::checkWeightChange()
+{
+	return mDoWeightChange;
 }
 
 void Game::handleEvent(const Event& theEvent)
@@ -244,13 +334,78 @@ void Game::handleEvent(const Event& theEvent)
 		case DELETE_UNIT:
 			mpUnitManager->deleteRandomUnit();
 			break;
-		case MOVE_PLAYER:
-		{	
-			/*const MouseEvent& mouseEvent = static_cast<const MouseEvent&>(theEvent);
-			Unit* pPlayer = gpGame->getUnitManager()->getPlayerUnit();
-			Vector2D pos(mouseEvent.getX(), mouseEvent.getY());
-			pPlayer->setSteering(Steering::ARRIVE_FACE, pos);
-			*/break;
-		}
+		
+		case WANDER_DOWN:
+			if(mFlockData.wanderWeight > 0)
+			{
+				mFlockData.wanderWeight -= mWEIGHT_CHANGE_VALUE; 
+				cout << "WANDER DOWN" << endl;
+			}
+
+			mDoWeightChange = true;
+			break;
+		case WANDER_UP:
+			mFlockData.wanderWeight += mWEIGHT_CHANGE_VALUE; 
+			cout << "WANDER UP" << endl;
+			mDoWeightChange = true;
+			break;
+		case GROUP_ALIGN_DOWN:
+			if (mFlockData.groupAlignWeight > 0)
+				mFlockData.groupAlignWeight -= mWEIGHT_CHANGE_VALUE;
+
+			mDoWeightChange = true;
+			break;
+		case GROUP_ALIGN_UP:
+			mFlockData.groupAlignWeight += mWEIGHT_CHANGE_VALUE;
+			mDoWeightChange = true;
+
+			break;
+		case SEPARATION_DOWN:
+			if (mFlockData.seaparationWeight > 0)
+				mFlockData.seaparationWeight -= mWEIGHT_CHANGE_VALUE;
+
+			mDoWeightChange = true;
+			break;
+		case SEPARATION_UP:
+			mFlockData.seaparationWeight += mWEIGHT_CHANGE_VALUE;
+			mDoWeightChange = true;
+			break;
+		case COHESION_DOWN:
+			if (mFlockData.cohesionWeight > 0)
+				mFlockData.cohesionWeight -= mWEIGHT_CHANGE_VALUE;
+
+			mDoWeightChange = true;
+			break;
+		case COHESION_UP:
+			mFlockData.cohesionWeight += mWEIGHT_CHANGE_VALUE;
+			mDoWeightChange = true;
+			break;
+
+		case SEP_RADIUS_DOWN:
+			cout << "SEPARATION RADIUS DOWN" << endl;
+			mFlockData.separationRadius -= mWEIGHT_CHANGE_VALUE;
+			mDoRadiusChange = true;
+			break;
+		case SEP_RADIUS_UP:
+			cout << "SEPARATION RADIUS UP" << endl;
+			mFlockData.separationRadius += mRADIUS_CHANGE_VALUE;
+			mDoRadiusChange = true;
+			break;
+		case COH_RADIUS_DOWN:
+			mFlockData.cohesionRadius -= mRADIUS_CHANGE_VALUE;
+			mDoRadiusChange = true;
+			break;
+		case COH_RADIUS_UP:
+			mFlockData.cohesionRadius += mRADIUS_CHANGE_VALUE;
+			mDoRadiusChange = true;
+			break;
+		case GROUP_RADIUS_DOWN:
+			mFlockData.groupAlignRadius -= mRADIUS_CHANGE_VALUE;
+			mDoRadiusChange = true;
+			break;
+		case GROUP_RADIUS_UP:
+			mFlockData.groupAlignRadius += mRADIUS_CHANGE_VALUE;
+			mDoRadiusChange = true;
+			break;
 	}
 }

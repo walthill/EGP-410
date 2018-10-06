@@ -17,25 +17,27 @@ CohesionSteering::CohesionSteering(const UnitID& ownerID, const Vector2D& target
 	unitManangerHandle = gpGame->getUnitManager();
 }
 
-Steering* CohesionSteering::getSteering()
+Steering* CohesionSteering::getSteering() { return this; }
+
+Steering* CohesionSteering::getSteering(std::vector<Unit*> unitList)
 {
 	int i, neighborCount =0;
 	float distance;
 	Vector2D direction, centerMassLoc;
 	pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
-	unitMapSize = unitManangerHandle->size();
+	unitMapSize = unitList.size();
 
-	for (i = 1; i < unitMapSize + 1; i++)
+	for (int i = 0; i < unitMapSize; i++)
 	{
-		currentUnit = unitManangerHandle->getUnit(i);
+		currentUnit = unitList[i];
 		
 		if (currentUnit != pOwner && currentUnit != NULL)
 		{
 			direction = currentUnit->getPositionComponent()->getPosition() - pOwner->getPositionComponent()->getPosition();
 			distance = direction.getLength();
 
-			if (distance < mTHRESHOLD) //if target is within cohesion radius, pull towards center of mass
+			if (distance < mThreshold) //if target is within cohesion radius, pull towards center of mass
 			{
 				centerMassLoc += currentUnit->getPositionComponent()->getPosition();
 				++neighborCount;

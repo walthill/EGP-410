@@ -13,8 +13,11 @@ class GroupAlignSteering: public FaceSteering
 	public:
 		GroupAlignSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID = INVALID_UNIT_ID, bool shouldFlee = false);
 		virtual Steering* getSteering(); //overrides parent functions
+		virtual Steering* getSteering(std::vector<Unit*> unitList); //overrides parent function
+		void setRadius(float value) { mThreshold = value; };
+
 	protected:
-		const float mTHRESHOLD = 100.0f;
+		float mThreshold;// = 100.0f;
 		
 		UnitManager* unitManangerHandle;
 		Unit* currentUnit;

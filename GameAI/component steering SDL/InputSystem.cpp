@@ -78,23 +78,98 @@ void InputSystem::getInputEvents()
 				mKeyEvent.setType(SPAWN);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
+			if (mEvent.key.keysym.sym == SDLK_1)
+			{
+				cout << "InputSystem: 1" << endl;
+				mKeyEvent.setType(WANDER_UP);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+			if (mEvent.key.keysym.sym == SDLK_2)
+			{
+				cout << "InputSystem: 2" << endl;
+				mKeyEvent.setType(WANDER_DOWN);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+
+			if (mEvent.key.keysym.sym == SDLK_3)
+			{
+				cout << "InputSystem: 3" << endl;
+				mKeyEvent.setType(GROUP_ALIGN_UP);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+
+			if (mEvent.key.keysym.sym == SDLK_4)
+			{
+				cout << "InputSystem: 4" << endl;
+				mKeyEvent.setType(GROUP_ALIGN_DOWN);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+
+			if (mEvent.key.keysym.sym == SDLK_5)
+			{
+				cout << "InputSystem: 5" << endl;
+				mKeyEvent.setType(COHESION_UP);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+
+			if (mEvent.key.keysym.sym == SDLK_6)
+			{
+				cout << "InputSystem: 6" << endl;
+				mKeyEvent.setType(COHESION_DOWN);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+			if (mEvent.key.keysym.sym == SDLK_7)
+			{
+				cout << "InputSystem: 7" << endl;
+				mKeyEvent.setType(SEPARATION_UP);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+			if (mEvent.key.keysym.sym == SDLK_8)
+			{
+				cout << "InputSystem: 8" << endl;
+				mKeyEvent.setType(SEPARATION_DOWN);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+
+			if (mEvent.key.keysym.sym == SDLK_q)
+			{
+				cout << "InputSystem: q" << endl;
+				mKeyEvent.setType(SEP_RADIUS_UP);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
 			if (mEvent.key.keysym.sym == SDLK_w)
 			{
-				//cout << "InputSystem: Up arrow" << endl;
-				//mKeyEvent.setType(UP_ARROW);
-				//EventSystem::getInstance()->fireEvent(mKeyEvent);
+				cout << "InputSystem: w" << endl;
+				mKeyEvent.setType(SEP_RADIUS_DOWN);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
-			if (mEvent.key.keysym.sym == SDLK_s)
+
+			if (mEvent.key.keysym.sym == SDLK_e)
 			{
-				//cout << "InputSystem: Down arrow" << endl;
-			//	mKeyEvent.setType(DOWN_ARROW);
-		//		EventSystem::getInstance()->fireEvent(mKeyEvent);
+				cout << "InputSystem: e" << endl;
+				mKeyEvent.setType(GROUP_RADIUS_UP);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
-			if (mEvent.key.keysym.sym == SDLK_a)
+
+			if (mEvent.key.keysym.sym == SDLK_r)
 			{
-				//cout << "InputSystem: Left arrow" << endl;
-//				mKeyEvent.setType(LEFT_ARROW);
-	//			EventSystem::getInstance()->fireEvent(mKeyEvent);
+				cout << "InputSystem: r" << endl;
+				mKeyEvent.setType(GROUP_RADIUS_DOWN);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+
+			if (mEvent.key.keysym.sym == SDLK_t)
+			{
+				cout << "InputSystem: t" << endl;
+				mKeyEvent.setType(COH_RADIUS_UP);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+
+			if (mEvent.key.keysym.sym == SDLK_y)
+			{
+				cout << "InputSystem: y" << endl;
+				mKeyEvent.setType(COH_RADIUS_DOWN);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_d)
 			{
@@ -103,15 +178,6 @@ void InputSystem::getInputEvents()
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 
-			#ifdef _DEBUG 
-			if (mEvent.key.keysym.sym == SDLK_LCTRL)
-			{
-				//cout << "InputSystem: LCTRL" << endl;
-			//	mKeyEvent.setType(LCTRL);
-			//	EventSystem::getInstance()->fireEvent(mKeyEvent);
-			}
-			#endif
-			
 			break;
 		case SDL_KEYUP:
 			if (mEvent.key.keysym.sym == SDLK_w)

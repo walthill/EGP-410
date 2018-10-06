@@ -6,17 +6,17 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{1A18F6FE-8656-404E-9BAC-DD6665DDF2AE}
-AppName=Steering Behaviours
+AppName=Flock Steering Behaviours
 AppVersion=1.0
 ;AppVerName=Steering Behaviours 1.0
 AppPublisher=Walter Hill
 AppPublisherURL=https://github.com/walthill/EGP-410
 AppSupportURL=https://github.com/walthill/EGP-410
 AppUpdatesURL=https://github.com/walthill/EGP-410
-DefaultDirName={pf}\Steering Behaviours
-DefaultGroupName=Steering Behaviours
+DefaultDirName={pf}\Flock Steering Behaviours
+DefaultGroupName=Flock Steering Behaviours
 AllowNoIcons=yes
-OutputBaseFilename=steeringsetup
+OutputBaseFilename=flocksteeringsetup
 Compression=lzma
 SolidCompression=yes
 
@@ -49,11 +49,11 @@ Source: "C:\Users\student\Documents\waltdocs\EGP-410\GameAI\component steering S
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\Steering Behaviours"; Filename: "{app}\steering.exe"
-Name: "{group}\{cm:UninstallProgram,Steering Behaviours}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\Steering Behaviours"; Filename: "{app}\steering.exe"; Tasks: desktopicon
+Name: "{group}\Flock Steering Behaviours"; Filename: "{app}\flocksteering.exe"
+Name: "{group}\{cm:UninstallProgram,Flock Steering Behaviours}"; Filename: "{uninstallexe}"
+Name: "{commondesktop}\Flock Steering Behaviours"; Filename: "{app}\steering.exe"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Steering Behaviours"; Filename: "{app}\steering.exe"; Tasks: quicklaunchicon
 
 [Run]
-Filename: "{app}\steering.exe"; Description: "{cm:LaunchProgram,Steering Behaviours}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\flocksteering.exe"; Description: "{cm:LaunchProgram,Steering Behaviours}"; Flags: nowait postinstall skipifsilent
 

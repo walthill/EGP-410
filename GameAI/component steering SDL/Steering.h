@@ -6,10 +6,11 @@
 
 #include <Vector2D.h>
 #include <Trackable.h>
+#include <vector>
 #include "defines.h"
 #include "PhysicsComponent.h"
 
-
+class Unit;
 
 class Steering : public Trackable
 {
@@ -45,6 +46,7 @@ public:
 	const PhysicsData& getData() const { return mData; };
 	void update();
 	virtual Steering* getSteering() { return this; };//overridden by sub-classes
+	virtual Steering* getSteering(std::vector<Unit*> unitList) { return this; }; //overidden by flocking sub-classes
 protected:
 	SteeringType mType;
 	Vector2D mTargetLoc;

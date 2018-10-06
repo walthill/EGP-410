@@ -23,18 +23,20 @@ Steering* BlendedSteering::getSteering()
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
 	Steering* behaviorSteering;
-	
+
+	if (gpGame->getUnitManager()->hasNewUnit())
+		unitList = gpGame->getUnitManager()->getAllUnits();
+
 	physicsData.acc = 0;
 	physicsData.rotAcc = 0;
 
 	for (unsigned int i =0; i < behaviorList.size(); i++)
 	{
 		tmpBehaviorData = behaviorList[i];
-		behaviorSteering = tmpBehaviorData.behavior->getSteering();
+		behaviorSteering = tmpBehaviorData.behavior->getSteering(unitList);
 		physicsData.acc += (behaviorSteering->getData().acc * tmpBehaviorData.weight);
 		physicsData.rotAcc += (behaviorSteering->getData().rotAcc * tmpBehaviorData.weight);
 	}
-
 
 	physicsData.acc.normalize();
 	physicsData.acc *= pOwner->getMaxAcc();
@@ -54,4 +56,10 @@ void BlendedSteering::setBehaviorList(Steering *behavior, float weight)
 	itemToAdd.behavior = behavior;
 	itemToAdd.weight = weight;
 	behaviorList.push_back(itemToAdd);
+}
+
+
+void BlendedSteering::setWeight(BehaviorType behaviorType, float weight)
+{
+	behaviorList[behaviorType].weight = weight;
 }

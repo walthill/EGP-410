@@ -20,6 +20,11 @@ WanderSteering::WanderSteering(const UnitID& ownerID, const Vector2D& targetLoc,
 	mTargetFacing = 0;
 }
 
+Steering* WanderSteering::getSteering(std::vector<Unit*> unitList)
+{
+	return getSteering(); //called in flock steering
+}
+
 Steering* WanderSteering::getSteering()
 {
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
