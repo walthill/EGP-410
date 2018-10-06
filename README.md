@@ -1,4 +1,4 @@
-# EGP-410- AI for Games
+# EGP-410 - AI for Games
 Template projects for base code for EGP 410 assignments.
 
 
@@ -9,5 +9,7 @@ Template projects for base code for EGP 410 assignments.
    * pathfinding
    * state machine
    * steering
+# Other External Libraries
+* [SimpleIni](https://github.com/brofield/simpleini) - Ini file read/write utility.
 
 Building instructions(TBD) are left up to the student. 
