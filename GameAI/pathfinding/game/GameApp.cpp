@@ -43,6 +43,7 @@ GameApp::~GameApp()
 bool GameApp::init()
 {
 	bool retVal = Game::init();
+
 	if( retVal == false )
 	{
 

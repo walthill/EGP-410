@@ -34,11 +34,11 @@ Path* DepthFirstPathfinder::findPath( Node* pFrom, Node* pTo )
 	list<Node*> nodesToVisit;
 	nodesToVisit.push_front( pFrom );
 
-#ifdef VISUALIZE_PATH
+	#ifdef VISUALIZE_PATH
 	delete mpPath;
 	mVisitedNodes.clear();
 	mVisitedNodes.push_back( pFrom );
-#endif
+	#endif
 	
 	//create Path
 	Path* pPath = new Path();
@@ -63,19 +63,19 @@ Path* DepthFirstPathfinder::findPath( Node* pFrom, Node* pTo )
 		{
 			Connection* pConnection = connections[i];
 			Node* pTempToNode = connections[i]->getToNode();
-			if( !toNodeAdded && 
-				!pPath->containsNode( pTempToNode ) && 
+			if( !toNodeAdded && !pPath->containsNode( pTempToNode ) && 
 				find(nodesToVisit.begin(), nodesToVisit.end(), pTempToNode ) == nodesToVisit.end() )
 			{
-				nodesToVisit.push_front( pTempToNode );//uncomment me for depth-first search
-				//nodesToVisit.push_back( pTempToNode );//uncomment me for breadth-first search
+				//nodesToVisit.push_front( pTempToNode );//uncomment me for depth-first search //make changeable at runtime?
+				nodesToVisit.push_back( pTempToNode );//uncomment me for breadth-first search
 				if( pTempToNode == pTo )
 				{
 					toNodeAdded = true;
 				}
-#ifdef VISUALIZE_PATH
+				
+				#ifdef VISUALIZE_PATH
 				mVisitedNodes.push_back( pTempToNode );
-#endif
+				#endif
 
 			}
 		}
@@ -84,10 +84,10 @@ Path* DepthFirstPathfinder::findPath( Node* pFrom, Node* pTo )
 	gpPerformanceTracker->stopTracking("path");
 	mTimeElapsed = gpPerformanceTracker->getElapsedTime("path");
 
-#ifdef VISUALIZE_PATH
+	#ifdef VISUALIZE_PATH
 	mpPath = pPath;
-#endif
+	#endif
+	
 	return pPath;
-
 }
 

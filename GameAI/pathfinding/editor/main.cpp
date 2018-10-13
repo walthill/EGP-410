@@ -43,7 +43,7 @@ int main(void)
 	//cleanup
 	gpGame->cleanup();
 	delete gpGame;
-	gMemoryTracker.reportAllocations( std::cout );
+	MemoryTracker::getInstance()->reportAllocations( std::cout );
 
 	system("pause");
 
