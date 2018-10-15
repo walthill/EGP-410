@@ -131,13 +131,13 @@ void GameApp::processLoop()
 
 	if (SDL_GetMouseState(&x, &y) & SDL_BUTTON(SDL_BUTTON_LEFT))
 	{
-		static Vector2D lastPos(0.0f, 0.0f);
+		static Vector2D lastPos(0.0f, 0.0f); //pathfinding will always start from top left
 		Vector2D pos(x,y);
 		if (lastPos.getX() != pos.getX() || lastPos.getY() != pos.getY())
 		{
 			GameMessage* pMessage = new PathToMessage(lastPos, pos);
 			mpMessageManager->addMessage(pMessage, 0);
-			lastPos = pos;
+			//lastPos = pos;
 		}
 	}
 
