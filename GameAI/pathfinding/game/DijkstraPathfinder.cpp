@@ -3,12 +3,11 @@
 #include "Connection.h"
 #include "GridGraph.h"
 #include "Game.h"
+#include "MemoryTracker.h"
 #include <PerformanceTracker.h>
-#include <list>
 #include <vector>
 #include <algorithm>
 
-using namespace std;
 
 DijkstraPathfinder::DijkstraPathfinder(Graph* graph)
 : GridPathfinder(dynamic_cast<GridGraph*>(graph))
@@ -29,32 +28,163 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 {
 	gpPerformanceTracker->clearTracker("path");
 	gpPerformanceTracker->startTracking("path");
-	
+
+	Path* returnPath = new Path();
 	//allocate nodes to open list and place starting node in it
-	list<Node*> openNodes;
-	openNodes.push_front(fromNode);
-	
-	//float minCost;
+	//list<Node*> openNodes;
+	//init struct
+	mNodeRecord = {};
+	mNodeRecord.node = fromNode;
+	mNodeRecord.connection = nullptr;
+	mNodeRecord.costSoFar = 0;
+
+	list<NodeRecord> mClosedList; //TODO: more efficient data structure
+	list<NodeRecord> mOpenList;
+	mOpenList.push_front(mNodeRecord);
 
 	#ifdef VISUALIZE_PATH
 	delete mpPath;
 	//empty out the closed list
-	mVisitedNodes.clear(); 
-	mVisitedNodes.push_back(fromNode);
+	
+	mClosedList.clear();
+	mVisitedNodes.clear();
+	//mClosedList.push_back(mNodeRecord);
+	//mVisitedNodes.push_back(fromNode);
 	#endif
 
-	//create Path
-	Path* returnPath = new Path();
 
-	Node* pCurrentNode = NULL;
-	bool toNodeAdded = false;
 
-	while (pCurrentNode != toNode && openNodes.size() > 0)
+	float endNodeCost;
+	Node* endNode;
+	NodeRecord currentRecord = {}, endNodeRecord = {};
+	//bool toNodeAdded = false;
+	
+	float smallestValue = 100000.0f, value;
+
+	while (mOpenList.size() > 0)
+	{
+		//find smallest element
+		
+	//	for (auto record = mOpenList.begin(); record != mOpenList.end(); ++record)
+		{
+			//value = record->costSoFar;
+
+			//if (value <= smallestValue)
+			{
+				currentRecord = mOpenList.front();
+				//smallestValue = value;
+			}
+		}
+
+		if (currentRecord.node == toNode)
+			break;
+		
+		vector<Connection*> connections = mpGraph->getConnections(currentRecord.node->getId());
+
+		for (unsigned int i = 0; i < connections.size(); i++)
+		{
+			bool containedInClosedList = false, containedInOpenList = false;
+			Connection* tmpConnection = connections[i];
+
+			endNode = tmpConnection->getToNode();
+			endNodeCost = currentRecord.costSoFar + connections.at(i)->getCost();
+			
+
+			for (auto record = mClosedList.begin(); record != mClosedList.end(); ++record) //check if closed list contains the current endNode
+			{
+				if (record->node == endNode) //skip loop if node is closed
+				{
+					containedInClosedList = true;
+					break;
+				}
+			}
+
+			NodeRecord tmp = {};
+			for (auto record = mOpenList.begin(); record != mOpenList.end(); ++record) //check if closed list contains the current endNode
+			{
+				if (record->node == endNode) //skip loop if node is closed
+				{
+					tmp.node = record->node;
+					tmp.connection = record->connection;
+					tmp.costSoFar = record->costSoFar;
+
+					containedInOpenList = true;
+					break;
+				}
+			}
+
+			if (containedInClosedList)
+				continue;
+			else if (containedInOpenList)
+			{
+				endNodeRecord = tmp;
+				if (endNodeRecord.costSoFar <= endNodeCost)
+					continue;
+			}
+			else //unvisited node, make a record of it
+			{
+				endNodeRecord = {};
+				endNodeRecord.node = endNode;
+			}
+
+			endNodeRecord.costSoFar = endNodeCost;
+			endNodeRecord.connection = tmpConnection;
+
+			if (!containedInOpenList)
+				mOpenList.push_back(endNodeRecord);
+
+		}
+
+
+		mOpenList.pop_front();
+		mClosedList.push_back(currentRecord);
+		mVisitedNodes.push_back(currentRecord.node);
+
+	}
+	
+	if (currentRecord.node != toNode)
+		return NULL;
+	else
+	{
+		//create Path
+		Path* path = new Path();
+
+		while (currentRecord.node != fromNode)
+		{
+			path->addNode(currentRecord.node);
+
+			currentRecord.node = currentRecord.connection->getFromNode();
+
+			//find next connection in the closed list
+			for (auto record = mClosedList.begin(); record != mClosedList.end(); ++record) //check if closed list contains the current endNode
+			{
+				if (record->node == currentRecord.node) //skip loop if node is closed
+				{
+					currentRecord.connection = record->connection;
+					break;
+				}
+			}
+
+			//currentRecord.connection = mClosedList.back().connection; //TODO: get the proper connection here
+			//mClosedList.pop_back();
+			//currentRecord.connection = currentRecord.connection;
+		//	currentRecord.costSoFar = currentRecord.costSoFar;
+		}
+		int size = path->getNumNodes();
+		for (int i = 0; i < size; i++)
+		{
+			returnPath->addNode(path->getAndRemoveNextNode());
+		}
+
+		delete path;
+	}
+
+	/*while (pCurrentNode != toNode && openList.size() > 0)
 	{
 		//get current node from front of open list
-		pCurrentNode = openNodes.front();
+		pCurrentNode = openList.front();
 		//remove node from open list
-		openNodes.pop_front();
+		openList.pop_front();
 		//add Node to path
 		returnPath->addNode(pCurrentNode);
 
@@ -68,10 +198,10 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 			Node* tmpToNode = connections[i]->getToNode();
 			
 			if (!toNodeAdded && !returnPath->containsNode(tmpToNode) &&
-				find(openNodes.begin(), openNodes.end(), tmpToNode) == openNodes.end())
+				find(openList.begin(), openList.end(), tmpToNode) == openList.end())
 			{
 				//nodesToVisit.push_front( pTempToNode );//uncomment me for depth-first search //make changeable at runtime?
-				openNodes.push_back(tmpToNode);//uncomment me for breadth-first search
+				openList.push_back(tmpToNode);//uncomment me for breadth-first search
 
 				//if temp node is the goal, stop adding to the open list
 				if (tmpToNode == toNode)// && tmpConnection->getCost() < minCost)
@@ -80,12 +210,14 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 				}
 
 				#ifdef VISUALIZE_PATH
-				mVisitedNodes.push_back(tmpToNode);
+				closedList.push_back(tmpToNode);
+
+				//mVisitedNodes.push_back(tmpToNode);
 				#endif
 
 			}
 		}
-	}
+	}*/
 
 	gpPerformanceTracker->stopTracking("path");
 	mTimeElapsed = gpPerformanceTracker->getElapsedTime("path");
