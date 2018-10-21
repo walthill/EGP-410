@@ -1,4 +1,4 @@
-#include "DijkstraPathfinder.h"
+#include "aStarPathfinding.h"
 #include "Path.h"
 #include "Connection.h"
 #include "GridGraph.h"
@@ -9,27 +9,30 @@
 #include <algorithm>
 
 
-DijkstraPathfinder::DijkstraPathfinder(Graph* graph)
-: GridPathfinder(dynamic_cast<GridGraph*>(graph))
+aStarPathfinder::aStarPathfinder(Graph* graph)
+	: GridPathfinder(dynamic_cast<GridGraph*>(graph))
 {
-	#ifdef VISUALIZE_PATH
+#ifdef VISUALIZE_PATH
 	mpPath = NULL;
-	#endif
+#endif
 }
 
-DijkstraPathfinder::~DijkstraPathfinder()
+aStarPathfinder::~aStarPathfinder()
 {
-	#ifdef VISUALIZE_PATH
+#ifdef VISUALIZE_PATH
 	delete mpPath;
-	#endif
+#endif
 }
 
-Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
+Path* aStarPathfinder::findPath(Node* fromNode, Node* toNode)
 {
 	gpPerformanceTracker->clearTracker("path");
 	gpPerformanceTracker->startTracking("path");
 
 	Path* returnPath = new Path();
+	float endNodeHeurisitc;
+	mHeuristic.setGoal(toNode);
+
 	//allocate nodes to open list and place starting node in it
 	//list<Node*> openNodes;
 	//init struct
@@ -37,48 +40,73 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 	mNodeRecord.node = fromNode;
 	mNodeRecord.connection = nullptr;
 	mNodeRecord.costSoFar = 0;
+	mNodeRecord.estimatedTotalCost = mHeuristic.estimate(fromNode);
 
 	list<NodeRecord> mClosedList; //TODO: more efficient data structure
 	list<NodeRecord> mOpenList;
+	
 	mOpenList.push_front(mNodeRecord);
 
-	#ifdef VISUALIZE_PATH
+#ifdef VISUALIZE_PATH
 	delete mpPath;
 	//empty out the closed list
-	
+
 	mClosedList.clear();
 	mVisitedNodes.clear();
 	//mClosedList.push_back(mNodeRecord);
 	//mVisitedNodes.push_back(fromNode);
-	#endif
+#endif
 
 
-
+	bool shouldDoubleBack = false;
 	float endNodeCost;
 	Node* endNode;
 	NodeRecord currentRecord = {}, endNodeRecord = {};
 	//bool toNodeAdded = false;
-	
+
 	float smallestValue = 100000.0f, value;
 
-	while (mOpenList.size() > 0)
+	while (currentRecord.node != toNode && mOpenList.size() > 0)
 	{
-		//find smallest element
+		//find element with smallest estimated total cost
+		for (auto record = mOpenList.begin(); record != mOpenList.end(); ++record)
+		{
+			float val = record->estimatedTotalCost;
+			
+			if (val <= smallestValue)
+			{
+				shouldDoubleBack = false;
+				currentRecord.insert(record->node, record->connection, record->costSoFar, record->estimatedTotalCost);
+				//returnPath->addNode(currentRecord.node); //display surveyed route
+				smallestValue = val;
+				break;
+			}
+			else
+			{
+				shouldDoubleBack = true; //handle obstacle dead ends
+			}
+		}
 		
-	//	for (auto record = mOpenList.begin(); record != mOpenList.end(); ++record)
+		if (shouldDoubleBack)
+		{
+			currentRecord = mOpenList.back();
+			smallestValue = currentRecord.estimatedTotalCost;
+		}
+		//	for (auto record = mOpenList.begin(); record != mOpenList.end(); ++record)
 		{
 			//value = record->costSoFar;
 
 			//if (value <= smallestValue)
 			{
-				currentRecord = mOpenList.front();
+			//	currentRecord = mOpenList.front();
 				//smallestValue = value;
+			
 			}
 		}
-
+	
 		if (currentRecord.node == toNode)
 			break;
-		
+
 		vector<Connection*> connections = mpGraph->getConnections(currentRecord.node->getId());
 
 		for (unsigned int i = 0; i < connections.size(); i++)
@@ -88,25 +116,31 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 
 			endNode = tmpConnection->getToNode();
 			endNodeCost = currentRecord.costSoFar + connections.at(i)->getCost();
-			
 
-			for (auto record = mClosedList.begin(); record != mClosedList.end(); ++record) //check if closed list contains the current endNode
+
+			NodeRecord tmpClosed = {};
+ 			for (auto record = mClosedList.begin(); record != mClosedList.end(); ++record) //check if closed list contains the current endNode
 			{
 				if (record->node == endNode) //skip loop if node is closed
 				{
+					tmpClosed.node = record->node;
+					tmpClosed.connection = record->connection;
+					tmpClosed.costSoFar = record->costSoFar;
+					tmpClosed.estimatedTotalCost = record->estimatedTotalCost;
 					containedInClosedList = true;
 					break;
 				}
 			}
 
-			NodeRecord tmp = {};
+			NodeRecord tmpOpen = {};
 			for (auto record = mOpenList.begin(); record != mOpenList.end(); ++record) //check if closed list contains the current endNode
 			{
 				if (record->node == endNode) //skip loop if node is closed
 				{
-					tmp.node = record->node;
-					tmp.connection = record->connection;
-					tmp.costSoFar = record->costSoFar;
+					tmpOpen.node = record->node;
+					tmpOpen.connection = record->connection;
+					tmpOpen.costSoFar = record->costSoFar;
+					tmpOpen.estimatedTotalCost = record->estimatedTotalCost;
 
 					containedInOpenList = true;
 					break;
@@ -114,21 +148,45 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 			}
 
 			if (containedInClosedList)
-				continue;
-			else if (containedInOpenList)
 			{
-				endNodeRecord = tmp;
+				endNodeRecord = tmpClosed;
+
 				if (endNodeRecord.costSoFar <= endNodeCost)
 					continue;
+
+				//remove from closed list
+				NodeRecord toDelete;
+				for (auto record = mClosedList.begin(); record != mClosedList.end(); ++record) 
+				{
+					if (record->node == endNodeRecord.node)
+					{
+						toDelete = endNodeRecord;
+					}
+				}
+
+				if(toDelete.node != nullptr)
+					mClosedList.remove(toDelete);
+
+				endNodeHeurisitc = endNodeRecord.estimatedTotalCost - endNodeRecord.costSoFar;
+			}
+			else if (containedInOpenList)
+			{
+				endNodeRecord = tmpOpen;
+				if (endNodeRecord.costSoFar <= endNodeCost)
+					continue;
+
+				endNodeHeurisitc = endNodeRecord.connection->getCost() - endNodeRecord.costSoFar;
 			}
 			else //unvisited node, make a record of it
 			{
 				endNodeRecord = {};
 				endNodeRecord.node = endNode;
+				endNodeHeurisitc = mHeuristic.estimate(endNode); //not toNode?
 			}
 
 			endNodeRecord.costSoFar = endNodeCost;
 			endNodeRecord.connection = tmpConnection;
+			endNodeRecord.estimatedTotalCost = endNodeCost + endNodeHeurisitc;
 
 			if (!containedInOpenList)
 				mOpenList.push_back(endNodeRecord);
@@ -136,12 +194,28 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 		}
 
 
-		mOpenList.pop_front();
+//		if(mOpenList.size() == 1)
+	//		mOpenList.pop_front();
+		
+		{
+			NodeRecord toDelete;
+			for (auto record = mOpenList.begin(); record != mOpenList.end(); ++record) //check if closed list contains the current endNode
+			{
+				if (record->node == currentRecord.node)
+				{
+					toDelete = currentRecord;
+					break;
+					//mOpenList
+				}
+			}
+			mOpenList.remove(toDelete);
+		}
+
 		mClosedList.push_back(currentRecord);
-		mVisitedNodes.push_back(currentRecord.node); //list for visualization
+		mVisitedNodes.push_back(currentRecord.node);
 
 	}
-	
+
 	if (currentRecord.node != toNode)
 		return NULL;
 	else
@@ -156,6 +230,12 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 			currentRecord.node = currentRecord.connection->getFromNode();
 
 			//find next connection in the closed list
+			/*list<NodeRecord>::iterator it;
+			it = find(mClosedList.begin(), mClosedList.end(), currentRecord);
+			if ( it != mClosedList.end())
+				currentRecord.connection = it->connection;*/
+				
+
 			for (auto record = mClosedList.begin(); record != mClosedList.end(); ++record) //check if closed list contains the current endNode
 			{
 				if (record->node == currentRecord.node) //skip loop if node is closed
@@ -168,7 +248,7 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 			//currentRecord.connection = mClosedList.back().connection; //TODO: get the proper connection here
 			//mClosedList.pop_back();
 			//currentRecord.connection = currentRecord.connection;
-		//	currentRecord.costSoFar = currentRecord.costSoFar;
+			//	currentRecord.costSoFar = currentRecord.costSoFar;
 		}
 		int size = path->getNumNodes();
 		for (int i = 0; i < size; i++)
@@ -179,52 +259,13 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 		delete path;
 	}
 
-	/*while (pCurrentNode != toNode && openList.size() > 0)
-	{
-		//get current node from front of open list
-		pCurrentNode = openList.front();
-		//remove node from open list
-		openList.pop_front();
-		//add Node to path
-		returnPath->addNode(pCurrentNode);
-
-		//get all the connections for the current node
-		vector<Connection*> connections = mpGraph->getConnections(pCurrentNode->getId());
-
-		//add all toNodes in the connections to the open list, if they are not already in the list
-		for (unsigned int i = 0; i < connections.size(); i++)
-		{
-			Connection* tmpConnection = connections[i];
-			Node* tmpToNode = connections[i]->getToNode();
-			
-			if (!toNodeAdded && !returnPath->containsNode(tmpToNode) &&
-				find(openList.begin(), openList.end(), tmpToNode) == openList.end())
-			{
-				//nodesToVisit.push_front( pTempToNode );//uncomment me for depth-first search //make changeable at runtime?
-				openList.push_back(tmpToNode);//uncomment me for breadth-first search
-
-				//if temp node is the goal, stop adding to the open list
-				if (tmpToNode == toNode)// && tmpConnection->getCost() < minCost)
-				{
-					toNodeAdded = true;
-				}
-
-				#ifdef VISUALIZE_PATH
-				closedList.push_back(tmpToNode);
-
-				//mVisitedNodes.push_back(tmpToNode);
-				#endif
-
-			}
-		}
-	}*/
-
+	
 	gpPerformanceTracker->stopTracking("path");
 	mTimeElapsed = gpPerformanceTracker->getElapsedTime("path");
 
-	#ifdef VISUALIZE_PATH
+#ifdef VISUALIZE_PATH
 	mpPath = returnPath;
-	#endif
+#endif
 
 	return returnPath;
 
