@@ -114,6 +114,12 @@
     <ClInclude Include="aStarPathfinding.h">
       <Filter>Header Files\pathfinding</Filter>
     </ClInclude>
+    <ClInclude Include="PriorityQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeRecord.h">
+      <Filter>Header Files\pathfinding</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Game.cpp">
@@ -199,6 +205,9 @@
     </ClCompile>
     <ClCompile Include="aStarPathfinder.cpp">
       <Filter>Source Files\pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="PriorityQueue.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #define DIJKSTRA_H
 
 #include "GridPathfinder.h"
+#include "NodeRecord.h"
 #include <list>
 
 class Connection;
@@ -16,16 +17,7 @@ using namespace std;
 class DijkstraPathfinder : public GridPathfinder
 {
 	private:
-		struct NodeRecord
-		{
-			Node* node;
-			Connection* connection;
-			float costSoFar;
-
-			void insert(Node* n, Connection* c, float cost) { node = n; connection = c; costSoFar = cost; };
-			void insert(NodeRecord* record) { node = record->node; connection = record->connection; costSoFar = record->costSoFar; };
-		} mNodeRecord;
-
+		NodeRecord mNodeRecord;
 		
 	public:
 		DijkstraPathfinder(Graph* graph);

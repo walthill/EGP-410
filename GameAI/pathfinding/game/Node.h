@@ -13,6 +13,7 @@ public:
 	~Node();
 
 	const NODE_ID& getId() const {return mId;};
+	friend bool operator== (const Node &lhs, const Node &rhs) { return  lhs.mId== rhs.mId; };
 
 private:
 	const NODE_ID mId;

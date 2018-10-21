@@ -7,6 +7,7 @@
 #include <PerformanceTracker.h>
 #include <vector>
 #include <algorithm>
+#include "PriorityQueue.h"
 
 
 aStarPathfinder::aStarPathfinder(Graph* graph)

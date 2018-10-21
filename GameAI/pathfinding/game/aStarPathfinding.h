@@ -3,8 +3,8 @@
 
 #include "GridPathfinder.h"
 #include <list>
-#include <assert.h>
 #include "Node.h"
+#include "NodeRecord.h"
 
 class Connection;
 //class Node;
@@ -18,18 +18,7 @@ using namespace std;
 class aStarPathfinder : public GridPathfinder
 {
 	private:
-		struct NodeRecord
-		{
-			Node* node;
-			Connection* connection;
-			float costSoFar;
-			float estimatedTotalCost;
-
-			void insert(Node* n, Connection* c, float cost, float estimatedCost) { node = n; connection = c; costSoFar = cost; estimatedTotalCost = estimatedCost; };
-//			void insert(NodeRecord* record) { node = record->node; connection = record->connection; costSoFar = record->costSoFar; };
-			bool operator ==(const NodeRecord& rhs) { return node == rhs.node; };
-		} mNodeRecord;
-
+		
 		struct PathHeuristic
 		{
 			Node* goalNode;
@@ -48,6 +37,9 @@ class aStarPathfinder : public GridPathfinder
 				return val; 
 			}; //euclidean distance - underestimates
 		} mHeuristic;
+
+
+		NodeRecord mNodeRecord;
 
 	public:
 		aStarPathfinder(Graph* graph);

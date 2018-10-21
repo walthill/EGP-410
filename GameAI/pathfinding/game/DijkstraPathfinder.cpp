@@ -7,6 +7,7 @@
 #include <PerformanceTracker.h>
 #include <vector>
 #include <algorithm>
+#include "PriorityQueue.h"
 
 
 DijkstraPathfinder::DijkstraPathfinder(Graph* graph)
@@ -38,15 +39,19 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 	mNodeRecord.connection = nullptr;
 	mNodeRecord.costSoFar = 0;
 
-	list<NodeRecord> mClosedList; //TODO: more efficient data structure
-	list<NodeRecord> mOpenList;
-	mOpenList.push_front(mNodeRecord);
+	PriorityQueue <NodeRecord, vector<NodeRecord>, W_Compare> mOpenList, mClosedList;
+
+	//list<NodeRecord> mClosedList; //TODO: more efficient data structure
+	//list<NodeRecord> mOpenList;
+
+	mOpenList.push(mNodeRecord);
+//	mOpenList.push_front(mNodeRecord);
 
 	#ifdef VISUALIZE_PATH
 	delete mpPath;
 	//empty out the closed list
 	
-	mClosedList.clear();
+//	mClosedList.empty();
 	mVisitedNodes.clear();
 	//mClosedList.push_back(mNodeRecord);
 	//mVisitedNodes.push_back(fromNode);
@@ -59,9 +64,9 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 	NodeRecord currentRecord = {}, endNodeRecord = {};
 	//bool toNodeAdded = false;
 	
-	float smallestValue = 100000.0f, value;
+	//float smallestValue = 100000.0f, value;
 
-	while (mOpenList.size() > 0)
+	while (currentRecord.node != toNode && mOpenList.size() > 0)
 	{
 		//find smallest element
 		
@@ -71,7 +76,8 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 
 			//if (value <= smallestValue)
 			{
-				currentRecord = mOpenList.front();
+				currentRecord = mOpenList.top();
+//				currentRecord = mOpenList.front();
 				//smallestValue = value;
 			}
 		}
@@ -88,40 +94,36 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 
 			endNode = tmpConnection->getToNode();
 			endNodeCost = currentRecord.costSoFar + connections.at(i)->getCost();
-			
 
-			for (auto record = mClosedList.begin(); record != mClosedList.end(); ++record) //check if closed list contains the current endNode
+
+		/*	for (auto record = mClosedList.begin(); record != mClosedList.end(); ++record) //check if closed list contains the current endNode
 			{
 				if (record->node == endNode) //skip loop if node is closed
 				{
 					containedInClosedList = true;
 					break;
 				}
-			}
+			}*/
 
-			NodeRecord tmp = {};
-			for (auto record = mOpenList.begin(); record != mOpenList.end(); ++record) //check if closed list contains the current endNode
-			{
-				if (record->node == endNode) //skip loop if node is closed
-				{
-					tmp.node = record->node;
-					tmp.connection = record->connection;
-					tmp.costSoFar = record->costSoFar;
+			NodeRecord listCheck = {};
+			listCheck.node = endNode;
 
-					containedInOpenList = true;
-					break;
-				}
-			}
 
-			if (containedInClosedList)
+			PriorityQueue <NodeRecord, vector<NodeRecord>, W_Compare>::const_iterator it;
+
+			it = mOpenList.contains(listCheck);
+
+			if (mClosedList.contains(listCheck) != mClosedList.end())
 				continue;
-			else if (containedInOpenList)
+			else if (it != mOpenList.end())
 			{
-				endNodeRecord = tmp;
+				containedInOpenList = false;
+				endNodeRecord.insert(it->node, it->connection, it->costSoFar);
+
 				if (endNodeRecord.costSoFar <= endNodeCost)
 					continue;
 			}
-			else //unvisited node, make a record of it
+			else
 			{
 				endNodeRecord = {};
 				endNodeRecord.node = endNode;
@@ -130,16 +132,67 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 			endNodeRecord.costSoFar = endNodeCost;
 			endNodeRecord.connection = tmpConnection;
 
-			if (!containedInOpenList)
-				mOpenList.push_back(endNodeRecord);
+			if(!containedInOpenList)
+				mOpenList.push(endNodeRecord);//mOpenList.push_back(endNodeRecord);
+
+
+		//	PriorityQueue <NodeRecord, vector<NodeRecord>, W_Compare>::const_iterator it;
+			//it = find(mOpenList.begin(), mOpenList.end(), endNode);
+
+			//tmp.node = endNode;
+
+			/*if (mOpenList.find(tmp) != mOpenList.end()) //check if in open list
+			{
+
+			}*/
+			/*
+			{
+			tmp = endNode;
+		}*/
+
+		/*		NodeRecord tmp = {};
+				for (auto record = mOpenList.begin(); record != mOpenList.end(); ++record) //check if closed list contains the current endNode
+				{
+					if (record->node == endNode) //skip loop if node is closed
+					{
+						tmp.node = record->node;
+						tmp.connection = record->connection;
+						tmp.costSoFar = record->costSoFar;
+
+						containedInOpenList = true;
+						break;
+					}
+				}
+				*/
+				/*	if (containedInClosedList)
+						continue;
+					else if (containedInOpenList)
+					{
+						endNodeRecord = listCheck;
+						if (endNodeRecord.costSoFar <= endNodeCost)
+							continue;
+					}
+					else //unvisited node, make a record of it
+					{
+						endNodeRecord = {};
+						endNodeRecord.node = endNode;
+					}
+
+					endNodeRecord.costSoFar = endNodeCost;
+					endNodeRecord.connection = tmpConnection;
+
+					if (!containedInOpenList)
+						mOpenList.push(endNodeRecord);//mOpenList.push_back(endNodeRecord);
+
+				}*/
 
 		}
-
-
-		mOpenList.pop_front();
-		mClosedList.push_back(currentRecord);
+		
+		mOpenList.pop();
+		//mOpenList.pop_front();
+		mClosedList.push(currentRecord);
 		mVisitedNodes.push_back(currentRecord.node); //list for visualization
-
+		
 	}
 	
 	if (currentRecord.node != toNode)
@@ -156,20 +209,27 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 			currentRecord.node = currentRecord.connection->getFromNode();
 
 			//find next connection in the closed list
-			for (auto record = mClosedList.begin(); record != mClosedList.end(); ++record) //check if closed list contains the current endNode
+			PriorityQueue <NodeRecord, vector<NodeRecord>, W_Compare>::const_iterator it;
+
+			it = mClosedList.contains(currentRecord);
+			if(it != mClosedList.end())
+				currentRecord.connection = it->connection;
+
+/*			for (auto record = mClosedList.begin(); record != mClosedList.end(); ++record) //check if closed list contains the current endNode
 			{
 				if (record->node == currentRecord.node) //skip loop if node is closed
 				{
 					currentRecord.connection = record->connection;
 					break;
 				}
-			}
+			}*/
 
 			//currentRecord.connection = mClosedList.back().connection; //TODO: get the proper connection here
 			//mClosedList.pop_back();
 			//currentRecord.connection = currentRecord.connection;
 		//	currentRecord.costSoFar = currentRecord.costSoFar;
 		}
+
 		int size = path->getNumNodes();
 		for (int i = 0; i < size; i++)
 		{
