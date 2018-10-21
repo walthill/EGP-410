@@ -9,8 +9,8 @@
 #include <Trackable.h>
 #include <Timer.h>
 #include "Defines.h"
-#include "../game/EventListener.h"
-#include "../game/InputSystem.h"
+#include "../common/EventListener.h"
+#include "../common/InputSystem.h"
 
 class MemoryTracker;
 class PerformanceTracker;

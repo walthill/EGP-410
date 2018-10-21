@@ -20,7 +20,7 @@
 #include "GridVisualizer.h"
 #include "DebugDisplay.h"
 #include "PathfindingDebugContent.h"
-#include "../game/EventListener.h"
+#include "../common/EventListener.h"
 #include <SDL.h>
 #include <fstream>
 #include <vector>

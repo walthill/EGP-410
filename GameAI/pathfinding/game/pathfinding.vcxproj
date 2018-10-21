@@ -81,6 +81,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\common\Color.h" />
+    <ClInclude Include="..\common\Event.h" />
+    <ClInclude Include="..\common\EventListener.h" />
+    <ClInclude Include="..\common\EventSystem.h" />
     <ClInclude Include="..\common\Font.h" />
     <ClInclude Include="..\common\Game.h" />
     <ClInclude Include="..\common\GraphicsBuffer.h" />
@@ -88,6 +91,8 @@
     <ClInclude Include="..\common\GraphicsSystem.h" />
     <ClInclude Include="..\common\Grid.h" />
     <ClInclude Include="..\common\GridVisualizer.h" />
+    <ClInclude Include="..\common\InputSystem.h" />
+    <ClInclude Include="..\common\MouseEvent.h" />
     <ClInclude Include="..\common\Renderer.h" />
     <ClInclude Include="..\common\Sprite.h" />
     <ClInclude Include="..\common\SpriteManager.h" />
@@ -97,17 +102,12 @@
     <ClInclude Include="DebugDisplay.h" />
     <ClInclude Include="DepthFirstPathfinder.h" />
     <ClInclude Include="DijkstraPathfinder.h" />
-    <ClInclude Include="Event.h" />
-    <ClInclude Include="EventListener.h" />
-    <ClInclude Include="EventSystem.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameMessage.h" />
     <ClInclude Include="GameMessageManager.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="GridGraph.h" />
     <ClInclude Include="GridPathfinder.h" />
-    <ClInclude Include="InputSystem.h" />
-    <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="NodeRecord.h" />
     <ClInclude Include="Path.h" />
@@ -118,6 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Color.cpp" />
+    <ClCompile Include="..\common\Event.cpp" />
+    <ClCompile Include="..\common\EventListener.cpp" />
+    <ClCompile Include="..\common\EventSystem.cpp" />
     <ClCompile Include="..\common\Font.cpp" />
     <ClCompile Include="..\common\Game.cpp" />
     <ClCompile Include="..\common\GraphicsBuffer.cpp" />
@@ -125,6 +128,8 @@
     <ClCompile Include="..\common\GraphicsSystem.cpp" />
     <ClCompile Include="..\common\Grid.cpp" />
     <ClCompile Include="..\common\GridVisualizer.cpp" />
+    <ClCompile Include="..\common\InputSystem.cpp" />
+    <ClCompile Include="..\common\MouseEvent.cpp" />
     <ClCompile Include="..\common\Renderer.cpp" />
     <ClCompile Include="..\common\Sprite.cpp" />
     <ClCompile Include="..\common\SpriteManager.cpp" />
@@ -133,18 +138,13 @@
     <ClCompile Include="DebugDisplay.cpp" />
     <ClCompile Include="DepthFirstPathfinder.cpp" />
     <ClCompile Include="DijkstraPathfinder.cpp" />
-    <ClCompile Include="Event.cpp" />
-    <ClCompile Include="EventListener.cpp" />
-    <ClCompile Include="EventSystem.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameMessage.cpp" />
     <ClCompile Include="GameMessageManager.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GridGraph.cpp" />
     <ClCompile Include="GridPathfinder.cpp" />
-    <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MouseEvent.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="Pathfinder.cpp" />

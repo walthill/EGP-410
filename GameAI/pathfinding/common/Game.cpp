@@ -12,8 +12,8 @@
 #include "Font.h"
 #include <Timer.h>
 #include "Defines.h"
-#include "../game/EventSystem.h"
-#include "../game/MouseEvent.h"
+#include "../common/EventSystem.h"
+#include "../common/MouseEvent.h"
 
 Game* gpGame = NULL;
 
