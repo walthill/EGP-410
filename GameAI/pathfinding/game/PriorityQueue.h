@@ -65,8 +65,28 @@ class PriorityQueue : public std::priority_queue<T, Container, Compare>
 			auto last = this->c.cend();
 			return last;
 		}
+			
+		bool remove(const T& value) {
+			auto it = std::find(this->c.begin(), this->c.end(), value);
+			if (it != this->c.end()) {
+				this->c.erase(it);
+				std::make_heap(this->c.begin(), this->c.end(), this->comp);
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
 
-		bool operator ==(const NodeRecord& rhs) { return node == rhs.node; };
+		/*const T back() const
+		{
+			T returnValue;
+
+
+
+			return returnValue;
+		}*/
+//		bool operator ==(const NodeRecord& rhs) { return node == rhs.node; };
 
 };
 
