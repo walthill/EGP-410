@@ -1,4 +1,4 @@
-#include "aStarPathfinding.h"
+#include "AStarPathfinder.h"
 #include "Path.h"
 #include "Connection.h"
 #include "GridGraph.h"
@@ -10,7 +10,7 @@
 #include "PriorityQueue.h"
 
 
-aStarPathfinder::aStarPathfinder(Graph* graph)
+AStarPathfinder::AStarPathfinder(Graph* graph)
 	: GridPathfinder(dynamic_cast<GridGraph*>(graph))
 {
 
@@ -19,14 +19,14 @@ aStarPathfinder::aStarPathfinder(Graph* graph)
 	#endif
 }
 
-aStarPathfinder::~aStarPathfinder()
+AStarPathfinder::~AStarPathfinder()
 {
 	#ifdef VISUALIZE_PATH
 	delete mpPath;
 	#endif
 }
 
-Path* aStarPathfinder::findPath(Node* fromNode, Node* toNode)
+Path* AStarPathfinder::findPath(Node* fromNode, Node* toNode)
 {
 	gpPerformanceTracker->clearTracker("path");
 	gpPerformanceTracker->startTracking("path");

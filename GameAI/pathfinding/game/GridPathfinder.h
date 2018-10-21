@@ -13,7 +13,7 @@ public:
 
 	GridPathfinder( GridGraph* pGraph );
 	virtual ~GridPathfinder();
-
+	Path* getPath() { return mpPath; };
 	virtual Path* findPath( Node* pFrom, Node* pTo ) = 0;
 	
 #ifdef VISUALIZE_PATH

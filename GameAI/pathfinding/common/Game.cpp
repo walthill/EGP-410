@@ -12,6 +12,8 @@
 #include "Font.h"
 #include <Timer.h>
 #include "Defines.h"
+#include "../game/EventSystem.h"
+#include "../game/MouseEvent.h"
 
 Game* gpGame = NULL;
 
@@ -19,7 +21,8 @@ const int WIDTH = 1024;
 const int HEIGHT = 768;
 
 Game::Game()
-	:mpGraphicsSystem(NULL)
+	:EventListener(nullptr)
+	,mpGraphicsSystem(NULL)
 	,mpGraphicsBufferManager(NULL)
 	,mpSpriteManager(NULL)
 	,mpLoopTimer(NULL)
@@ -58,6 +61,10 @@ bool Game::init()
 	mpGraphicsBufferManager = new GraphicsBufferManager(mpGraphicsSystem);
 	mpSpriteManager = new SpriteManager();
 
+	//init event & input systems
+	EventSystem::initInstance();
+	mpInputSystem = new InputSystem;
+	mpInputSystem->initInputSystem();
 	
 	//load background
 	mpGraphicsBufferManager->loadBuffer(mBackgroundBufferID, "wallpaper.bmp");
@@ -67,6 +74,7 @@ bool Game::init()
 
 	return true;
 }
+
 
 void Game::cleanup()
 {
@@ -88,6 +96,10 @@ void Game::cleanup()
 	mpGraphicsBufferManager = NULL;
 	delete mpSpriteManager;
 	mpSpriteManager = NULL;
+	delete mpInputSystem;
+	mpInputSystem = NULL;
+
+	EventSystem::cleanupInstance();
 }
 
 void Game::beginLoop()
@@ -101,7 +113,7 @@ void Game::beginLoop()
 
 void Game::processLoop()
 {
-		mpGraphicsSystem->swap();
+	mpGraphicsSystem->swap();
 }
 
 bool Game::endLoop()
@@ -136,3 +148,4 @@ float mapRotationToRange( float rotation, float low, float high )
 	}
 	return rotation;
 }
+

@@ -14,15 +14,28 @@ string PathfindingDebugContent::getDebugString()
 {
 	stringstream theStream;
 
-#ifdef VISUALIZE_PATH
+	#ifdef VISUALIZE_PATH
 	if( mpPathfinder->mpPath != NULL )
 	{
 		theStream << "Pathlength:"<< mpPathfinder->mpPath->getNumNodes();
 	}
 	
 	theStream << "  Num Nodes Processed:" << mpPathfinder->mVisitedNodes.size();
-#endif
+	#endif
 	theStream << "  Elapsed Time:" << mpPathfinder->mTimeElapsed;
+	string typeStr=  "";
+	switch (mType)
+	{
+		case DIJSKTRA_PATH: typeStr = "Dijkstra";
+			break;
+		case A_STAR_PATH: typeStr = "A*";
+			break;
+		case DEPTH_FIRST_PATH: typeStr = "Depth 1st";
+			break;
+	}
+
+	theStream << "  Type: " << typeStr;
+
 	return theStream.str();
 }
 

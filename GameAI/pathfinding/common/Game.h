@@ -9,6 +9,8 @@
 #include <Trackable.h>
 #include <Timer.h>
 #include "Defines.h"
+#include "../game/EventListener.h"
+#include "../game/InputSystem.h"
 
 class MemoryTracker;
 class PerformanceTracker;
@@ -18,13 +20,14 @@ class GraphicsBufferManager;
 class SpriteManager;
 class Game;
 class Font;
+class Event;
 
 extern PerformanceTracker* gpPerformanceTracker;
 extern Game* gpGame;
 
 const IDType BACKGROUND_SPRITE_ID = 0;
 
-class Game:public Trackable
+class Game : public EventListener
 {
 public:
 	Game();
@@ -45,7 +48,7 @@ public:
 	inline double getCurrentTime() const { return mpMasterTimer->getElapsedTime(); };
 	inline Font* getFont() const { return mpFont; };
 	inline void markForExit() { mShouldExit = true; };
-
+	
 protected:
 	GraphicsSystem* mpGraphicsSystem;
 	GraphicsBufferManager* mpGraphicsBufferManager;
@@ -55,6 +58,9 @@ protected:
 	float mLoopTargetTime;
 	bool mShouldExit;
 
+	InputSystem* mpInputSystem;
+	EventType mEventType;
+	
 	//should be somewhere else
 	Font* mpFont;
 

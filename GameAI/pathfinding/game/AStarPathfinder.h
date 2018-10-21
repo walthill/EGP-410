@@ -17,7 +17,7 @@ class GraphicsBuffer;
 
 using namespace std;
 
-class aStarPathfinder : public GridPathfinder
+class AStarPathfinder : public GridPathfinder
 {
 	private:
 		
@@ -56,8 +56,8 @@ class aStarPathfinder : public GridPathfinder
 		NodeRecord mNodeRecord;
 
 	public:
-		aStarPathfinder(Graph* graph);
-		~aStarPathfinder();
+		AStarPathfinder(Graph* graph);
+		~AStarPathfinder();
 
 		Path* findPath(Node* fromNode, Node* toNode);
 };
