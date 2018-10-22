@@ -33,6 +33,6 @@ private:
 	std::unordered_map<void*,AllocationRecord> mAllocations;
 
 	static int msAllocationNum;
-	//static MemoryTracker* mpInstance;
+	static MemoryTracker* mpInstance;
 };
 
