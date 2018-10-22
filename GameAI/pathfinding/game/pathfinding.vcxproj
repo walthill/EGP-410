@@ -154,7 +154,6 @@
     <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PathfindingDebugContent.cpp" />
     <ClCompile Include="PathToMessage.cpp" />
-    <ClCompile Include="PriorityQueue.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

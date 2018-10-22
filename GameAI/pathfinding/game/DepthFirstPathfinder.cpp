@@ -66,8 +66,8 @@ Path* DepthFirstPathfinder::findPath( Node* pFrom, Node* pTo )
 			if( !toNodeAdded && !pPath->containsNode( pTempToNode ) && 
 				find(nodesToVisit.begin(), nodesToVisit.end(), pTempToNode ) == nodesToVisit.end() )
 			{
-				//nodesToVisit.push_front( pTempToNode );//uncomment me for depth-first search //make changeable at runtime?
-				nodesToVisit.push_back( pTempToNode );//uncomment me for breadth-first search
+				nodesToVisit.push_front( pTempToNode );//uncomment me for depth-first search //make changeable at runtime?
+				//nodesToVisit.push_back( pTempToNode );//uncomment me for breadth-first search
 				
 				//if node is the goal, stop adding to the open list
 				if( pTempToNode == pTo )
