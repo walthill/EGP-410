@@ -85,6 +85,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\common\Color.h" />
+    <ClInclude Include="..\common\Defines.h" />
     <ClInclude Include="..\common\Event.h" />
     <ClInclude Include="..\common\EventListener.h" />
     <ClInclude Include="..\common\EventSystem.h" />
@@ -101,6 +102,19 @@
     <ClInclude Include="..\common\Sprite.h" />
     <ClInclude Include="..\common\SpriteManager.h" />
     <ClInclude Include="AStarPathfinder.h" />
+    <ClInclude Include="component steering\AlignSteering.h" />
+    <ClInclude Include="component steering\ArriveFace.h" />
+    <ClInclude Include="component steering\ArriveSteering.h" />
+    <ClInclude Include="component steering\Component.h" />
+    <ClInclude Include="component steering\ComponentManager.h" />
+    <ClInclude Include="component steering\FaceSteering.h" />
+    <ClInclude Include="component steering\PhysicsComponent.h" />
+    <ClInclude Include="component steering\PositionComponent.h" />
+    <ClInclude Include="component steering\SeekSteering.h" />
+    <ClInclude Include="component steering\Steering.h" />
+    <ClInclude Include="component steering\SteeringComponent.h" />
+    <ClInclude Include="component steering\Unit.h" />
+    <ClInclude Include="component steering\UnitManager.h" />
     <ClInclude Include="Connection.h" />
     <ClInclude Include="DebugContent.h" />
     <ClInclude Include="DebugDisplay.h" />
@@ -140,6 +154,19 @@
     <ClCompile Include="..\common\Sprite.cpp" />
     <ClCompile Include="..\common\SpriteManager.cpp" />
     <ClCompile Include="AStarPathfinder.cpp" />
+    <ClCompile Include="component steering\AlignSteering.cpp" />
+    <ClCompile Include="component steering\ArriveFace.cpp" />
+    <ClCompile Include="component steering\ArriveSteering.cpp" />
+    <ClCompile Include="component steering\Component.cpp" />
+    <ClCompile Include="component steering\ComponentManager.cpp" />
+    <ClCompile Include="component steering\FaceSteering.cpp" />
+    <ClCompile Include="component steering\PhysicsComponent.cpp" />
+    <ClCompile Include="component steering\PositionComponent.cpp" />
+    <ClCompile Include="component steering\SeekSteering.cpp" />
+    <ClCompile Include="component steering\Steering.cpp" />
+    <ClCompile Include="component steering\SteeringComponent.cpp" />
+    <ClCompile Include="component steering\Unit.cpp" />
+    <ClCompile Include="component steering\UnitManager.cpp" />
     <ClCompile Include="Connection.cpp" />
     <ClCompile Include="DebugDisplay.cpp" />
     <ClCompile Include="DepthFirstPathfinder.cpp" />
