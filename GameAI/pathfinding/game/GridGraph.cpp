@@ -52,8 +52,25 @@ void GridGraph::init()
 				if( mpGrid->getValueAtIndex(adjacencies[adjIndex]) != BLOCKING_VALUE )
 				{
 					Node* pToNode = mNodes[ adjacencies[adjIndex] ];//find to node
+					
+					const int RIGHT = pFromNode->getId() + 1, 
+							  LEFT = pFromNode->getId() - 1,
+	   						  UP = pFromNode->getId() - mpGrid->getGridWidth(), 
+							  DOWN = pFromNode->getId() + mpGrid->getGridWidth();
 
-					Connection* pConnection = new Connection( pFromNode, pToNode, 1.0f );//create a connection
+					Connection* pConnection = nullptr;
+					bool notDiagonal = pToNode->getId() == LEFT || pToNode->getId() == RIGHT ||
+									   pToNode->getId() == UP || pToNode->getId() == DOWN;
+
+					if (notDiagonal)
+					{
+						pConnection = new Connection(pFromNode, pToNode, 1.0f);//create a connection
+					}
+					else
+					{
+						pConnection = new Connection(pFromNode, pToNode, 1.41421356f);//create a connection
+					}
+
 
 					//add connection to connection vectors
 					mConnections.push_back( pConnection );
