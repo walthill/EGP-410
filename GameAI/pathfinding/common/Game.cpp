@@ -21,8 +21,7 @@ const int WIDTH = 1024;
 const int HEIGHT = 768;
 
 Game::Game()
-	:EventListener(nullptr)
-	,mpGraphicsSystem(NULL)
+	:mpGraphicsSystem(NULL)
 	,mpGraphicsBufferManager(NULL)
 	,mpSpriteManager(NULL)
 	,mpLoopTimer(NULL)
@@ -61,10 +60,6 @@ bool Game::init()
 	mpGraphicsBufferManager = new GraphicsBufferManager(mpGraphicsSystem);
 	mpSpriteManager = new SpriteManager();
 
-	//init event & input systems
-	EventSystem::initInstance();
-	mpInputSystem = new InputSystem;
-	mpInputSystem->initInputSystem();
 	
 	//load background
 	mpGraphicsBufferManager->loadBuffer(mBackgroundBufferID, "wallpaper.bmp");
@@ -96,8 +91,8 @@ void Game::cleanup()
 	mpGraphicsBufferManager = NULL;
 	delete mpSpriteManager;
 	mpSpriteManager = NULL;
-	delete mpInputSystem;
-	mpInputSystem = NULL;
+	//delete mpInputSystem;
+	//mpInputSystem = NULL;
 
 	EventSystem::cleanupInstance();
 }

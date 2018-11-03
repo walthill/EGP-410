@@ -9,8 +9,8 @@
 #include <Trackable.h>
 #include <Timer.h>
 #include "Defines.h"
-#include "../common/EventListener.h"
 #include "../common/InputSystem.h"
+
 
 class MemoryTracker;
 class PerformanceTracker;
@@ -33,7 +33,7 @@ const IDType PLAYER_ICON_SPRITE_ID = 1;
 const IDType AI_ICON_SPRITE_ID = 2;
 const IDType TARGET_SPRITE_ID = 3;
 
-class Game : public EventListener
+class Game : public Trackable
 {
 public:
 	Game();
@@ -68,8 +68,6 @@ protected:
 	float mLoopTargetTime;
 	bool mShouldExit;
 
-	InputSystem* mpInputSystem;
-	EventType mEventType;
 	
 	//should be somewhere else
 	Font* mpFont;

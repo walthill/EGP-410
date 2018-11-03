@@ -8,6 +8,7 @@ Champlain College
 */
 
 #include "Game.h"
+#include "InputManager.h"
 
 //forward declarations
 class GraphicsBuffer;
@@ -32,8 +33,6 @@ public:
 
 	virtual bool init();
 	virtual void cleanup();
-	void handleEvent(const Event& theEvent);
-	void installListeners();
 
 	//game loop
 	virtual void beginLoop();
@@ -41,20 +40,22 @@ public:
 	virtual bool endLoop();
 
 	//accessors
-//	inline GameMessageManager* getMessageManager() { return mpMessageManager; };
+	inline GameMessageManager* getMessageManager() { return mpMessageManager; };
 	inline GridVisualizer* getGridVisualizer() { return mpGridVisualizer; };
 	inline GridPathfinder* getPathfinder() { return mpPathfinder; };
 	inline Grid* getGrid() { return mpGrid; };
 	inline GridGraph* getGridGraph() { return mpGridGraph; };
-private:
-	//GameMessageManager* mpMessageManager;
-	Grid* mpGrid;
-	GridVisualizer* mpGridVisualizer;
-	GridGraph* mpGridGraph;
-	DebugDisplay* mpDebugDisplay;
 
 	GridPathfinder* mpPathfinder;
+	GridGraph* mpGridGraph;
+	GameMessageManager* mpMessageManager;
 	PathfindingDebugContent *pContent;
+	DebugDisplay* mpDebugDisplay;
+
+private:
+	Grid* mpGrid;
+	GridVisualizer* mpGridVisualizer;
+	InputManager* mpInput;
 
 };
 
