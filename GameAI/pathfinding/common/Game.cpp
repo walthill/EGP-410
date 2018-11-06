@@ -51,6 +51,7 @@ bool Game::init()
 	mpMasterTimer = new Timer;
 
 	mpUnitManager = new UnitManager(MAX_UNITS);
+	mpComponentManager = new ComponentManager(MAX_UNITS);
 
 	//create and init GraphicsSystem
 	mpGraphicsSystem = new GraphicsSystem();
@@ -120,6 +121,8 @@ void Game::cleanup()
 	mpGraphicsSystem = NULL;
 	delete mpUnitManager;
 	mpUnitManager = NULL;
+	delete mpComponentManager;
+	mpComponentManager = NULL;
 	delete mpGraphicsBufferManager;
 	mpGraphicsBufferManager = NULL;
 	delete mpSpriteManager;
@@ -143,7 +146,7 @@ void Game::beginLoop()
 
 void Game::processLoop()
 {
-//	mpComponentManager->update(TARGET_ELAPSED_MS);
+	mpComponentManager->update(TARGET_ELAPSED_MS);
 	mpUnitManager->updateAll(TARGET_ELAPSED_MS);
 	mpUnitManager->drawAll();
 	mpGraphicsSystem->swap();

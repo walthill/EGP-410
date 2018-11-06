@@ -82,12 +82,16 @@ void KeyDownMessage::process()
 		}
 		if (mKey == 4)
 		{
+			while(gpGameApp->getUnitManager()->size() > 0)
+				gpGameApp->getUnitManager()->deleteRandomUnit();
+
 			for (int i = 0; i < 10; i++)
 			{
-				cout << "AGDA WRTSGSH" << endl;
-//				Unit * pPlayer = gpGameApp->getUnitManager()->getPlayerUnit();
+				cout << "NEW UNIT " << i << endl;
 				Sprite* tmpSpr = gpGameApp->getSpriteManager()->getSprite(AI_ICON_SPRITE_ID);
 				gpGameApp->getUnitManager()->createRandomUnit(*tmpSpr);
+
+				//TODO: make sure arrows don't spawn on walls
 			}
 		}
 	}
