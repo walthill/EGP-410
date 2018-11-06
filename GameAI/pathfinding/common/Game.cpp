@@ -14,11 +14,14 @@
 #include "Defines.h"
 #include "../common/EventSystem.h"
 #include "../common/MouseEvent.h"
+#include "../game/component steering/ComponentManager.h"
+#include "../game/component steering/UnitManager.h"
 
 Game* gpGame = NULL;
 
 const int WIDTH = 1024;
 const int HEIGHT = 768;
+const Uint32 MAX_UNITS = 100;
 
 Game::Game()
 	:mpGraphicsSystem(NULL)
@@ -47,6 +50,7 @@ bool Game::init()
 	mpLoopTimer = new Timer;
 	mpMasterTimer = new Timer;
 
+	mpUnitManager = new UnitManager(MAX_UNITS);
 
 	//create and init GraphicsSystem
 	mpGraphicsSystem = new GraphicsSystem();
@@ -61,12 +65,40 @@ bool Game::init()
 	mpSpriteManager = new SpriteManager();
 
 	
-	//load background
+	//load buffers
 	mpGraphicsBufferManager->loadBuffer(mBackgroundBufferID, "wallpaper.bmp");
+	mpGraphicsBufferManager->loadBuffer(mPlayerIconBufferID, "arrow.png");
+	mpGraphicsBufferManager->loadBuffer(mEnemyIconBufferID, "enemy-arrow.png");
+	mpGraphicsBufferManager->loadBuffer(mTargetBufferID, "target.png");
 
 	//load Font
 	mpFont = new Font("cour.ttf", 24);
 
+	//setup sprites
+	GraphicsBuffer* pBackGroundBuffer = mpGraphicsBufferManager->getBuffer(mBackgroundBufferID);
+	if (pBackGroundBuffer != NULL)
+	{
+		mpSpriteManager->createAndManageSprite(BACKGROUND_SPRITE_ID, pBackGroundBuffer, 0, 0, (float)pBackGroundBuffer->getWidth(), (float)pBackGroundBuffer->getHeight());
+	}
+	GraphicsBuffer* pPlayerBuffer = mpGraphicsBufferManager->getBuffer(mPlayerIconBufferID);
+	Sprite* pArrowSprite = NULL;
+	if (pPlayerBuffer != NULL)
+	{
+		pArrowSprite = mpSpriteManager->createAndManageSprite(PLAYER_ICON_SPRITE_ID, pPlayerBuffer, 0, 0, (float)pPlayerBuffer->getWidth(), (float)pPlayerBuffer->getHeight());
+	}
+	GraphicsBuffer* pAIBuffer = mpGraphicsBufferManager->getBuffer(mEnemyIconBufferID);
+	Sprite* pEnemyArrow = NULL;
+	if (pAIBuffer != NULL)
+	{
+		pEnemyArrow = mpSpriteManager->createAndManageSprite(AI_ICON_SPRITE_ID, pAIBuffer, 0, 0, (float)pAIBuffer->getWidth(), (float)pAIBuffer->getHeight());
+	}
+
+	GraphicsBuffer* pTargetBuffer = mpGraphicsBufferManager->getBuffer(mTargetBufferID);
+	if (pTargetBuffer != NULL)
+	{
+		mpSpriteManager->createAndManageSprite(TARGET_SPRITE_ID, pTargetBuffer, 0, 0, (float)pTargetBuffer->getWidth(), (float)pTargetBuffer->getHeight());
+	}	
+	
 	return true;
 }
 
@@ -86,7 +118,8 @@ void Game::cleanup()
 	//delete the graphics system
 	delete mpGraphicsSystem;
 	mpGraphicsSystem = NULL;
-
+	delete mpUnitManager;
+	mpUnitManager = NULL;
 	delete mpGraphicsBufferManager;
 	mpGraphicsBufferManager = NULL;
 	delete mpSpriteManager;
@@ -96,6 +129,8 @@ void Game::cleanup()
 
 	EventSystem::cleanupInstance();
 }
+
+const float TARGET_ELAPSED_MS = LOOP_TARGET_TIME / 1000.0f;
 
 void Game::beginLoop()
 {
@@ -108,6 +143,9 @@ void Game::beginLoop()
 
 void Game::processLoop()
 {
+//	mpComponentManager->update(TARGET_ELAPSED_MS);
+	mpUnitManager->updateAll(TARGET_ELAPSED_MS);
+	mpUnitManager->drawAll();
 	mpGraphicsSystem->swap();
 }
 

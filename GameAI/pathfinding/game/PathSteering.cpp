@@ -25,15 +25,15 @@ Steering* PathSteering::getSteering()
 	//do stuff here
 
 	//calculate path using A*
-	if(availaible path in pool)	//use messaging system
+	/*if(availaible path in pool)	//use messaging system
 		path = A*.findPath
 	
 	if(owner near targetLocation && pathindex != path.len) //use distance function 
 		pathindex++
 		mSekkSteering.setTarget(path[0])
-
+	
 	physicsData = mSeekSteering.getSteering().data
 
-	this->mData = physicsData;
+	this->mData = physicsData;*/
 	return this;
 }

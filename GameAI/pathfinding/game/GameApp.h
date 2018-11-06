@@ -22,9 +22,6 @@ class GridPathfinder;
 class PathfindingDebugContent;
 class DebugDisplay;
 
-//how long should each frame of execution take? 30fps = 33.3ms/frame
-const float LOOP_TARGET_TIME = 33.3f;
-
 class GameApp: public Game
 {
 public:

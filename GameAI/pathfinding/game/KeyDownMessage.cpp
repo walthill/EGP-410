@@ -1,3 +1,4 @@
+#include "Game.h"
 #include "GameApp.h"
 #include "GameMessageManager.h"
 #include "GridGraph.h"
@@ -8,6 +9,9 @@
 #include "DebugDisplay.h"
 #include "PathfindingDebugContent.h"
 #include "Vector2D.h"
+#include "component steering/UnitManager.h"
+#include "SpriteManager.h"
+
 
 KeyDownMessage::KeyDownMessage(const int& key)
 	:GameMessage(BUTTON_DOWN)
@@ -75,6 +79,16 @@ void KeyDownMessage::process()
 			gpGameApp->pContent->setPathfindingType(A_STAR_PATH);
 			gpGameApp->mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), gpGameApp->pContent);
 			cout << "A STAR" << endl;
+		}
+		if (mKey == 4)
+		{
+			for (int i = 0; i < 10; i++)
+			{
+				cout << "AGDA WRTSGSH" << endl;
+//				Unit * pPlayer = gpGameApp->getUnitManager()->getPlayerUnit();
+				Sprite* tmpSpr = gpGameApp->getSpriteManager()->getSprite(AI_ICON_SPRITE_ID);
+				gpGameApp->getUnitManager()->createRandomUnit(*tmpSpr);
+			}
 		}
 	}
 }

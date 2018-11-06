@@ -99,13 +99,12 @@
     <ClInclude Include="GridPathfinder.h">
       <Filter>Header Files\pathfinding</Filter>
     </ClInclude>
-	<ClInclude Include="InputManager.h">
+    <ClInclude Include="InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="KeyDownMessage.h">
       <Filter>Header Files</Filter>
-	</ClInclude>
-	  
+    </ClInclude>
     <ClInclude Include="..\common\SpriteManager.h">
       <Filter>Common\Header Files</Filter>
     </ClInclude>
@@ -157,7 +156,6 @@
     <ClInclude Include="..\common\MouseEvent.h">
       <Filter>Common\Header Files</Filter>
     </ClInclude>
-
     <ClInclude Include="component steering\Component.h">
       <Filter>Component Steering\Header Files</Filter>
     </ClInclude>
@@ -199,7 +197,9 @@
     </ClInclude>
     <ClInclude Include="component steering\SeekSteering.h">
       <Filter>Component Steering\Header Files\steering</Filter>
-
+    </ClInclude>
+    <ClInclude Include="PathSteering.h">
+      <Filter>Header Files\pathfinding</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -272,12 +272,12 @@
     <ClCompile Include="PathfindingDebugContent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-	<ClCompile Include="InputManager.cpp">
+    <ClCompile Include="InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="KeyDownMessage.cpp">
       <Filter>Source Files</Filter>
-	  </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\common\Color.cpp">
       <Filter>Common\Source Files</Filter>
     </ClCompile>
@@ -308,8 +308,6 @@
     <ClCompile Include="..\common\MouseEvent.cpp">
       <Filter>Common\Source Files</Filter>
     </ClCompile>
-	
-
     <ClCompile Include="component steering\Component.cpp">
       <Filter>Component Steering\Source Files</Filter>
     </ClCompile>
@@ -348,7 +346,9 @@
     </ClCompile>
     <ClCompile Include="component steering\SeekSteering.cpp">
       <Filter>Component Steering\Source Files\steering</Filter>
-
+    </ClCompile>
+    <ClCompile Include="PathSteering.cpp">
+      <Filter>Source Files\pathfinding</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

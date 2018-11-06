@@ -133,6 +133,7 @@
     <ClInclude Include="Path.h" />
     <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="PathfindingDebugContent.h" />
+    <ClInclude Include="PathSteering.h" />
     <ClInclude Include="PathToMessage.h" />
     <ClInclude Include="PriorityQueue.h" />
   </ItemGroup>
@@ -184,6 +185,7 @@
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PathfindingDebugContent.cpp" />
+    <ClCompile Include="PathSteering.cpp" />
     <ClCompile Include="PathToMessage.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

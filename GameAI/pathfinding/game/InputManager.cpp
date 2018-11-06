@@ -61,5 +61,11 @@ void InputManager::process()
 		GameMessage* pMessage = new KeyDownMessage(3);
 		gpGameApp->mpMessageManager->addMessage(pMessage, 1);
 	}
+	// A*
+	if (state[SDL_SCANCODE_S])
+	{
+		GameMessage* pMessage = new KeyDownMessage(4);
+		gpGameApp->mpMessageManager->addMessage(pMessage, 1);
+	}
 
 }
