@@ -82,16 +82,41 @@ void KeyDownMessage::process()
 		}
 		if (mKey == 4)
 		{
+			//delete exisiting units
 			while(gpGameApp->getUnitManager()->size() > 0)
 				gpGameApp->getUnitManager()->deleteRandomUnit();
 
+			//spawn a new set of units
 			for (int i = 0; i < 10; i++)
 			{
 				cout << "NEW UNIT " << i << endl;
 				Sprite* tmpSpr = gpGameApp->getSpriteManager()->getSprite(AI_ICON_SPRITE_ID);
-				gpGameApp->getUnitManager()->createRandomUnit(*tmpSpr);
+				Unit* newUnit = gpGameApp->getUnitManager()->createRandomUnit(*tmpSpr);
 
-				//TODO: make sure arrows don't spawn on walls
+				float x = newUnit->getPositionComponent()->getPosition().getX();
+				float y = newUnit->getPositionComponent()->getPosition().getY();
+
+				//check if unit is within or adjacent to a wall tile, randomize its position until it is not
+				int squareIndex = gpGameApp->getGrid()->getSquareIndexFromPixelXY(x, y);
+				std::vector<int> adjacencies = gpGameApp->getGrid()->getAdjacentIndices(squareIndex);
+
+				for (unsigned int adjIndex = 0; adjIndex < adjacencies.size(); adjIndex++)
+				{
+					while (gpGameApp->getGrid()->getValueAtIndex(adjacencies[adjIndex]) == BLOCKING_VALUE)
+					{
+						cout << "WALL" << endl;
+						newUnit->randomizePosition();
+
+						x = newUnit->getPositionComponent()->getPosition().getX();
+						y = newUnit->getPositionComponent()->getPosition().getY();
+						
+						squareIndex = gpGameApp->getGrid()->getSquareIndexFromPixelXY(x, y);
+						
+						adjacencies = gpGameApp->getGrid()->getAdjacentIndices(squareIndex);
+						adjIndex = 0;
+
+					}
+				}
 			}
 		}
 	}

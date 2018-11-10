@@ -77,3 +77,12 @@ void Unit::setSteering(Steering::SteeringType type, Vector2D targetLoc /*= ZERO_
 		pSteeringComponent->setData(SteeringData(type, targetLoc, mID, targetUnitID));
 	}
 }
+
+void Unit::randomizePosition()
+{
+	int x = rand() % gpGame->getGraphicsSystem()->getWidth();
+	int y = rand() % gpGame->getGraphicsSystem()->getHeight();
+	Vector2D pos(x, y);
+
+	mpPositionComponent->setPosition(pos);
+}
