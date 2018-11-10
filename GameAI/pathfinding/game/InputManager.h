@@ -16,5 +16,6 @@ private:
 	GameApp* gpGameApp;
 	int x, y;
 	int iNum;
+	SDL_Event mEvent;
 };
 

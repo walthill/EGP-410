@@ -72,7 +72,7 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite)
 	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0));
 
 	if (pUnit != NULL)
-		pUnit->setSteering(Steering::FLOCK, Vector2D(gpGame->getGraphicsSystem()->getWidth() / 2, gpGame->getGraphicsSystem()->getHeight() / 2));
+		pUnit->setSteering(Steering::PATH_STEER, Vector2D(gpGame->getGraphicsSystem()->getWidth() / 2, gpGame->getGraphicsSystem()->getHeight() / 2));
 
 	mIsNewUnit = true;
 	mCallCount = 0; //track unit creation for flocking
@@ -175,6 +175,8 @@ void UnitManager::deleteRandomUnit()
 				break;
 			}
 		}
+
+		msNextUnitID--;
 	}
 }
 

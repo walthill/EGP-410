@@ -1,7 +1,7 @@
 #ifndef PATH_STEER_H
 #define PATH_STEER_H
 
-#include "component steering\Steering.h"
+#include "component steering/Steering.h"
 #include "component steering/SeekSteering.h"
 
 class PathSteering : public Steering
