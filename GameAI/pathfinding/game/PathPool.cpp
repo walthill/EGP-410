@@ -1,24 +1,27 @@
 #include "GameApp.h"
 #include "PathPool.h"
+#include "GridGraph.h"
 #include "AStarPathfinder.h"
 #include "DijkstraPathfinder.h"
 #include "DepthFirstPathfinder.h"
 
 PathPool::PathPool(const int& pathNums):mPathNums(pathNums)
 {
-	depthPaths[pathNums];
-	dijkstraPaths[pathNums];
-	aStarPaths[pathNums];
+	
+	depthPaths = new DepthFirstPathfinder[pathNums];
+	dijkstraPaths = new DijkstraPathfinder[pathNums];
+	aStarPaths = new AStarPathfinder[pathNums];
 
 	mPathUse[pathNums];
 
 	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
 	
+	
 	for(int i = 0; i < pathNums; i++)
 	{
-		depthPaths[i] = new DepthFirstPathfinder(gpGameApp->mpGridGraph);
-		dijkstraPaths[i] = new DijkstraPathfinder(gpGameApp->mpGridGraph);
-		aStarPaths[i] = new AStarPathfinder(gpGameApp->mpGridGraph);
+		depthPaths[i] = DepthFirstPathfinder(gpGameApp->mpGridGraph);
+		dijkstraPaths[i] = DijkstraPathfinder(gpGameApp->mpGridGraph);
+		aStarPaths[i] = AStarPathfinder(gpGameApp->mpGridGraph);
 		mPathUse[i] = false;
 	}
 }
@@ -41,25 +44,17 @@ int PathPool::queryPool()
 	return -1; //not yet, amigo!
 }
 
-GridPathfinder* PathPool::getPath(int index, int pathType)
+DepthFirstPathfinder PathPool::getDepthPath(int index)
 {
-	if(pathType = 0)
-	{
 		return depthPaths[index];
-	}
-	if (pathType = 1)
-	{
-		return dijkstraPaths[index];
-	}
-	if (pathType = 2)
-	{
-		return aStarPaths[index];
-	}
-	else
-	{
-		return nullptr;
-	}
-	
+}
+DijkstraPathfinder PathPool::getDijkstraPath(int index)
+{
+	return dijkstraPaths[index];
+}
+AStarPathfinder PathPool::getAStarPath(int index)
+{
+	return aStarPaths[index];
 }
 
 
@@ -69,4 +64,10 @@ void PathPool::returnPath(int index)
 	mPathUse[index] = false;
 }
 
-
+void PathPool::resetPathUse()
+{
+	for (int i = 0; i < mPathNums; i++)
+	{
+		mPathUse[i] = false;
+	}
+}

@@ -21,6 +21,7 @@ class DijkstraPathfinder : public GridPathfinder
 		
 	public:
 		DijkstraPathfinder(Graph* graph);
+		DijkstraPathfinder();
 		~DijkstraPathfinder();
 
 		Path* findPath(Node* fromNode, Node* toNode);
