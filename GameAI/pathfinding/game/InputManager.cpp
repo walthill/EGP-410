@@ -31,7 +31,7 @@ void InputManager::process()
 					Vector2D pos(x, y);
 
 					//loop thru all non player units
-					for (unsigned int i = 1; i < 2/*gpGame->getUnitManager()->size()+1*/; i++)
+					for (unsigned int i = 1; i < gpGame->getUnitManager()->size()+1; i++)
 						gpGame->getUnitManager()->getUnit(i)->generatePath(pos);
 				}
 				break;

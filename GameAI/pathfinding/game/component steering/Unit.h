@@ -46,6 +46,7 @@ public:
 	Path* getPath() { return &pathData.mPath; };
 	std::vector<Vector2D> getPathInScreenSpace();
 	int getNumPathNodes() { return pathData.numNodes; };
+	int getDestinationNode();
 
 	void setSteering(Steering::SteeringType type, Vector2D targetLoc = ZERO_VECTOR2D, UnitID targetUnitID = INVALID_UNIT_ID);
 
@@ -67,6 +68,7 @@ private:
 		Path mPath;
 		std::vector<Vector2D> mPathPositions;
 		int numNodes;
+		int toNodeId;
 	}pathData;
 
 	Unit(const Sprite& sprite);

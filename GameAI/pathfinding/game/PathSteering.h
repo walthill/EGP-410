@@ -2,19 +2,20 @@
 #define PATH_STEER_H
 
 #include "component steering/Steering.h"
-#include "component steering/SeekSteering.h"
 
 class Path;
 class GameApp;
+class ArriveSteering;
 
 class PathSteering : public Steering
 {
 	private:
-		GameApp* gameAppHandle;
-		int nextLocationIndex = 1;
+		int nextLocationIndex = 0;
 		bool hasArrived;
+		int oldToNodeId;
+		int toNodeId;
 	protected:
-		SeekSteering mSeekSteering;
+		ArriveSteering mArriveSteering;
 
 	public:
 		PathSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID = INVALID_UNIT_ID, bool shouldFlee = false);
