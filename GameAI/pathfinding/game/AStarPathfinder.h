@@ -57,6 +57,7 @@ class AStarPathfinder : public GridPathfinder
 
 	public:
 		AStarPathfinder(Graph* graph);
+		AStarPathfinder();
 		~AStarPathfinder();
 
 		Path* findPath(Node* fromNode, Node* toNode);

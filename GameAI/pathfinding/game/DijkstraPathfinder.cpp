@@ -18,6 +18,14 @@ DijkstraPathfinder::DijkstraPathfinder(Graph* graph)
 	#endif
 }
 
+DijkstraPathfinder::DijkstraPathfinder(Graph* graph)
+	: GridPathfinder(NULL)
+{
+#ifdef VISUALIZE_PATH
+	mpPath = NULL;
+#endif
+}
+
 DijkstraPathfinder::~DijkstraPathfinder()
 {
 	#ifdef VISUALIZE_PATH

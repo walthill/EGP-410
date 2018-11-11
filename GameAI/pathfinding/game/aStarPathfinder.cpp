@@ -19,6 +19,15 @@ AStarPathfinder::AStarPathfinder(Graph* graph)
 	#endif
 }
 
+AStarPathfinder::AStarPathfinder()
+	: GridPathfinder(NULL)
+{
+
+#ifdef VISUALIZE_PATH
+	mpPath = NULL;
+#endif
+}
+
 AStarPathfinder::~AStarPathfinder()
 {
 	#ifdef VISUALIZE_PATH
