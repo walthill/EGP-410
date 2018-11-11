@@ -24,6 +24,7 @@ Unit::Unit(const Sprite& sprite)
 	pathData = {};
 }
 
+
 Unit::~Unit()
 {
 }

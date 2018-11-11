@@ -58,6 +58,9 @@ bool GameApp::init()
 
 	mpInput = new InputManager();
 
+	//this is where we decide how large the pool is!
+	mpPathPool = new PathPool(1);
+
 	//create and load the Grid, GridBuffer, and GridRenderer
 	mpGrid = new Grid(mpGraphicsSystem->getWidth(), mpGraphicsSystem->getHeight(), GRID_SQUARE_SIZE);
 	mpGridVisualizer = new GridVisualizer( mpGrid );
@@ -69,7 +72,8 @@ bool GameApp::init()
 	//init the nodes and connections
 	mpGridGraph->init();
 
-	mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
+//	mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
+	pathfinderIndex = 0;
 
 	//load buffers
 	mpGraphicsBufferManager->loadBuffer(mBackgroundBufferID, "wallpaper.bmp");
@@ -132,9 +136,10 @@ void GameApp::processLoop()
 #endif
 	mpDebugDisplay->draw( pBackBuffer );
 	
-	
 	mpMessageManager->processMessagesForThisframe();
 	mpInput->process();
+
+	mpPathPool->process();
 
 	//should be last thing in processLoop
 	Game::processLoop();

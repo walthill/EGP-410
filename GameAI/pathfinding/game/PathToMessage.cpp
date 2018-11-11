@@ -5,6 +5,9 @@
 #include "Grid.h"
 #include "GridGraph.h"
 #include "../game/component steering/Unit.h"
+#include "AStarPathfinder.h"
+#include "DijkstraPathfinder.h"
+#include "DepthFirstPathfinder.h"
 
 
 PathToMessage::PathToMessage(Unit* owner, const Vector2D& from, const Vector2D& to )
@@ -24,7 +27,21 @@ void PathToMessage::process()
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	if( pGame != NULL ) 
 	{
-		GridPathfinder* pPathfinder = pGame->getPathfinder();
+		GridPathfinder* pPathfinder = NULL;
+		//make this game's pathPool
+		if (pGame->pathfinderIndex == 0)
+		{
+			pPathfinder = pGame->getPathPool()->getDepthPath(pGame->getPathPool()->queryPool(mOwner, mTo));
+		}
+		if (pGame->pathfinderIndex == 1)
+		{
+			pPathfinder = pGame->getPathPool()->getDijkstraPath(pGame->getPathPool()->queryPool(mOwner, mTo));
+		}
+		if (pGame->pathfinderIndex == 2)
+		{
+			pPathfinder = pGame->getPathPool()->getAStarPath(pGame->getPathPool()->queryPool(mOwner, mTo));
+		}
+
 		GridGraph* pGridGraph = pGame->getGridGraph();
 		Grid* pGrid = pGame->getGrid();
 		int fromIndex = pGrid->getSquareIndexFromPixelXY( (int)mFrom.getX(), (int)mFrom.getY() );
@@ -37,6 +54,6 @@ void PathToMessage::process()
 		
 		mOwner->setPath(*p);
 	
-		cout << "unit pathing" << endl;
+		//cout << "unit pathing" << endl;
 	}
 }

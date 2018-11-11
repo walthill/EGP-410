@@ -9,6 +9,7 @@ Champlain College
 
 #include "Game.h"
 #include "InputManager.h"
+#include "PathPool.h"
 
 //forward declarations
 class GraphicsBuffer;
@@ -42,6 +43,7 @@ public:
 	inline GridPathfinder* getPathfinder() { return mpPathfinder; };
 	inline Grid* getGrid() { return mpGrid; };
 	inline GridGraph* getGridGraph() { return mpGridGraph; };
+	inline PathPool* getPathPool() { return mpPathPool; };
 
 	GridPathfinder* mpPathfinder;
 	GridGraph* mpGridGraph;
@@ -49,10 +51,13 @@ public:
 	PathfindingDebugContent *pContent;
 	DebugDisplay* mpDebugDisplay;
 
+	int pathfinderIndex;
+
 private:
 	Grid* mpGrid;
 	GridVisualizer* mpGridVisualizer;
 	InputManager* mpInput;
+	PathPool* mpPathPool;
 
 };
 
