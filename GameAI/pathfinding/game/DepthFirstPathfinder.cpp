@@ -19,7 +19,7 @@ DepthFirstPathfinder::DepthFirstPathfinder( Graph* pGraph )
 
 }
 
-DepthFirstPathfinder::DepthFirstPathfinder(Graph* pGraph)
+DepthFirstPathfinder::DepthFirstPathfinder()
 	:GridPathfinder(NULL)
 {
 #ifdef VISUALIZE_PATH

@@ -18,7 +18,7 @@ DijkstraPathfinder::DijkstraPathfinder(Graph* graph)
 	#endif
 }
 
-DijkstraPathfinder::DijkstraPathfinder(Graph* graph)
+DijkstraPathfinder::DijkstraPathfinder()
 	: GridPathfinder(NULL)
 {
 #ifdef VISUALIZE_PATH
