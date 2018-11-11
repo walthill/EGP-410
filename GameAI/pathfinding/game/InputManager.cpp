@@ -28,18 +28,11 @@ void InputManager::process()
 				{
 					x = mEvent.motion.x;
 					y = mEvent.motion.y;
+					Vector2D pos(x, y);
 
-					for (size_t i = 1; i < gpGame->getUnitManager()->size()+1; i++)
-					{
-						Vector2D lastPos(gpGame->getUnitManager()->getUnit(i)->getPositionComponent()->getPosition().getX(), gpGame->getUnitManager()->getUnit(i)->getPositionComponent()->getPosition().getY());
-						Vector2D pos(x, y);
-						if (lastPos.getX() != pos.getX() || lastPos.getY() != pos.getY())
-						{
-							GameMessage* pMessage = new PathToMessage(lastPos, pos);
-							gpGameApp->mpMessageManager->addMessage(pMessage, 0);
-							//lastPos = pos;
-						}
-					}
+					//loop thru all non player units
+					for (unsigned int i = 1; i < 2/*gpGame->getUnitManager()->size()+1*/; i++)
+						gpGame->getUnitManager()->getUnit(i)->generatePath(pos);
 				}
 				break;
 

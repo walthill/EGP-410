@@ -4,8 +4,15 @@
 #include "component steering/Steering.h"
 #include "component steering/SeekSteering.h"
 
+class Path;
+class GameApp;
+
 class PathSteering : public Steering
 {
+	private:
+		GameApp* gameAppHandle;
+		int nextLocationIndex = 1;
+		bool hasArrived;
 	protected:
 		SeekSteering mSeekSteering;
 

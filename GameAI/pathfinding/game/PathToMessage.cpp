@@ -4,9 +4,12 @@
 #include "GridPathfinder.h"
 #include "Grid.h"
 #include "GridGraph.h"
+#include "../game/component steering/Unit.h"
 
-PathToMessage::PathToMessage( const Vector2D& from, const Vector2D& to )
+
+PathToMessage::PathToMessage(Unit* owner, const Vector2D& from, const Vector2D& to )
 :GameMessage(PATH_TO_MESSAGE)
+,mOwner(owner)
 ,mFrom(from)
 ,mTo(to)
 {
@@ -28,6 +31,12 @@ void PathToMessage::process()
 		int toIndex = pGrid->getSquareIndexFromPixelXY( (int)mTo.getX(), (int)mTo.getY() );
 		Node* pFromNode = pGridGraph->getNode( fromIndex );
 		Node* pToNode = pGridGraph->getNode( toIndex );
-		pPathfinder->findPath( pFromNode, pToNode );
+		
+		//can't destroy this pointer
+		Path* p = pPathfinder->findPath( pFromNode, pToNode );
+		
+		mOwner->setPath(*p);
+	
+		cout << "unit pathing" << endl;
 	}
 }

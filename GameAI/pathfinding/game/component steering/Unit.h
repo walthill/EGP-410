@@ -10,6 +10,7 @@
 #include "PositionComponent.h"
 #include "Sprite.h"
 #include "Steering.h"
+#include "../game/Path.h"
 //#include "CircularQueue.h"
 //#include "Transaction.h"
 //#include "TransactionProcessor.h"
@@ -39,6 +40,12 @@ public:
 	float getMaxRotVel() const { return mMaxRotVel; };
 	void setShowTarget(bool val) { mShowTarget = val; };
 	void randomizePosition();
+	
+	void generatePath(Vector2D posToReach);
+	void setPath(Path path);
+	Path* getPath() { return &pathData.mPath; };
+	std::vector<Vector2D> getPathInScreenSpace();
+	int getNumPathNodes() { return pathData.numNodes; };
 
 	void setSteering(Steering::SteeringType type, Vector2D targetLoc = ZERO_VECTOR2D, UnitID targetUnitID = INVALID_UNIT_ID);
 
@@ -54,6 +61,13 @@ private:
 	float mMaxRotAcc;
 	float mMaxRotVel;
 	bool mShowTarget;
+
+	struct PathData
+	{
+		Path mPath;
+		std::vector<Vector2D> mPathPositions;
+		int numNodes;
+	}pathData;
 
 	Unit(const Sprite& sprite);
 	virtual ~Unit();

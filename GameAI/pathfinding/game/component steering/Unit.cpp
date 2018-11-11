@@ -1,7 +1,5 @@
 #include "Unit.h"
 #include <assert.h>
-
-#include "Game.h"
 #include "GraphicsSystem.h"
 #include "Component.h"
 #include "PositionComponent.h"
@@ -9,7 +7,12 @@
 #include "SteeringComponent.h"
 #include "ComponentManager.h"
 #include "SpriteManager.h"
-
+#include "../game/PathToMessage.h"
+#include "../game/GameMessage.h"
+#include "../game/GameMessageManager.h"
+#include "../game/Node.h"
+#include "../common/Grid.h"
+#include "../game/GameApp.h"
 
 Unit::Unit(const Sprite& sprite) 
 	:mSprite(sprite)
@@ -18,6 +21,7 @@ Unit::Unit(const Sprite& sprite)
 	,mSteeringComponentID(INVALID_COMPONENT_ID)
 	,mShowTarget(false)
 {
+	pathData = {};
 }
 
 Unit::~Unit()
@@ -85,4 +89,39 @@ void Unit::randomizePosition()
 	Vector2D pos(x, y);
 
 	mpPositionComponent->setPosition(pos);
+}
+
+void Unit::generatePath(Vector2D posToReach)
+{
+	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
+	if (mpPositionComponent->getPosition().getX() != posToReach.getX() || mpPositionComponent->getPosition().getY() != posToReach.getY())
+	{
+		GameMessage* pMessage = new PathToMessage(this, mpPositionComponent->getPosition(), posToReach);
+		gpGameApp->mpMessageManager->addMessage(pMessage, 0);
+		//lastPos = pos;
+	}
+}
+
+void Unit::setPath(Path path)
+{
+	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
+	pathData.mPath = path;
+	
+	//if (pathData.mPath != NULL)
+	{
+		pathData.numNodes = pathData.mPath.getNumNodes();
+
+		pathData.mPathPositions.resize(pathData.numNodes);//= new Vector2D[numNodes];
+
+		for (int i = pathData.numNodes; i > 0; i--)
+		{
+//			pathData.mPathPositions.insert(front(), )
+			pathData.mPathPositions[i-1] = gpGameApp->getGrid()->getULCornerOfSquare(pathData.mPath.getAndRemoveNextNode()->getId());
+		}
+	}
+}
+
+std::vector<Vector2D> Unit::getPathInScreenSpace()
+{
+	return pathData.mPathPositions;
 }

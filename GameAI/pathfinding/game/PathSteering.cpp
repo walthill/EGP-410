@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "GameApp.h"
 #include "component steering/Steering.h"
 #include "component steering/Unit.h"
 #include "component steering/UnitManager.h"
@@ -13,14 +13,53 @@ PathSteering::PathSteering(const UnitID& ownerID, const Vector2D& targetLoc, con
 	setOwnerID(ownerID);
 	setTargetID(targetID);
 	setTargetLoc(targetLoc);
+	hasArrived = false;
+
+	gameAppHandle = dynamic_cast<GameApp*>(gpGame);
 }
 
 Steering* PathSteering::getSteering()
 {
-	Vector2D direction;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
-	Path path;
+	//pOwner.getPath
+	//start node is at index 0
+	
+	std::vector<Vector2D> pathArr = pOwner->getPathInScreenSpace();
+	if (pathArr.size() > 0 && !hasArrived)
+	{
+		if (nextLocationIndex < pOwner->getNumPathNodes()) //if not at end
+		{
+			Vector2D direction = pathArr[nextLocationIndex] - pOwner->getPositionComponent()->getPosition();
+			float dist = direction.getLength();
+	
+			if (dist < 25)
+			{
+				nextLocationIndex++;
+			}
+			else
+			{
+				mSeekSteering.setTargetLoc(pathArr[nextLocationIndex]);
+				physicsData = mSeekSteering.getSteering()->getData();
+			}
+		}
+		else
+		{
+			hasArrived = true;
+//			nextLocationIndex = 1;
+			physicsData.acc = 0;
+			physicsData.vel = 0;
+			this->mData = physicsData;
+			return this;
+		}
+	}
+
+	if (hasArrived && nextLocationIndex != pOwner->getNumPathNodes())
+	{
+		hasArrived = false;
+		nextLocationIndex = 1;
+	}
+	
 
 	//do stuff here
 
@@ -33,7 +72,8 @@ Steering* PathSteering::getSteering()
 		mSekkSteering.setTarget(path[0])
 	
 	physicsData = mSeekSteering.getSteering().data
-
-	this->mData = physicsData;*/
+*/
+	this->mData = physicsData;
 	return this;
 }
+

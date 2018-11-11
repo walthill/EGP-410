@@ -120,7 +120,7 @@ Path* AStarPathfinder::findPath(Node* fromNode, Node* toNode)
 		}
 
 		mClosedList.push(currentRecord);
-		mVisitedNodes.push_back(currentRecord.node);  //send to list for graphical visualization
+	//	mVisitedNodes.push_back(currentRecord.node);  //send to list for graphical visualization
 
 	}
 

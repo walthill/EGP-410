@@ -19,6 +19,8 @@ public:
 
 	void addNode( Node* pNode );
 
+	Node* operator[](int index) { return mNodes[index]; };
+
 private:
 	std::vector<Node*> mNodes;
 

@@ -87,7 +87,7 @@ void KeyDownMessage::process()
 				gpGameApp->getUnitManager()->deleteRandomUnit();
 
 			//spawn a new set of units
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 1; i++)
 			{
 				cout << "NEW UNIT " << i << endl;
 				Sprite* tmpSpr = gpGameApp->getSpriteManager()->getSprite(AI_ICON_SPRITE_ID);
