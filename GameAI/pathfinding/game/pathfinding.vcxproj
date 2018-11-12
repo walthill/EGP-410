@@ -134,6 +134,7 @@
     <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="PathfindingDebugContent.h" />
     <ClInclude Include="PathPool.h" />
+    <ClInclude Include="PathSmooth.h" />
     <ClInclude Include="PathSteering.h" />
     <ClInclude Include="PathToMessage.h" />
     <ClInclude Include="PriorityQueue.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PathfindingDebugContent.cpp" />
     <ClCompile Include="PathPool.cpp" />
+    <ClCompile Include="PathSmooth.cpp" />
     <ClCompile Include="PathSteering.cpp" />
     <ClCompile Include="PathToMessage.cpp" />
   </ItemGroup>

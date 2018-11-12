@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DEPTH_FIRST_H
+#define DEPTH_FIRST_H
 
 #include "GridPathfinder.h"
 #include <vector>
@@ -21,3 +22,4 @@ public:
 private:
 };
 
+#endif

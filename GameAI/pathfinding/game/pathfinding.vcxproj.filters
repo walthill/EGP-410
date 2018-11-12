@@ -204,6 +204,9 @@
     <ClInclude Include="PathPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PathSmooth.h">
+      <Filter>Header Files\pathfinding</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Game.cpp">
@@ -355,6 +358,9 @@
     </ClCompile>
     <ClCompile Include="PathPool.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PathSmooth.cpp">
+      <Filter>Source Files\pathfinding</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -10,7 +10,7 @@ class ArriveSteering : public Steering
 		ArriveSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID = INVALID_UNIT_ID, bool shouldFlee = false);
 		virtual Steering* getSteering(); //overrides parent function
 
-		int getTargetRadius() { return mTARGET_RADIUS;}
+		float getTargetRadius() { return mTARGET_RADIUS;}
 
 	protected:
 

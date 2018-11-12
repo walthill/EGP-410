@@ -8,12 +8,12 @@
 #include "Node.h"
 #include "NodeRecord.h"
 #include "Grid.h"
+#include "PathSmooth.h"
 
 class Connection;
 class Path;
 class Graph;
 class GraphicsBuffer;
-//class Grid;
 
 using namespace std;
 
@@ -38,16 +38,7 @@ class AStarPathfinder : public GridPathfinder
 				Vector2D nodePos;
 				GameApp * pGame = dynamic_cast<GameApp*>(gpGame);
 				nodePos = pGame->getGrid()->getULCornerOfSquare(node->getId());
-		
-/*				float val;  
-				
-				if (goalNode->getId() >= node->getId())
-					val = goalNode->getId() - node->getId();
-				else
-					val = goalNode->getId();
-					*/
-		//		if (val < 0)
-			//		cout << "poop";
+
 				return (goalPos - nodePos).getLength(); 
 			}; //euclidean distance - underestimates
 		} mHeuristic;

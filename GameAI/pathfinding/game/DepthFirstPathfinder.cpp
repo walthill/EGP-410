@@ -2,6 +2,7 @@
 #include "Path.h"
 #include "Connection.h"
 #include "GridGraph.h"
+#include "PathSmooth.h"
 #include "Game.h"
 #include <PerformanceTracker.h>
 #include <list>
@@ -91,6 +92,11 @@ Path* DepthFirstPathfinder::findPath( Node* pFrom, Node* pTo )
 			}
 		}
 	}
+
+	#ifdef SMOOTH_PATH
+	PathSmooth pathSmoother;
+	pPath = pathSmoother.smoothPath(pPath);
+	#endif
 	
 	gpPerformanceTracker->stopTracking("path");
 	mTimeElapsed = gpPerformanceTracker->getElapsedTime("path");
