@@ -8,6 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include "PriorityQueue.h"
+#include "PathSmooth.h"
 
 
 DijkstraPathfinder::DijkstraPathfinder(Graph* graph)
@@ -143,6 +144,11 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 		{
 			returnPath->addNode(path->getAndRemoveNextNode());
 		}
+
+		#ifdef SMOOTH_PATH
+		PathSmooth pathSmoother;
+		returnPath = pathSmoother.smoothPath(returnPath);
+		#endif
 
 		delete path;
 	}

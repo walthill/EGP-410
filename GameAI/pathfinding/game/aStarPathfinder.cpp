@@ -13,7 +13,6 @@
 AStarPathfinder::AStarPathfinder(Graph* graph)
 	: GridPathfinder(dynamic_cast<GridGraph*>(graph))
 {
-
 	#ifdef VISUALIZE_PATH
 	mpPath = NULL;
 	#endif
@@ -158,6 +157,11 @@ Path* AStarPathfinder::findPath(Node* fromNode, Node* toNode)
 			returnPath->addNode(path->getAndRemoveNextNode());
 		}
 
+		#ifdef SMOOTH_PATH
+		PathSmooth pathSmoother;
+		returnPath = pathSmoother.smoothPath(returnPath);
+		#endif
+
 		delete path;
 	}
 
@@ -170,5 +174,4 @@ Path* AStarPathfinder::findPath(Node* fromNode, Node* toNode)
 	#endif
 
 	return returnPath;
-
 }

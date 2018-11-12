@@ -116,7 +116,7 @@ void Unit::setPath(Path path)
 
 		for (int i = pathData.numNodes; i > 0; i--)
 		{
-			pathData.mPathPositions[i - 1] = gpGameApp->getGrid()->getULCornerOfSquare(pathData.mPath.getAndRemoveNextNode()->getId());
+			pathData.mPathPositions[i-1] = gpGameApp->getGrid()->getULCornerOfSquare(pathData.mPath.peekNode(i-1)->getId());
 		}
 	}
 
