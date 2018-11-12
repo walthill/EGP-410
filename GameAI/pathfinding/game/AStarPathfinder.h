@@ -29,14 +29,14 @@ class AStarPathfinder : public GridPathfinder
 			void setGoal(Node* goal) 
 			{ 
 				goalNode = goal;
-				GameApp * pGame = dynamic_cast<GameApp*>(gpGame);
+				GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 				goalPos = pGame->getGrid()->getULCornerOfSquare(goalNode->getId());
 			};
 			
 			float estimate(Node* node) 
 			{ 
 				Vector2D nodePos;
-				GameApp * pGame = dynamic_cast<GameApp*>(gpGame);
+				GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 				nodePos = pGame->getGrid()->getULCornerOfSquare(node->getId());
 		
 /*				float val;  

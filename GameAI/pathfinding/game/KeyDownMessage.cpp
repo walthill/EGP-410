@@ -38,6 +38,7 @@ void KeyDownMessage::process()
 		//F Depth First Search
 		if (mKey == 1)
 		{
+			gpGameApp->getPathPool()->resetPathUse();
 			if (gpGameApp->mpPathfinder != NULL)
 			{
 				delete gpGameApp->mpPathfinder;
@@ -45,6 +46,7 @@ void KeyDownMessage::process()
 			}
 
 			gpGameApp->mpPathfinder = new DepthFirstPathfinder(gpGameApp->mpGridGraph);
+			gpGameApp->pathfinderIndex = 0;
 			gpGameApp->pContent = new PathfindingDebugContent(gpGameApp->mpPathfinder);
 			gpGameApp->pContent->setPathfindingType(DEPTH_FIRST_PATH);
 			gpGameApp->mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), gpGameApp->pContent);
@@ -53,6 +55,7 @@ void KeyDownMessage::process()
 		//D Dijkstra Pathfinding
 		if (mKey == 2)
 		{
+			gpGameApp->getPathPool()->resetPathUse();
 			if (gpGameApp->mpPathfinder != NULL)
 			{
 				delete gpGameApp->mpPathfinder;
@@ -60,6 +63,7 @@ void KeyDownMessage::process()
 			}
 
 			gpGameApp->mpPathfinder = new DijkstraPathfinder(gpGameApp->mpGridGraph);
+			gpGameApp->pathfinderIndex = 1;
 			gpGameApp->pContent = new PathfindingDebugContent(gpGameApp->mpPathfinder);
 			gpGameApp->pContent->setPathfindingType(DIJSKTRA_PATH);
 			gpGameApp->mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), gpGameApp->pContent);
@@ -68,6 +72,7 @@ void KeyDownMessage::process()
 		//A A* pathfinding
 		if (mKey == 3)
 		{
+			gpGameApp->getPathPool()->resetPathUse();
 			if (gpGameApp->mpPathfinder != NULL)
 			{
 				delete gpGameApp->mpPathfinder;
@@ -75,6 +80,7 @@ void KeyDownMessage::process()
 			}
 
 			gpGameApp->mpPathfinder = new AStarPathfinder(gpGameApp->mpGridGraph);
+			gpGameApp->pathfinderIndex = 2;
 			gpGameApp->pContent = new PathfindingDebugContent(gpGameApp->mpPathfinder);
 			gpGameApp->pContent->setPathfindingType(A_STAR_PATH);
 			gpGameApp->mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), gpGameApp->pContent);

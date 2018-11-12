@@ -106,6 +106,7 @@ void Unit::generatePath(Vector2D posToReach)
 void Unit::setPath(Path path)
 {
 	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
+
 	pathData.mPath = path;
 
 	{
@@ -115,12 +116,13 @@ void Unit::setPath(Path path)
 
 		for (int i = pathData.numNodes; i > 0; i--)
 		{
-			pathData.mPathPositions[i-1] = gpGameApp->getGrid()->getULCornerOfSquare(pathData.mPath.getAndRemoveNextNode()->getId());
+			pathData.mPathPositions[i - 1] = gpGameApp->getGrid()->getULCornerOfSquare(pathData.mPath.getAndRemoveNextNode()->getId());
 		}
 	}
 
 	Vector2D toVector = pathData.mPathPositions[pathData.mPathPositions.size() - 1];
 	pathData.toNodeId = gpGameApp->getGrid()->getSquareIndexFromPixelXY(toVector.getX(), toVector.getY());
+
 }
 
 std::vector<Vector2D> Unit::getPathInScreenSpace()

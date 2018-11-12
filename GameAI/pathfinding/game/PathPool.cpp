@@ -5,7 +5,7 @@
 #include "AStarPathfinder.h"
 #include "DijkstraPathfinder.h"
 #include "DepthFirstPathfinder.h"
-#include "component steering/SteeringComponent.h"
+#include "../game/component steering/SteeringComponent.h"
 
 PathPool::PathPool(const int& pathNums):mPathNums(pathNums)
 {
@@ -14,7 +14,7 @@ PathPool::PathPool(const int& pathNums):mPathNums(pathNums)
 	dijkstraPaths = new DijkstraPathfinder[pathNums];
 	aStarPaths = new AStarPathfinder[pathNums];
 	
-	mPathUse[pathNums];
+	mPathUse = new bool[pathNums];
 
 	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
 	
@@ -30,6 +30,12 @@ PathPool::PathPool(const int& pathNums):mPathNums(pathNums)
 
 PathPool::~PathPool()
 {
+	queuedUnits.clear();
+	members.clear();
+	delete mPathUse;
+	delete [] depthPaths;
+	delete [] dijkstraPaths;
+	delete [] aStarPaths;
 }
 
 void PathPool::process() 
@@ -44,10 +50,10 @@ void PathPool::process()
 		}
 	}
 
-	if (freePath)
+	if (freePath && queuedUnits.size() != 0)
 	{
 		queuedUnits[0]->generatePath(pointClicked);
-		queuedUnits.erase(queuedUnits.front);
+		queuedUnits.erase(queuedUnits.begin());
 	}
 }
 
@@ -60,7 +66,8 @@ int PathPool::queryPool(Unit* mOwner, Vector2D point)
 		if (!mPathUse[i])
 		{
 			mPathUse[i] = true;
-			members.insert(int(mOwner->getSteeringComponent()->getOwnerID()), i);
+			int unitId = (int)mOwner->getSteeringComponent()->getOwnerID();
+			members.insert(std::pair<int, int>(unitId, i));
 			return i; //return index of available path
 		}
 	}
@@ -93,9 +100,10 @@ void PathPool::returnPath(Unit* mOwner)
 {
 	// undo pointer first
 	std::map<int, int>::iterator pair = members.find(int(mOwner->getSteeringComponent()->getOwnerID()));
-	if (pair != members.end) 
+	if (pair != members.end()) 
 	{
 		mPathUse[pair->second] = false;
+		members.erase((int)mOwner->getSteeringComponent()->getOwnerID());
 	}
 	
 
@@ -106,5 +114,7 @@ void PathPool::resetPathUse()
 	for (int i = 0; i < mPathNums; i++)
 	{
 		mPathUse[i] = false;
+		members.clear();
+		queuedUnits.clear();
 	}
 }

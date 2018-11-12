@@ -4,7 +4,7 @@
 #include "component steering/Steering.h"
 
 class Path;
-class GameApp;
+//class GameApp;
 class ArriveSteering;
 
 class PathSteering : public Steering

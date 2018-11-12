@@ -31,7 +31,10 @@ DepthFirstPathfinder::DepthFirstPathfinder()
 DepthFirstPathfinder::~DepthFirstPathfinder()
 {
 	#ifdef VISUALIZE_PATH
-	delete mpPath;
+	if (mpPath != NULL) 
+	{
+		delete mpPath;
+	}
 	#endif
 }
 

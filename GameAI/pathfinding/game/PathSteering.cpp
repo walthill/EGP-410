@@ -20,6 +20,7 @@ PathSteering::PathSteering(const UnitID& ownerID, const Vector2D& targetLoc, con
 Steering* PathSteering::getSteering()
 {
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
+	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
 	PhysicsData physicsData = pOwner->getPhysicsComponent()->getData();
 	
 	//path data represented in Vector2D(x,y)
@@ -48,6 +49,7 @@ Steering* PathSteering::getSteering()
 		else //arrived at final destination
 		{
 			hasArrived = true;
+			gpGameApp->getPathPool()->returnPath(pOwner);
 			physicsData.acc = 0;
 			physicsData.vel = 0;
 			this->mData = physicsData;

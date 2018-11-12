@@ -12,14 +12,13 @@
 #include "GridGraph.h"
 #include "Connection.h"
 #include "Path.h"
-#include "DepthFirstPathfinder.h"
-#include "DijkstraPathfinder.h"
-#include "AStarPathfinder.h"
 #include "Pathfinder.h"
 #include "GridPathfinder.h"
 #include "GridVisualizer.h"
 #include "DebugDisplay.h"
 #include "PathfindingDebugContent.h"
+
+#include "DepthFirstPathfinder.h"
 
 #include "InputManager.h"
 
@@ -58,9 +57,6 @@ bool GameApp::init()
 
 	mpInput = new InputManager();
 
-	//this is where we decide how large the pool is!
-	mpPathPool = new PathPool(1);
-
 	//create and load the Grid, GridBuffer, and GridRenderer
 	mpGrid = new Grid(mpGraphicsSystem->getWidth(), mpGraphicsSystem->getHeight(), GRID_SQUARE_SIZE);
 	mpGridVisualizer = new GridVisualizer( mpGrid );
@@ -72,7 +68,7 @@ bool GameApp::init()
 	//init the nodes and connections
 	mpGridGraph->init();
 
-//	mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
+	mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
 	pathfinderIndex = 0;
 
 	//load buffers
@@ -90,6 +86,11 @@ bool GameApp::init()
 	pContent->setPathfindingType(DEPTH_FIRST_PATH);
 	mpDebugDisplay = new DebugDisplay( Vector2D(0,12), pContent );
 
+
+	//THIS IS WHERE WE DECIDE HOW MANY PATHS ARE IN THE POOL!
+	mpPathPool = new PathPool(5);
+
+
 	mpMasterTimer->start();
 	return true;
 }
@@ -97,6 +98,9 @@ bool GameApp::init()
 
 void GameApp::cleanup()
 {
+	delete mpPathPool;
+	mpPathPool = NULL;
+	
 	delete mpMessageManager;
 	mpMessageManager = NULL;
 
@@ -114,6 +118,8 @@ void GameApp::cleanup()
 
 	delete mpDebugDisplay;
 	mpDebugDisplay = NULL;
+
+	
 
 //	delete mpInputSystem;
 }

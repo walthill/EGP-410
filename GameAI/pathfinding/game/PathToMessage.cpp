@@ -49,11 +49,17 @@ void PathToMessage::process()
 		Node* pFromNode = pGridGraph->getNode( fromIndex );
 		Node* pToNode = pGridGraph->getNode( toIndex );
 		
-		//can't destroy this pointer
-		Path* p = pPathfinder->findPath( pFromNode, pToNode );
+		//pOwner is in queue
+		if (pPathfinder != NULL) 
+		{
+			//can't destroy this pointer
+			Path* p = pPathfinder->findPath( pFromNode, pToNode );
+			mOwner->setPath(*p);
+			//cout << "unit pathing" << endl;
+		}
 		
-		mOwner->setPath(*p);
+		
 	
-		//cout << "unit pathing" << endl;
+		
 	}
 }

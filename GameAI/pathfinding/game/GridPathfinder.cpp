@@ -48,6 +48,7 @@ void GridPathfinder::drawVisualization( Grid* pGrid, GraphicsBuffer* pDest )
 {
 	//cout << "mpPath:" << mpPath << endl;
 	delete mpVisualizer;
+	
 	mpVisualizer = new GridVisualizer( pGrid );
 	static Color pathColor = Color(255,64,64);
 	static Color visitedColor = GREEN_COLOR;
