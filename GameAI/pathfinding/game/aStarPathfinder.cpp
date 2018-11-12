@@ -3,6 +3,7 @@
 #include "Connection.h"
 #include "GridGraph.h"
 #include "Game.h"
+#include "GameApp.h"
 #include "MemoryTracker.h"
 #include <PerformanceTracker.h>
 #include <vector>
@@ -14,7 +15,7 @@ AStarPathfinder::AStarPathfinder(Graph* graph)
 	: GridPathfinder(dynamic_cast<GridGraph*>(graph))
 {
 	#ifdef VISUALIZE_PATH
-	mpPath = NULL;
+//	mpPath = NULL;
 	#endif
 }
 
@@ -23,7 +24,7 @@ AStarPathfinder::AStarPathfinder()
 {
 
 #ifdef VISUALIZE_PATH
-	mpPath = NULL;
+//	mpPath = NULL;
 #endif
 }
 
@@ -170,7 +171,10 @@ Path* AStarPathfinder::findPath(Node* fromNode, Node* toNode)
 	mTimeElapsed = gpPerformanceTracker->getElapsedTime("path");
 
 	#ifdef VISUALIZE_PATH
-	mpPath = returnPath;
+	//mpPath = returnPath;
+	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
+	//add path to paths to be visualized
+	gpGameApp->gpPaths.push_back(returnPath);
 	#endif
 
 	return returnPath;

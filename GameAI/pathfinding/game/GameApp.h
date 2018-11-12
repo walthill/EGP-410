@@ -10,6 +10,8 @@ Champlain College
 #include "Game.h"
 #include "InputManager.h"
 #include "PathPool.h"
+#include <vector>
+#include "Path.h"
 
 //forward declarations
 class GraphicsBuffer;
@@ -52,6 +54,7 @@ public:
 	DebugDisplay* mpDebugDisplay;
 
 	int pathfinderIndex;
+	std::vector<Path*> gpPaths;
 
 private:
 	Grid* mpGrid;

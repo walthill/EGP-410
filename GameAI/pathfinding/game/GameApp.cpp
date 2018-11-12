@@ -119,7 +119,7 @@ void GameApp::cleanup()
 	delete mpDebugDisplay;
 	mpDebugDisplay = NULL;
 
-	
+	gpPaths.clear();
 
 //	delete mpInputSystem;
 }

@@ -3,6 +3,7 @@
 #include "GridVisualizer.h"
 #include "Path.h"
 #include "Game.h"
+#include "GameApp.h"
 #include "GraphicsBuffer.h"
 #include "Color.h"
 #include <cassert>
@@ -44,19 +45,31 @@ float lerp(int value, int start, int end)
 
 
 #ifdef VISUALIZE_PATH
-void GridPathfinder::drawVisualization( Grid* pGrid, GraphicsBuffer* pDest )
+void GridPathfinder::drawVisualization(Grid* pGrid, GraphicsBuffer* pDest)
 {
 	//cout << "mpPath:" << mpPath << endl;
 	delete mpVisualizer;
-	
-	mpVisualizer = new GridVisualizer( pGrid );
-	static Color pathColor = Color(255,64,64);
-	static Color visitedColor = GREEN_COLOR;
-	static Color startColor = Color(1,255,128); //green
-	static Color stopColor = Color(1,128,255); //blue
 
-	if( mpPath != NULL )
+	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
+	//set mpPath to the next path to be visualized
+	if (gpGameApp->gpPaths.size() != 0)
 	{
+		delete mpPath;
+		mpPath = gpGameApp->gpPaths[0];
+		gpGameApp->gpPaths.erase(gpGameApp->gpPaths.begin());
+	}
+	
+	
+	mpVisualizer = new GridVisualizer(pGrid);
+	static Color pathColor = Color(255, 64, 64);
+	static Color visitedColor = GREEN_COLOR;
+	static Color startColor = Color(1, 255, 128); //green
+	static Color stopColor = Color(1, 128, 255); //blue
+
+
+	if (mpPath != NULL && mpPath->getNumNodes() > 0)
+	{
+
 		Color currentPathColor = pathColor;
 		unsigned int numNodes = mpPath->getNumNodes();
 
@@ -74,7 +87,7 @@ void GridPathfinder::drawVisualization( Grid* pGrid, GraphicsBuffer* pDest )
 
 		//add beginning and ending color
 		mpVisualizer->addColor(mpPath->peekNode(0)->getId(), startColor);
-		mpVisualizer->addColor( mpPath->peekNode( mpPath->getNumNodes()-1 )->getId(), stopColor );
+		mpVisualizer->addColor(mpPath->peekNode(mpPath->getNumNodes() - 1)->getId(), stopColor);
 	}
 
 	mpVisualizer->draw(*pDest);
