@@ -15,6 +15,7 @@ PathSteering::PathSteering(const UnitID& ownerID, const Vector2D& targetLoc, con
 	setTargetID(targetID);
 	setTargetLoc(targetLoc);
 	hasArrived = false;
+	once = true;
 }
 
 Steering* PathSteering::getSteering()
@@ -29,6 +30,12 @@ Steering* PathSteering::getSteering()
 	
 	if (pathArr.size() > 0 && !hasArrived)
 	{
+		if (once)
+		{
+			gpGameApp->getPathPool()->returnPath(pOwner);
+			once = false;
+		}
+		
 		//calculate steering if target not reached
 		if (nextLocationIndex < pOwner->getNumPathNodes()) 
 		{
@@ -49,7 +56,6 @@ Steering* PathSteering::getSteering()
 		else //arrived at final destination
 		{
 			hasArrived = true;
-			gpGameApp->getPathPool()->returnPath(pOwner);
 			physicsData.acc = 0;
 			physicsData.vel = 0;
 			this->mData = physicsData;
@@ -61,6 +67,7 @@ Steering* PathSteering::getSteering()
 	if (toNodeId != oldToNodeId)
 	{
 		nextLocationIndex = 0;
+		once = true;
 		if (hasArrived)
 		{
 			hasArrived = false;

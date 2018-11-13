@@ -14,6 +14,7 @@ class PathSteering : public Steering
 		bool hasArrived;
 		int oldToNodeId;
 		int toNodeId;
+		bool once;
 	protected:
 		ArriveSteering mArriveSteering;
 
