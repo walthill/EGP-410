@@ -171,7 +171,6 @@ Path* AStarPathfinder::findPath(Node* fromNode, Node* toNode)
 	mTimeElapsed = gpPerformanceTracker->getElapsedTime("path");
 
 	#ifdef VISUALIZE_PATH
-	//mpPath = returnPath;
 	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
 	//add path to paths to be visualized
 	gpGameApp->gpPaths.push_back(returnPath);

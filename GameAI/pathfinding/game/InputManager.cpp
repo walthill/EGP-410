@@ -26,12 +26,22 @@ void InputManager::process()
 			case SDL_MOUSEBUTTONDOWN:
 				if (mEvent.button.button == SDL_BUTTON_LEFT)
 				{
+					//clear pool
+					gpGameApp->getPathPool()->resetPathUse();
+					//clear gpPaths
+					int size = gpGameApp->gpPaths.size();
+					for (int i = 0; i < size; i++)
+					{
+						delete gpGameApp->gpPaths[0];
+						gpGameApp->gpPaths.erase(gpGameApp->gpPaths.begin());
+					}
+
 					x = mEvent.motion.x;
 					y = mEvent.motion.y;
 					Vector2D pos(x, y);
 
 					//loop thru all non player units
-					for (unsigned int i = 1; i < gpGame->getUnitManager()->size()+1; i++)
+					for (unsigned int i = 1; i < gpGame->getUnitManager()->size() + 1; i++)
 						gpGame->getUnitManager()->getUnit(i)->generatePath(pos);
 				}
 				break;
@@ -44,16 +54,19 @@ void InputManager::process()
 				}
 				if (mEvent.key.keysym.sym == SDLK_f)
 				{
+					
 					GameMessage* pMessage = new KeyDownMessage(1);
 					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
 				}
 				if (mEvent.key.keysym.sym == SDLK_d)
 				{
+					
 					GameMessage* pMessage = new KeyDownMessage(2);
 					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
 				}
 				if (mEvent.key.keysym.sym == SDLK_a)
 				{
+					
 					GameMessage* pMessage = new KeyDownMessage(3);
 					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
 				}

@@ -3,6 +3,7 @@
 #include "Connection.h"
 #include "GridGraph.h"
 #include "Game.h"
+#include "GameApp.h"
 #include "MemoryTracker.h"
 #include <PerformanceTracker.h>
 #include <vector>
@@ -157,7 +158,9 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 	mTimeElapsed = gpPerformanceTracker->getElapsedTime("path");
 
 	#ifdef VISUALIZE_PATH
-	mpPath = returnPath;
+	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
+	//add path to paths to be visualized
+	gpGameApp->gpPaths.push_back(returnPath);
 	#endif
 
 	return returnPath;

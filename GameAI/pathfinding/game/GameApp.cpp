@@ -69,6 +69,7 @@ bool GameApp::init()
 	mpGridGraph->init();
 
 	mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
+	//mpPathfinder = 
 	pathfinderIndex = 0;
 
 	//load buffers
@@ -98,6 +99,15 @@ bool GameApp::init()
 
 void GameApp::cleanup()
 {
+
+	int size = gpPaths.size();
+	for (int i = 0; i < size; i++)
+	{
+		delete gpPaths[0];
+		gpPaths.erase(gpPaths.begin());
+	}
+	gpPaths.clear();
+
 	delete mpPathPool;
 	mpPathPool = NULL;
 	
@@ -119,8 +129,7 @@ void GameApp::cleanup()
 	delete mpDebugDisplay;
 	mpDebugDisplay = NULL;
 
-	gpPaths.clear();
-
+	
 //	delete mpInputSystem;
 }
 
@@ -155,6 +164,7 @@ bool GameApp::endLoop()
 {
 	return Game::endLoop();
 }
+
 
 
 

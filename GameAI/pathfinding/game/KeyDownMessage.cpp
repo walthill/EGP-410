@@ -38,6 +38,14 @@ void KeyDownMessage::process()
 		//F Depth First Search
 		if (mKey == 1)
 		{
+			//clear gpPaths
+			int size = gpGameApp->gpPaths.size();
+			for (int i = 0; i < size; i++)
+			{
+				delete gpGameApp->gpPaths[0];
+				gpGameApp->gpPaths.erase(gpGameApp->gpPaths.begin());
+			}
+
 			gpGameApp->getPathPool()->resetPathUse();
 			if (gpGameApp->mpPathfinder != NULL)
 			{
@@ -55,6 +63,14 @@ void KeyDownMessage::process()
 		//D Dijkstra Pathfinding
 		if (mKey == 2)
 		{
+			//clear gpPaths
+			int size = gpGameApp->gpPaths.size();
+			for (int i = 0; i < size; i++)
+			{
+				delete gpGameApp->gpPaths[0];
+				gpGameApp->gpPaths.erase(gpGameApp->gpPaths.begin());
+			}
+
 			gpGameApp->getPathPool()->resetPathUse();
 			if (gpGameApp->mpPathfinder != NULL)
 			{
@@ -72,6 +88,14 @@ void KeyDownMessage::process()
 		//A A* pathfinding
 		if (mKey == 3)
 		{
+			//clear gpPaths
+			int size = gpGameApp->gpPaths.size();
+			for (int i = 0; i < size; i++)
+			{
+				delete gpGameApp->gpPaths[0];
+				gpGameApp->gpPaths.erase(gpGameApp->gpPaths.begin());
+			}
+
 			gpGameApp->getPathPool()->resetPathUse();
 			if (gpGameApp->mpPathfinder != NULL)
 			{
@@ -91,6 +115,14 @@ void KeyDownMessage::process()
 			//delete exisiting units
 			while(gpGameApp->getUnitManager()->size() > 0)
 				gpGameApp->getUnitManager()->deleteRandomUnit();
+
+			//clear gpPaths
+			int size = gpGameApp->gpPaths.size();
+			for (int i = 0; i < size; i++)
+			{
+				delete gpGameApp->gpPaths[0];
+				gpGameApp->gpPaths.erase(gpGameApp->gpPaths.begin());
+			}
 
 			//spawn a new set of units
 			for (int i = 0; i < 10; i++)

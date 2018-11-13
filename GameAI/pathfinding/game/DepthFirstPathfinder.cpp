@@ -4,6 +4,7 @@
 #include "GridGraph.h"
 #include "PathSmooth.h"
 #include "Game.h"
+#include "GameApp.h"
 #include <PerformanceTracker.h>
 #include <list>
 #include <vector>
@@ -105,7 +106,9 @@ Path* DepthFirstPathfinder::findPath( Node* pFrom, Node* pTo )
 	mTimeElapsed = gpPerformanceTracker->getElapsedTime("path");
 
 	#ifdef VISUALIZE_PATH
-	mpPath = pPath;
+	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
+	//add path to paths to be visualized
+	gpGameApp->gpPaths.push_back(pPath);
 	#endif
 	
 	return pPath;

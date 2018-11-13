@@ -48,48 +48,56 @@ float lerp(int value, int start, int end)
 void GridPathfinder::drawVisualization(Grid* pGrid, GraphicsBuffer* pDest)
 {
 	//cout << "mpPath:" << mpPath << endl;
+
 	delete mpVisualizer;
 
 	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
-	//set mpPath to the next path to be visualized
-	if (gpGameApp->gpPaths.size() != 0)
+
+	
+	/*if (gpGameApp->gpPaths.size() != 0)
 	{
 		delete mpPath;
 		mpPath = gpGameApp->gpPaths[0];
 		gpGameApp->gpPaths.erase(gpGameApp->gpPaths.begin());
-	}
+	}*/
 	
 	
 	mpVisualizer = new GridVisualizer(pGrid);
-	static Color pathColor = Color(255, 64, 64);
-	static Color visitedColor = GREEN_COLOR;
-	static Color startColor = Color(1, 255, 128); //green
-	static Color stopColor = Color(1, 128, 255); //blue
+	
 
-
-	if (mpPath != NULL && mpPath->getNumNodes() > 0)
+	for (int i = 0; i < gpGameApp->gpPaths.size(); i++)
 	{
+		//set mpPath to the next path to be visualized
+		mpPath = gpGameApp->gpPaths[i];
 
-		Color currentPathColor = pathColor;
-		unsigned int numNodes = mpPath->getNumNodes();
+		static Color pathColor = Color(255, 64, 64);
+		static Color visitedColor = GREEN_COLOR;
+		static Color startColor = Color(1, 255, 128); //green
+		static Color stopColor = Color(1, 128, 255); //blue
 
-		/*for( int i=1; i<numNodes-1; i++ )
+
+		if (mpPath != NULL && mpPath->getNumNodes() > 0)
 		{
-			mpVisualizer->addColor( mpPath->peekNode(i)->getId(), pathColor );
-		}*/
-		for (unsigned int i = 1; i < numNodes - 1; i++)
-		{
-			mpVisualizer->addColor(mpPath->peekNode(i)->getId(), currentPathColor);
-			float lerpVal = lerp(i, 0, numNodes);
-			currentPathColor = Color((int)(255 * (1.0f - lerpVal)), currentPathColor.getG(), currentPathColor.getB());
+
+			Color currentPathColor = pathColor;
+			unsigned int numNodes = mpPath->getNumNodes();
+
+			for (unsigned int i = 1; i < numNodes - 1; i++)
+			{
+				mpVisualizer->addColor(mpPath->peekNode(i)->getId(), currentPathColor);
+				float lerpVal = lerp(i, 0, numNodes);
+				currentPathColor = Color((int)(255 * (1.0f - lerpVal)), currentPathColor.getG(), currentPathColor.getB());
+			}
+
+
+			//add beginning and ending color
+			mpVisualizer->addColor(mpPath->peekNode(0)->getId(), startColor);
+			mpVisualizer->addColor(mpPath->peekNode(mpPath->getNumNodes() - 1)->getId(), stopColor);
+
 		}
 
-
-		//add beginning and ending color
-		mpVisualizer->addColor(mpPath->peekNode(0)->getId(), startColor);
-		mpVisualizer->addColor(mpPath->peekNode(mpPath->getNumNodes() - 1)->getId(), stopColor);
 	}
-
+	mpPath = NULL;
 	mpVisualizer->draw(*pDest);
 }
 #endif
