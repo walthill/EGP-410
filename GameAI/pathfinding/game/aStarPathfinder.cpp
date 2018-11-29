@@ -3,6 +3,7 @@
 #include "Connection.h"
 #include "GridGraph.h"
 #include "Game.h"
+#include "GameApp.h"
 #include "MemoryTracker.h"
 #include <PerformanceTracker.h>
 #include <vector>
@@ -13,10 +14,18 @@
 AStarPathfinder::AStarPathfinder(Graph* graph)
 	: GridPathfinder(dynamic_cast<GridGraph*>(graph))
 {
-
 	#ifdef VISUALIZE_PATH
-	mpPath = NULL;
+//	mpPath = NULL;
 	#endif
+}
+
+AStarPathfinder::AStarPathfinder()
+	: GridPathfinder(NULL)
+{
+
+#ifdef VISUALIZE_PATH
+//	mpPath = NULL;
+#endif
 }
 
 AStarPathfinder::~AStarPathfinder()
@@ -120,7 +129,7 @@ Path* AStarPathfinder::findPath(Node* fromNode, Node* toNode)
 		}
 
 		mClosedList.push(currentRecord);
-		mVisitedNodes.push_back(currentRecord.node);  //send to list for graphical visualization
+	//	mVisitedNodes.push_back(currentRecord.node);  //send to list for graphical visualization
 
 	}
 
@@ -149,6 +158,11 @@ Path* AStarPathfinder::findPath(Node* fromNode, Node* toNode)
 			returnPath->addNode(path->getAndRemoveNextNode());
 		}
 
+		#ifdef SMOOTH_PATH
+		PathSmooth pathSmoother;
+		returnPath = pathSmoother.smoothPath(returnPath);
+		#endif
+
 		delete path;
 	}
 
@@ -157,9 +171,10 @@ Path* AStarPathfinder::findPath(Node* fromNode, Node* toNode)
 	mTimeElapsed = gpPerformanceTracker->getElapsedTime("path");
 
 	#ifdef VISUALIZE_PATH
-	mpPath = returnPath;
+	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
+	//add path to paths to be visualized
+	gpGameApp->gpPaths.push_back(returnPath);
 	#endif
 
 	return returnPath;
-
 }

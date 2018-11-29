@@ -28,6 +28,21 @@
     <Filter Include="Source Files\pathfinding">
       <UniqueIdentifier>{474fbefa-c012-4187-954c-fdb12b4f06d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component Steering">
+      <UniqueIdentifier>{0461642c-8292-495e-aa3a-a49560fa873d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component Steering\Header Files">
+      <UniqueIdentifier>{664ab9de-e211-4c38-bfd7-12efef064ec1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component Steering\Source Files">
+      <UniqueIdentifier>{403e616d-510c-4dec-ae45-877d901dfd88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component Steering\Header Files\steering">
+      <UniqueIdentifier>{17a59d3a-1c26-4cf7-af78-d81dec5f6585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component Steering\Source Files\steering">
+      <UniqueIdentifier>{4c3fc20b-452e-4e8a-8f35-1d2a5e1c12df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\Game.h">
@@ -84,6 +99,12 @@
     <ClInclude Include="GridPathfinder.h">
       <Filter>Header Files\pathfinding</Filter>
     </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyDownMessage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\common\SpriteManager.h">
       <Filter>Common\Header Files</Filter>
     </ClInclude>
@@ -134,6 +155,57 @@
     </ClInclude>
     <ClInclude Include="..\common\MouseEvent.h">
       <Filter>Common\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="component steering\Component.h">
+      <Filter>Component Steering\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="component steering\ComponentManager.h">
+      <Filter>Component Steering\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="component steering\PositionComponent.h">
+      <Filter>Component Steering\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="component steering\SteeringComponent.h">
+      <Filter>Component Steering\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="component steering\Unit.h">
+      <Filter>Component Steering\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="component steering\UnitManager.h">
+      <Filter>Component Steering\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="component steering\PhysicsComponent.h">
+      <Filter>Component Steering\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="component steering\Steering.h">
+      <Filter>Component Steering\Header Files\steering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\Defines.h">
+      <Filter>Common\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="component steering\AlignSteering.h">
+      <Filter>Component Steering\Header Files\steering</Filter>
+    </ClInclude>
+    <ClInclude Include="component steering\ArriveFace.h">
+      <Filter>Component Steering\Header Files\steering</Filter>
+    </ClInclude>
+    <ClInclude Include="component steering\ArriveSteering.h">
+      <Filter>Component Steering\Header Files\steering</Filter>
+    </ClInclude>
+    <ClInclude Include="component steering\FaceSteering.h">
+      <Filter>Component Steering\Header Files\steering</Filter>
+    </ClInclude>
+    <ClInclude Include="component steering\SeekSteering.h">
+      <Filter>Component Steering\Header Files\steering</Filter>
+    </ClInclude>
+    <ClInclude Include="PathSteering.h">
+      <Filter>Header Files\pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="PathPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PathSmooth.h">
+      <Filter>Header Files\pathfinding</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +278,12 @@
     <ClCompile Include="PathfindingDebugContent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyDownMessage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\common\Color.cpp">
       <Filter>Common\Source Files</Filter>
     </ClCompile>
@@ -235,6 +313,54 @@
     </ClCompile>
     <ClCompile Include="..\common\MouseEvent.cpp">
       <Filter>Common\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="component steering\Component.cpp">
+      <Filter>Component Steering\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="component steering\ComponentManager.cpp">
+      <Filter>Component Steering\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="component steering\PositionComponent.cpp">
+      <Filter>Component Steering\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="component steering\SteeringComponent.cpp">
+      <Filter>Component Steering\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="component steering\Unit.cpp">
+      <Filter>Component Steering\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="component steering\UnitManager.cpp">
+      <Filter>Component Steering\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="component steering\PhysicsComponent.cpp">
+      <Filter>Component Steering\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="component steering\Steering.cpp">
+      <Filter>Component Steering\Source Files\steering</Filter>
+    </ClCompile>
+    <ClCompile Include="component steering\AlignSteering.cpp">
+      <Filter>Component Steering\Source Files\steering</Filter>
+    </ClCompile>
+    <ClCompile Include="component steering\ArriveFace.cpp">
+      <Filter>Component Steering\Source Files\steering</Filter>
+    </ClCompile>
+    <ClCompile Include="component steering\ArriveSteering.cpp">
+      <Filter>Component Steering\Source Files\steering</Filter>
+    </ClCompile>
+    <ClCompile Include="component steering\FaceSteering.cpp">
+      <Filter>Component Steering\Source Files\steering</Filter>
+    </ClCompile>
+    <ClCompile Include="component steering\SeekSteering.cpp">
+      <Filter>Component Steering\Source Files\steering</Filter>
+    </ClCompile>
+    <ClCompile Include="PathSteering.cpp">
+      <Filter>Source Files\pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="PathPool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PathSmooth.cpp">
+      <Filter>Source Files\pathfinding</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,11 +3,13 @@
 #include "Connection.h"
 #include "GridGraph.h"
 #include "Game.h"
+#include "GameApp.h"
 #include "MemoryTracker.h"
 #include <PerformanceTracker.h>
 #include <vector>
 #include <algorithm>
 #include "PriorityQueue.h"
+#include "PathSmooth.h"
 
 
 DijkstraPathfinder::DijkstraPathfinder(Graph* graph)
@@ -16,6 +18,14 @@ DijkstraPathfinder::DijkstraPathfinder(Graph* graph)
 	#ifdef VISUALIZE_PATH
 	mpPath = NULL;
 	#endif
+}
+
+DijkstraPathfinder::DijkstraPathfinder()
+	: GridPathfinder(NULL)
+{
+#ifdef VISUALIZE_PATH
+	mpPath = NULL;
+#endif
 }
 
 DijkstraPathfinder::~DijkstraPathfinder()
@@ -136,6 +146,11 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 			returnPath->addNode(path->getAndRemoveNextNode());
 		}
 
+		#ifdef SMOOTH_PATH
+		PathSmooth pathSmoother;
+		returnPath = pathSmoother.smoothPath(returnPath);
+		#endif
+
 		delete path;
 	}
 
@@ -143,7 +158,9 @@ Path* DijkstraPathfinder::findPath(Node* fromNode, Node* toNode)
 	mTimeElapsed = gpPerformanceTracker->getElapsedTime("path");
 
 	#ifdef VISUALIZE_PATH
-	mpPath = returnPath;
+	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
+	//add path to paths to be visualized
+	gpGameApp->gpPaths.push_back(returnPath);
 	#endif
 
 	return returnPath;

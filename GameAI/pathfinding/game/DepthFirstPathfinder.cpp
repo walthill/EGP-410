@@ -2,7 +2,9 @@
 #include "Path.h"
 #include "Connection.h"
 #include "GridGraph.h"
+#include "PathSmooth.h"
 #include "Game.h"
+#include "GameApp.h"
 #include <PerformanceTracker.h>
 #include <list>
 #include <vector>
@@ -19,10 +21,22 @@ DepthFirstPathfinder::DepthFirstPathfinder( Graph* pGraph )
 
 }
 
+DepthFirstPathfinder::DepthFirstPathfinder()
+	:GridPathfinder(NULL)
+{
+#ifdef VISUALIZE_PATH
+	mpPath = NULL;
+#endif
+
+}
+
 DepthFirstPathfinder::~DepthFirstPathfinder()
 {
 	#ifdef VISUALIZE_PATH
-	delete mpPath;
+	if (mpPath != NULL) 
+	{
+		delete mpPath;
+	}
 	#endif
 }
 
@@ -82,12 +96,19 @@ Path* DepthFirstPathfinder::findPath( Node* pFrom, Node* pTo )
 			}
 		}
 	}
+
+	#ifdef SMOOTH_PATH
+	PathSmooth pathSmoother;
+	pPath = pathSmoother.smoothPath(pPath);
+	#endif
 	
 	gpPerformanceTracker->stopTracking("path");
 	mTimeElapsed = gpPerformanceTracker->getElapsedTime("path");
 
 	#ifdef VISUALIZE_PATH
-	mpPath = pPath;
+	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
+	//add path to paths to be visualized
+	gpGameApp->gpPaths.push_back(pPath);
 	#endif
 	
 	return pPath;

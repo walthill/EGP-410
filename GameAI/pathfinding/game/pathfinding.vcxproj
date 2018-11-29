@@ -85,6 +85,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\common\Color.h" />
+    <ClInclude Include="..\common\Defines.h" />
     <ClInclude Include="..\common\Event.h" />
     <ClInclude Include="..\common\EventListener.h" />
     <ClInclude Include="..\common\EventSystem.h" />
@@ -101,6 +102,19 @@
     <ClInclude Include="..\common\Sprite.h" />
     <ClInclude Include="..\common\SpriteManager.h" />
     <ClInclude Include="AStarPathfinder.h" />
+    <ClInclude Include="component steering\AlignSteering.h" />
+    <ClInclude Include="component steering\ArriveFace.h" />
+    <ClInclude Include="component steering\ArriveSteering.h" />
+    <ClInclude Include="component steering\Component.h" />
+    <ClInclude Include="component steering\ComponentManager.h" />
+    <ClInclude Include="component steering\FaceSteering.h" />
+    <ClInclude Include="component steering\PhysicsComponent.h" />
+    <ClInclude Include="component steering\PositionComponent.h" />
+    <ClInclude Include="component steering\SeekSteering.h" />
+    <ClInclude Include="component steering\Steering.h" />
+    <ClInclude Include="component steering\SteeringComponent.h" />
+    <ClInclude Include="component steering\Unit.h" />
+    <ClInclude Include="component steering\UnitManager.h" />
     <ClInclude Include="Connection.h" />
     <ClInclude Include="DebugContent.h" />
     <ClInclude Include="DebugDisplay.h" />
@@ -112,11 +126,16 @@
     <ClInclude Include="Graph.h" />
     <ClInclude Include="GridGraph.h" />
     <ClInclude Include="GridPathfinder.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="KeyDownMessage.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="NodeRecord.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="PathfindingDebugContent.h" />
+    <ClInclude Include="PathPool.h" />
+    <ClInclude Include="PathSmooth.h" />
+    <ClInclude Include="PathSteering.h" />
     <ClInclude Include="PathToMessage.h" />
     <ClInclude Include="PriorityQueue.h" />
   </ItemGroup>
@@ -138,6 +157,19 @@
     <ClCompile Include="..\common\Sprite.cpp" />
     <ClCompile Include="..\common\SpriteManager.cpp" />
     <ClCompile Include="AStarPathfinder.cpp" />
+    <ClCompile Include="component steering\AlignSteering.cpp" />
+    <ClCompile Include="component steering\ArriveFace.cpp" />
+    <ClCompile Include="component steering\ArriveSteering.cpp" />
+    <ClCompile Include="component steering\Component.cpp" />
+    <ClCompile Include="component steering\ComponentManager.cpp" />
+    <ClCompile Include="component steering\FaceSteering.cpp" />
+    <ClCompile Include="component steering\PhysicsComponent.cpp" />
+    <ClCompile Include="component steering\PositionComponent.cpp" />
+    <ClCompile Include="component steering\SeekSteering.cpp" />
+    <ClCompile Include="component steering\Steering.cpp" />
+    <ClCompile Include="component steering\SteeringComponent.cpp" />
+    <ClCompile Include="component steering\Unit.cpp" />
+    <ClCompile Include="component steering\UnitManager.cpp" />
     <ClCompile Include="Connection.cpp" />
     <ClCompile Include="DebugDisplay.cpp" />
     <ClCompile Include="DepthFirstPathfinder.cpp" />
@@ -148,11 +180,16 @@
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GridGraph.cpp" />
     <ClCompile Include="GridPathfinder.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="KeyDownMessage.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PathfindingDebugContent.cpp" />
+    <ClCompile Include="PathPool.cpp" />
+    <ClCompile Include="PathSmooth.cpp" />
+    <ClCompile Include="PathSteering.cpp" />
     <ClCompile Include="PathToMessage.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
