@@ -60,6 +60,11 @@ void KeyDownMessage::process()
 		}
 		else if (mKey == W_KEY)
 		{
+			PhysicsData data;
+			data.vel = 0;
+			data.acc = 0;
+			gpGameApp->getUnitManager()->getPlayerUnit()->getPhysicsComponent()->setData(data);
+
 			Vector2D playerPos = gpGameApp->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition();
 			Vector2D farthestUp(playerPos.getX(), 0.0f);
 
@@ -75,6 +80,11 @@ void KeyDownMessage::process()
 		}
 		else if (mKey == A_KEY)
 		{
+			PhysicsData data;
+			data.vel = 0;
+			data.acc = 0;
+			gpGameApp->getUnitManager()->getPlayerUnit()->getPhysicsComponent()->setData(data);
+
 			Vector2D playerPos = gpGameApp->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition();
 			Vector2D farthestLeft(0.0f, playerPos.getY());
 
@@ -90,6 +100,11 @@ void KeyDownMessage::process()
 		}
 		else if (mKey == S_KEY)
 		{
+			PhysicsData data;
+			data.vel = 0;
+			data.acc = 0;
+			gpGameApp->getUnitManager()->getPlayerUnit()->getPhysicsComponent()->setData(data);
+
 			Vector2D playerPos = gpGameApp->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition();
 			Vector2D farthestDown(playerPos.getX(), 767.0f);
 
@@ -105,6 +120,11 @@ void KeyDownMessage::process()
 		}
 		else if (mKey == D_KEY) //GO RIGHT
 		{
+			PhysicsData data;
+			data.vel = 0;
+			data.acc = 0;
+			gpGameApp->getUnitManager()->getPlayerUnit()->getPhysicsComponent()->setData(data);
+
 			Vector2D playerPos = gpGameApp->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition();
 			
 			Vector2D farthestRight(1023.0f, playerPos.getY());

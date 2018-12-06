@@ -93,12 +93,12 @@ bool GameApp::init()
 
 
 	Unit* pUnit = mpUnitManager->createPlayerUnit(*pArrowSprite);
-	pUnit->setShowTarget(true);
+	pUnit->setShowTarget(false);
 	pUnit->setSteering(Steering::PATH_STEER, ZERO_VECTOR2D);
 
 	//debug display
 	pContent = new PathfindingDebugContent( mpPathfinder );
-	pContent->setPathfindingType(DEPTH_FIRST_PATH);
+	pContent->setPathfindingType(A_STAR_PATH);
 	mpDebugDisplay = new DebugDisplay( Vector2D(0,12), pContent );
 
 
