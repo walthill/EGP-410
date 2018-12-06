@@ -17,6 +17,8 @@
 #include "GridVisualizer.h"
 #include "DebugDisplay.h"
 #include "PathfindingDebugContent.h"
+#include "../game/AStarPathfinder.h"
+#include "../game/component steering/UnitManager.h"
 
 #include "DepthFirstPathfinder.h"
 
@@ -67,10 +69,10 @@ bool GameApp::init()
 	mpGridGraph = new GridGraph(mpGrid);
 	//init the nodes and connections
 	mpGridGraph->init();
-
-	mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
+//	mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
+	mpPathfinder = new AStarPathfinder(mpGridGraph);
 	//mpPathfinder = 
-	pathfinderIndex = 0;
+	pathfinderIndex = 2;
 
 	//load buffers
 	mpGraphicsBufferManager->loadBuffer(mBackgroundBufferID, "wallpaper.bmp");
@@ -81,6 +83,18 @@ bool GameApp::init()
 	{
 		mpSpriteManager->createAndManageSprite( BACKGROUND_SPRITE_ID, pBackGroundBuffer, 0, 0, (float)pBackGroundBuffer->getWidth(), (float)pBackGroundBuffer->getHeight() );
 	}
+
+	GraphicsBuffer* pPlayerBuffer = mpGraphicsBufferManager->getBuffer(mPlayerIconBufferID);
+	Sprite* pArrowSprite = NULL;
+	if (pPlayerBuffer != NULL)
+	{
+		pArrowSprite = mpSpriteManager->createAndManageSprite(PLAYER_ICON_SPRITE_ID, pPlayerBuffer, 0, 0, (float)pPlayerBuffer->getWidth(), (float)pPlayerBuffer->getHeight());
+	}
+
+
+	Unit* pUnit = mpUnitManager->createPlayerUnit(*pArrowSprite);
+	pUnit->setShowTarget(true);
+	pUnit->setSteering(Steering::PATH_STEER, ZERO_VECTOR2D);
 
 	//debug display
 	pContent = new PathfindingDebugContent( mpPathfinder );

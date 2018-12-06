@@ -23,6 +23,29 @@ KeyDownMessage::~KeyDownMessage()
 {
 }
 
+void KeyDownMessage::initializePlayerPathing(Vector2D pos)
+{
+	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
+	//clear pool
+	gpGameApp->getPathPool()->resetPathUse();
+	//clear gpPaths
+	int size = gpGameApp->gpPaths.size();
+	for (int i = 0; i < size; i++)
+	{
+		delete gpGameApp->gpPaths[0];
+		gpGameApp->gpPaths.erase(gpGameApp->gpPaths.begin());
+	}
+
+	//x = mEvent.motion.x;
+	//y = mEvent.motion.y;
+//	Vector2D pos(0, 768 * 0.5); // middle left
+
+	cout << "player Pathfinding" << endl;
+	//pathfind for player player units
+	gpGame->getUnitManager()->getPlayerUnit()->generatePath(pos);
+
+}
+
 void KeyDownMessage::process()
 {
 	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
@@ -31,86 +54,73 @@ void KeyDownMessage::process()
 	if (gpGameApp != NULL)
 	{
 		//exit game
-		if (mKey == 0)
+		if (mKey == ESCAPE_KEY)
 		{
 			gpGame->markForExit();
 		}
-		//F Depth First Search
-		if (mKey == 1)
+		else if (mKey == W_KEY)
 		{
-			//clear gpPaths
-			int size = gpGameApp->gpPaths.size();
-			for (int i = 0; i < size; i++)
-			{
-				delete gpGameApp->gpPaths[0];
-				gpGameApp->gpPaths.erase(gpGameApp->gpPaths.begin());
-			}
+			Vector2D playerPos = gpGameApp->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition();
+			Vector2D farthestUp(playerPos.getX(), 0.0f);
 
-			gpGameApp->getPathPool()->resetPathUse();
-			if (gpGameApp->mpPathfinder != NULL)
-			{
-				delete gpGameApp->mpPathfinder;
-				delete gpGameApp->mpDebugDisplay;
-			}
+			bool test = clearPathRaycast(playerPos, farthestUp);
 
-			gpGameApp->mpPathfinder = new DepthFirstPathfinder(gpGameApp->mpGridGraph);
-			gpGameApp->pathfinderIndex = 0;
-			gpGameApp->pContent = new PathfindingDebugContent(gpGameApp->mpPathfinder);
-			gpGameApp->pContent->setPathfindingType(DEPTH_FIRST_PATH);
-			gpGameApp->mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), gpGameApp->pContent);
-			cout << "DEPTH FIRST" << endl;
+			cout << test << endl;
+			//TODO: raycast for position data to send to pathfinder 
+
+			//768 is max screen height, width - 1024
+			//toY - raycast right until blocking path if none, then path to screen bounds
+			if (test)
+				initializePlayerPathing(farthestUp);
 		}
-		//D Dijkstra Pathfinding
-		if (mKey == 2)
+		else if (mKey == A_KEY)
 		{
-			//clear gpPaths
-			int size = gpGameApp->gpPaths.size();
-			for (int i = 0; i < size; i++)
-			{
-				delete gpGameApp->gpPaths[0];
-				gpGameApp->gpPaths.erase(gpGameApp->gpPaths.begin());
-			}
+			Vector2D playerPos = gpGameApp->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition();
+			Vector2D farthestLeft(0.0f, playerPos.getY());
 
-			gpGameApp->getPathPool()->resetPathUse();
-			if (gpGameApp->mpPathfinder != NULL)
-			{
-				delete gpGameApp->mpPathfinder;
-				delete gpGameApp->mpDebugDisplay;
-			}
+			bool test = clearPathRaycast(playerPos, farthestLeft);
 
-			gpGameApp->mpPathfinder = new DijkstraPathfinder(gpGameApp->mpGridGraph);
-			gpGameApp->pathfinderIndex = 1;
-			gpGameApp->pContent = new PathfindingDebugContent(gpGameApp->mpPathfinder);
-			gpGameApp->pContent->setPathfindingType(DIJSKTRA_PATH);
-			gpGameApp->mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), gpGameApp->pContent);
-			cout << "DIJKSTRA" << endl;
+			cout << test << endl;
+			//TODO: raycast for position data to send to pathfinder 
+
+			//768 is max screen height, width - 1024
+			//toY - raycast right until blocking path if none, then path to screen bounds
+			if (test)
+				initializePlayerPathing(farthestLeft);
 		}
-		//A A* pathfinding
-		if (mKey == 3)
+		else if (mKey == S_KEY)
 		{
-			//clear gpPaths
-			int size = gpGameApp->gpPaths.size();
-			for (int i = 0; i < size; i++)
-			{
-				delete gpGameApp->gpPaths[0];
-				gpGameApp->gpPaths.erase(gpGameApp->gpPaths.begin());
-			}
+			Vector2D playerPos = gpGameApp->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition();
+			Vector2D farthestDown(playerPos.getX(), 767.0f);
 
-			gpGameApp->getPathPool()->resetPathUse();
-			if (gpGameApp->mpPathfinder != NULL)
-			{
-				delete gpGameApp->mpPathfinder;
-				delete gpGameApp->mpDebugDisplay;
-			}
+			bool test = clearPathRaycast(playerPos, farthestDown);
 
-			gpGameApp->mpPathfinder = new AStarPathfinder(gpGameApp->mpGridGraph);
-			gpGameApp->pathfinderIndex = 2;
-			gpGameApp->pContent = new PathfindingDebugContent(gpGameApp->mpPathfinder);
-			gpGameApp->pContent->setPathfindingType(A_STAR_PATH);
-			gpGameApp->mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), gpGameApp->pContent);
-			cout << "A STAR" << endl;
+			cout << test << endl;
+			//TODO: raycast for position data to send to pathfinder 
+
+			//768 is max screen height, width - 1024
+			//toY - raycast right until blocking path if none, then path to screen bounds
+			if (test)
+				initializePlayerPathing(farthestDown);
 		}
-		if (mKey == 4)
+		else if (mKey == D_KEY) //GO RIGHT
+		{
+			Vector2D playerPos = gpGameApp->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition();
+			
+			Vector2D farthestRight(1023.0f, playerPos.getY());
+
+			bool test = clearPathRaycast(playerPos, farthestRight);
+			
+			cout << test << endl;
+			//TODO: raycast for position data to send to pathfinder 
+
+			//768 is max screen height, width - 1024
+			//toY - raycast right until blocking path if none, then path to screen bounds
+			if(test)
+				initializePlayerPathing(farthestRight);
+		}
+
+		/*if (mKey == 4)
 		{
 			//delete exisiting units
 			while(gpGameApp->getUnitManager()->size() > 0)
@@ -156,6 +166,46 @@ void KeyDownMessage::process()
 					}
 				}
 			}
-		}
+		}*/
 	}
+
+	
+}
+
+bool KeyDownMessage::clearPathRaycast(Vector2D fromPos, Vector2D toPos)
+{
+	GameApp* pGameApp = dynamic_cast<GameApp*>(gpGame);
+	float previousX, previousY;
+	Vector2D direction;
+	bool result = true;
+
+	//fromPos = pGameApp->getGrid()->getULCornerOfSquare(startCastNode->getId());
+	//toPos = pGameApp->getGrid()->getULCornerOfSquare(nextNode->getId());
+
+	direction = toPos - fromPos;
+
+	float posX = fromPos.getX();
+	float posY = fromPos.getY();
+
+	for (size_t i = 0; i < 100 /*mRAY_ITERATORS*/; i++)
+	{
+		bool pathBlocked = pGameApp->getGrid()->getValueAtPixelXY((int)posX, (int)posY) == BLOCKING_VALUE;
+
+		if (pathBlocked)
+		{
+			result = false;
+			break;
+		}
+		else
+		{
+			previousX = posX;
+			previousY = posY;
+		}
+
+		//shoot raycast
+		posX = posX + (direction.getX() / 100);
+		posY = posY + (direction.getY() / 100);
+	}
+
+	return result;
 }

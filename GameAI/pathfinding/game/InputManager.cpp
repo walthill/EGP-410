@@ -25,8 +25,8 @@ void InputManager::process()
 		{
 			case SDL_MOUSEBUTTONDOWN:
 				if (mEvent.button.button == SDL_BUTTON_LEFT)
-				{
-					//clear pool
+				{	
+	/*				//clear pool
 					gpGameApp->getPathPool()->resetPathUse();
 					//clear gpPaths
 					int size = gpGameApp->gpPaths.size();
@@ -38,41 +38,41 @@ void InputManager::process()
 
 					x = mEvent.motion.x;
 					y = mEvent.motion.y;
-					Vector2D pos(x, y);
+					Vector2D pos(0, 768 * 0.5); // middle left
 
-					//loop thru all non player units
-					for (unsigned int i = 1; i < gpGame->getUnitManager()->size() + 1; i++)
-						gpGame->getUnitManager()->getUnit(i)->generatePath(pos);
-				}
+					cout << "player Pathfinding" << endl;
+					//pathfind for player player units
+					gpGame->getUnitManager()->getPlayerUnit()->generatePath(pos);
+*/				}
 				break;
 
 			case SDL_KEYDOWN:
 				if (mEvent.key.keysym.sym == SDLK_ESCAPE)
 				{
-					GameMessage* pMessage = new KeyDownMessage(0);
+					GameMessage* pMessage = new KeyDownMessage(ESCAPE_KEY);
 					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
 				}
-				if (mEvent.key.keysym.sym == SDLK_f)
+				if (mEvent.key.keysym.sym == SDLK_w)
 				{
 					
-					GameMessage* pMessage = new KeyDownMessage(1);
-					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
-				}
-				if (mEvent.key.keysym.sym == SDLK_d)
-				{
-					
-					GameMessage* pMessage = new KeyDownMessage(2);
+					GameMessage* pMessage = new KeyDownMessage(W_KEY);
 					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
 				}
 				if (mEvent.key.keysym.sym == SDLK_a)
 				{
 					
-					GameMessage* pMessage = new KeyDownMessage(3);
+					GameMessage* pMessage = new KeyDownMessage(A_KEY);
 					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
 				}
 				if (mEvent.key.keysym.sym == SDLK_s)
 				{
-					GameMessage* pMessage = new KeyDownMessage(4);
+					
+					GameMessage* pMessage = new KeyDownMessage(S_KEY);
+					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
+				}
+				if (mEvent.key.keysym.sym == SDLK_d)
+				{
+					GameMessage* pMessage = new KeyDownMessage(D_KEY);
 					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
 				}
 			break;

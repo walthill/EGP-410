@@ -3,6 +3,12 @@
 
 class GameApp;
 
+enum KeyEvents
+{
+	INVALID_KEY = -1,
+	W_KEY, A_KEY, S_KEY, D_KEY, ESCAPE_KEY
+};
+
 class InputManager
 {
 public:
