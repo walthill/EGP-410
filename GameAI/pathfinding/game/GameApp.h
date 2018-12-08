@@ -46,6 +46,7 @@ public:
 	inline Grid* getGrid() { return mpGrid; };
 	inline GridGraph* getGridGraph() { return mpGridGraph; };
 	inline PathPool* getPathPool() { return mpPathPool; };
+	inline InputManager* getInputManager() { return mpInput; };
 
 	GridPathfinder* mpPathfinder;
 	GridGraph* mpGridGraph;

@@ -10,7 +10,7 @@ public:
 
 	void process();
 	void initializePlayerPathing(Vector2D pos);
-	bool clearPathRaycast(Vector2D fromPos, Vector2D toPos);
+	bool clearPathRaycast(Vector2D fromPos, Vector2D toPos, Vector2D& deadEndPos);
 
 
 private:

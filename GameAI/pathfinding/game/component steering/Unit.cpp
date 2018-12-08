@@ -117,12 +117,20 @@ void Unit::setPath(Path path)
 		for (int i = pathData.numNodes; i > 0; i--)
 		{
 			pathData.mPathPositions[i-1] = gpGameApp->getGrid()->getULCornerOfSquare(pathData.mPath.peekNode(i-1)->getId());
+		
+			float x = pathData.mPathPositions[i - 1].getX()+16;
+			float y = pathData.mPathPositions[i - 1].getY()+16;
+
+			pathData.mPathPositions[i - 1].setX(x);
+			pathData.mPathPositions[i - 1].setY(y);
 		}
 	}
 
-	Vector2D toVector = pathData.mPathPositions[pathData.mPathPositions.size() - 1];
-	pathData.toNodeId = gpGameApp->getGrid()->getSquareIndexFromPixelXY(toVector.getX(), toVector.getY());
-
+	if (pathData.mPathPositions.size() > 0)
+	{
+		Vector2D toVector = pathData.mPathPositions[pathData.mPathPositions.size() - 1];
+		pathData.toNodeId = gpGameApp->getGrid()->getSquareIndexFromPixelXY(toVector.getX(), toVector.getY());
+	}
 }
 
 std::vector<Vector2D> Unit::getPathInScreenSpace()

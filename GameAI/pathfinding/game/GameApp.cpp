@@ -91,10 +91,36 @@ bool GameApp::init()
 		pArrowSprite = mpSpriteManager->createAndManageSprite(PLAYER_ICON_SPRITE_ID, pPlayerBuffer, 0, 0, (float)pPlayerBuffer->getWidth(), (float)pPlayerBuffer->getHeight());
 	}
 
+	//Initializing player 
 
 	Unit* pUnit = mpUnitManager->createPlayerUnit(*pArrowSprite);
 	pUnit->setShowTarget(false);
 	pUnit->setSteering(Steering::PATH_STEER, ZERO_VECTOR2D);
+
+	float x = pUnit->getPositionComponent()->getPosition().getX();
+	float y = pUnit->getPositionComponent()->getPosition().getY();
+
+	//check if unit is within or adjacent to a wall tile, randomize its position until it is not
+	int squareIndex = mpGrid->getSquareIndexFromPixelXY(x, y);
+	std::vector<int> adjacencies = mpGrid->getAdjacentIndices(squareIndex);
+
+	for (unsigned int adjIndex = 0; adjIndex < adjacencies.size(); adjIndex++)
+	{
+		while (mpGrid->getValueAtIndex(adjacencies[adjIndex]) == BLOCKING_VALUE)
+		{
+			cout << "WALL" << endl;
+			pUnit->randomizePosition();
+
+			x = pUnit->getPositionComponent()->getPosition().getX();
+			y = pUnit->getPositionComponent()->getPosition().getY();
+
+			squareIndex = mpGrid->getSquareIndexFromPixelXY(x, y);
+
+			adjacencies = mpGrid->getAdjacentIndices(squareIndex);
+			adjIndex = 0;
+		}
+	}
+	
 
 	//debug display
 	pContent = new PathfindingDebugContent( mpPathfinder );

@@ -13,6 +13,7 @@ class InputManager
 {
 public:
 
+	KeyEvents currentEvent = INVALID_KEY;
 	InputManager();
 	~InputManager();
 
@@ -24,4 +25,3 @@ private:
 	int iNum;
 	SDL_Event mEvent;
 };
-
