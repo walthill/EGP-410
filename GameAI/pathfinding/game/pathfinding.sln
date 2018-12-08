@@ -7,6 +7,59 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pathfinding", "pathfinding.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DeanLib", "..\..\..\DeanLib\DeanLib.vcxproj", "{DB900E08-5331-46D6-B450-6775A2C7C856}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "component steering", "component steering", "{FAC4FA4A-56F7-452D-B366-8B3A9CA521C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "state machine", "state machine", "{558415FA-F7BF-4322-A2F4-8092B4D68EE1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Header Files", "Header Files", "{E5E9499D-75FC-4B0A-85B3-48F26EC817C5}"
+	ProjectSection(SolutionItems) = preProject
+		component steering\AlignSteering.h = component steering\AlignSteering.h
+		component steering\ArriveFace.h = component steering\ArriveFace.h
+		component steering\ArriveSteering.h = component steering\ArriveSteering.h
+		component steering\Component.h = component steering\Component.h
+		component steering\ComponentManager.h = component steering\ComponentManager.h
+		component steering\ComponentSteeringDefines.h = component steering\ComponentSteeringDefines.h
+		component steering\FaceSteering.h = component steering\FaceSteering.h
+		component steering\PhysicsComponent.h = component steering\PhysicsComponent.h
+		component steering\PositionComponent.h = component steering\PositionComponent.h
+		component steering\SeekSteering.h = component steering\SeekSteering.h
+		component steering\Steering.h = component steering\Steering.h
+		component steering\SteeringComponent.h = component steering\SteeringComponent.h
+		component steering\Unit.h = component steering\Unit.h
+		component steering\UnitManager.h = component steering\UnitManager.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source Files", "Source Files", "{87942AED-AC81-4E00-B0CD-B07D933E4153}"
+	ProjectSection(SolutionItems) = preProject
+		component steering\AlignSteering.cpp = component steering\AlignSteering.cpp
+		component steering\ArriveFace.cpp = component steering\ArriveFace.cpp
+		component steering\ArriveSteering.cpp = component steering\ArriveSteering.cpp
+		component steering\Component.cpp = component steering\Component.cpp
+		component steering\ComponentManager.cpp = component steering\ComponentManager.cpp
+		component steering\FaceSteering.cpp = component steering\FaceSteering.cpp
+		component steering\PhysicsComponent.cpp = component steering\PhysicsComponent.cpp
+		component steering\PositionComponent.cpp = component steering\PositionComponent.cpp
+		component steering\SeekSteering.cpp = component steering\SeekSteering.cpp
+		component steering\Steering.cpp = component steering\Steering.cpp
+		component steering\SteeringComponent.cpp = component steering\SteeringComponent.cpp
+		component steering\Unit.cpp = component steering\Unit.cpp
+		component steering\UnitManager.cpp = component steering\UnitManager.cpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Header Files", "Header Files", "{866CCA71-CE28-482A-A2F7-A411B0B530CE}"
+	ProjectSection(SolutionItems) = preProject
+		state machine\BaseAction.h = state machine\BaseAction.h
+		state machine\DecisionTreeHelpers.h = state machine\DecisionTreeHelpers.h
+		state machine\StateMachine.h = state machine\StateMachine.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source Files", "Source Files", "{43DD03C3-D6AF-4423-BCB2-2392F49FFB0D}"
+	ProjectSection(SolutionItems) = preProject
+		state machine\BaseAction.cpp = state machine\BaseAction.cpp
+		state machine\DecisionTreeHelpers.cpp = state machine\DecisionTreeHelpers.cpp
+		state machine\StateMachine.cpp = state machine\StateMachine.cpp
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -32,6 +85,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E5E9499D-75FC-4B0A-85B3-48F26EC817C5} = {FAC4FA4A-56F7-452D-B366-8B3A9CA521C8}
+		{87942AED-AC81-4E00-B0CD-B07D933E4153} = {FAC4FA4A-56F7-452D-B366-8B3A9CA521C8}
+		{866CCA71-CE28-482A-A2F7-A411B0B530CE} = {558415FA-F7BF-4322-A2F4-8092B4D68EE1}
+		{43DD03C3-D6AF-4423-BCB2-2392F49FFB0D} = {558415FA-F7BF-4322-A2F4-8092B4D68EE1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7542C8F4-6AE4-4B90-A1DF-145656B6AF6B}
