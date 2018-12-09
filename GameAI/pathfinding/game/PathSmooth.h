@@ -7,7 +7,7 @@ class Path;
 class Node;
 
 //comment this out to remove path smoothing
-#define SMOOTH_PATH 117
+//#define SMOOTH_PATH 117
 
 class PathSmooth : public Trackable
 {
