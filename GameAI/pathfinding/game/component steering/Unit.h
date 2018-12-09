@@ -11,6 +11,7 @@
 #include "Sprite.h"
 #include "Steering.h"
 #include "../game/Path.h"
+#include "../game/UnitStateMachine.h"
 //#include "CircularQueue.h"
 //#include "Transaction.h"
 //#include "TransactionProcessor.h"
@@ -47,6 +48,8 @@ public:
 	std::vector<Vector2D> getPathInScreenSpace();
 	int getNumPathNodes() { return pathData.numNodes; };
 	int getDestinationNode();
+	
+	UnitStateMachine* mUnitStateMachine;
 
 	void setSteering(Steering::SteeringType type, Vector2D targetLoc = ZERO_VECTOR2D, UnitID targetUnitID = INVALID_UNIT_ID);
 
@@ -62,6 +65,8 @@ private:
 	float mMaxRotAcc;
 	float mMaxRotVel;
 	bool mShowTarget;
+
+	
 
 	struct PathData
 	{

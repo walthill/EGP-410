@@ -13,6 +13,12 @@
 #include "../game/Node.h"
 #include "../common/Grid.h"
 #include "../game/GameApp.h"
+#include "../game/IdleState.h"
+#include "../game/WanderState.h"
+#include "../game/ChaseState.h"
+#include"../game/FleeState.h"
+#include "../game/state machine/StateMachine.h"
+
 
 Unit::Unit(const Sprite& sprite) 
 	:mSprite(sprite)
@@ -22,11 +28,22 @@ Unit::Unit(const Sprite& sprite)
 	,mShowTarget(false)
 {
 	pathData = {};
+	
+	
+	if (mID == 0) //unit is player
+	{
+		mUnitStateMachine = new UnitStateMachine();
+	}
+	else //unit is enemy
+	{
+		mUnitStateMachine = new UnitStateMachine();
+	}
 }
 
 
 Unit::~Unit()
 {
+	delete mUnitStateMachine;
 }
 
 void Unit::draw() const

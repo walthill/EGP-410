@@ -16,6 +16,20 @@ UnitManager::UnitManager(Uint32 maxSize)
 {
 }
 
+UnitManager::~UnitManager()
+{
+	//why can't you delete a state machine????
+	
+	/*vector<Unit*> allUnits = getAllUnits();
+	for (int i = 0; i < allUnits.size(); ++i)
+	{
+		if (allUnits[i] != NULL)
+		{
+			delete allUnits[i];
+		}
+	}*/
+}
+
 Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const PositionData& posData /*= ZERO_POSITION_DATA*/, const PhysicsData& physicsData /*= ZERO_PHYSICS_DATA*/, const UnitID& id)
 {
 	Unit* pUnit = NULL;

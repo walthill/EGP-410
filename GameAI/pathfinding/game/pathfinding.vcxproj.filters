@@ -43,6 +43,15 @@
     <Filter Include="Component Steering\Source Files\steering">
       <UniqueIdentifier>{4c3fc20b-452e-4e8a-8f35-1d2a5e1c12df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="State Machine">
+      <UniqueIdentifier>{ef52d0a2-118d-4e35-a62c-6611f91d26dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State Machine\Header Files">
+      <UniqueIdentifier>{31168d50-df99-4252-88f0-9e0bae9bab63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State Machine\Source Files">
+      <UniqueIdentifier>{6eb908e0-162b-4587-9aec-3c7369e53306}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\Game.h">
@@ -207,6 +216,30 @@
     <ClInclude Include="PathSmooth.h">
       <Filter>Header Files\pathfinding</Filter>
     </ClInclude>
+    <ClInclude Include="state machine\BaseAction.h">
+      <Filter>State Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="state machine\DecisionTreeHelpers.h">
+      <Filter>State Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="state machine\StateMachine.h">
+      <Filter>State Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IdleState.h">
+      <Filter>State Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WanderState.h">
+      <Filter>State Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChaseState.h">
+      <Filter>State Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FleeState.h">
+      <Filter>State Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitStateMachine.h">
+      <Filter>State Machine\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Game.cpp">
@@ -361,6 +394,30 @@
     </ClCompile>
     <ClCompile Include="PathSmooth.cpp">
       <Filter>Source Files\pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="state machine\BaseAction.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="state machine\DecisionTreeHelpers.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="state machine\StateMachine.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IdleState.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WanderState.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChaseState.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FleeState.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitStateMachine.cpp">
+      <Filter>State Machine\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
