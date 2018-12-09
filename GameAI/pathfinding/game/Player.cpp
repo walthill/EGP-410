@@ -1,10 +1,13 @@
 #include "Player.h"
 #include "Collider.h"
 #include "../game/component steering/Unit.h"
+#include "component steering/UnitManager.h"
+#include "GameApp.h"
 
 Player::Player()
 {
 	playerUnit = NULL;
+	gameHandle = dynamic_cast<GameApp*>(gpGame);
 }
 
 Player::~Player()
@@ -23,11 +26,14 @@ void Player::process(std::vector<Unit*> mUnitMap)
 		if (playerUnit->checkCollision(mUnitMap[i]->getCollider())
 			&& mUnitMap[i]->getCollider()->getTag() == COIN)
 		{
-			cout << "X: " << mUnitMap[i]->getPositionComponent()->getPosition().getX() << endl;
-			cout << "Y: " << mUnitMap[i]->getPositionComponent()->getPosition().getY() << endl;
-			cout << "COLLUSION" << endl;
-
 			//destroy coin, increase score
+			int unitId = mUnitMap[i]->getUnitID();
+			
+			gameHandle->getUnitManager()->deleteUnit(unitId);
+			
+			//cout << "X: " << mUnitMap[i]->getPositionComponent()->getPosition().getX() << endl;
+			//cout << "Y: " << mUnitMap[i]->getPositionComponent()->getPosition().getY() << endl;
+			cout << "COLLUSION" << endl;
 		}
 		else
 		{

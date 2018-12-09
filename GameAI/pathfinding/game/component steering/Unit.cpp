@@ -27,25 +27,29 @@ Unit::Unit(const Sprite& sprite)
 
 Unit::~Unit()
 {
+	mDestroyed = true;
 }
 
 void Unit::draw() const
 {
-	PositionComponent* pPosition = getPositionComponent();
-	assert(pPosition != NULL);
-	const Vector2D& pos = pPosition->getPosition();
-	gpGame->getGraphicsSystem()->draw(mSprite, pos.getX(), pos.getY(), pPosition->getFacing());
-
-	if (mShowTarget)
+	if (!mDestroyed)
 	{
-		SteeringComponent* pSteering = getSteeringComponent();
-		assert(pSteering != NULL);
-		const Vector2D& targetLoc = pSteering->getTargetLoc();
-		if (&targetLoc != &ZERO_VECTOR2D)
+		PositionComponent* pPosition = getPositionComponent();
+		assert(pPosition != NULL);
+		const Vector2D& pos = pPosition->getPosition();
+		gpGame->getGraphicsSystem()->draw(mSprite, pos.getX(), pos.getY(), pPosition->getFacing());
+
+		if (mShowTarget)
 		{
-			Sprite* pTargetSprite = gpGame->getSpriteManager()->getSprite(TARGET_SPRITE_ID);
-			assert(pTargetSprite != NULL);
-			gpGame->getGraphicsSystem()->draw(*pTargetSprite, targetLoc.getX(), targetLoc.getY());
+			SteeringComponent* pSteering = getSteeringComponent();
+			assert(pSteering != NULL);
+			const Vector2D& targetLoc = pSteering->getTargetLoc();
+			if (&targetLoc != &ZERO_VECTOR2D)
+			{
+				Sprite* pTargetSprite = gpGame->getSpriteManager()->getSprite(TARGET_SPRITE_ID);
+				assert(pTargetSprite != NULL);
+				gpGame->getGraphicsSystem()->draw(*pTargetSprite, targetLoc.getX(), targetLoc.getY());
+			}
 		}
 	}
 }

@@ -65,7 +65,7 @@ void GridPathfinder::drawVisualization(Grid* pGrid, GraphicsBuffer* pDest)
 	mpVisualizer = new GridVisualizer(pGrid);
 	
 
-	for (int i = 0; i < gpGameApp->gpPaths.size(); i++)
+	for (unsigned int i = 0; i < gpGameApp->gpPaths.size(); i++)
 	{
 		//set mpPath to the next path to be visualized
 		mpPath = gpGameApp->gpPaths[i];

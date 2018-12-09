@@ -3,20 +3,18 @@
 
 #include <vector>
 #include <Trackable.h>
-//#include "../game/component steering/Unit.h"
 
 class Unit;
 class Collider;
+class GameApp;
 
 class Player : public Trackable
 {
 	private:
 		Unit* playerUnit;
-		
-		
+		GameApp* gameHandle;
 
 		int health;
-	
 		float coinCaptureRadius;
 
 	public:

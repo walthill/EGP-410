@@ -25,6 +25,7 @@ class GridPathfinder;
 class PathfindingDebugContent;
 class DebugDisplay;
 class Player;
+class CoinManager;
 
 class GameApp: public Game
 {
@@ -65,6 +66,7 @@ private:
 	PathPool* mpPathPool;
 
 	Player* mPlayer;
+	CoinManager* mCoinManager;
 
 };
 

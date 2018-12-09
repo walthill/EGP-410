@@ -63,7 +63,7 @@ bool PathSmooth::clearPathRaycast(Node* startCastNode, Node* nextNode)
 	float posX = fromPos.getX();
 	float posY = fromPos.getY();
 
-	for (size_t i = 0; i < mRAY_ITERATORS; i++)
+	for (int i = 0; i < mRAY_ITERATORS; i++)
 	{
 		bool pathBlocked = pGameApp->getGrid()->getValueAtPixelXY((int)posX, (int)posY) == BLOCKING_VALUE;
 

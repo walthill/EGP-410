@@ -40,8 +40,11 @@ public:
 	float getMaxSpeed() const { return mMaxSpeed; };
 	float getMaxRotAcc() const { return mMaxRotAcc; };
 	float getMaxRotVel() const { return mMaxRotVel; };
+	bool hasBeenDestroyed() const { return mDestroyed; };
 	void setShowTarget(bool val) { mShowTarget = val; };
-//	UnitID getUnitID() { return mID; };
+	void destroy() { mDestroyed = true; };
+	void respawn() { mDestroyed = false; };
+	UnitID getUnitID() { return mID; };
 	void randomizePosition();
 	
 	void generatePath(Vector2D posToReach);
@@ -68,6 +71,8 @@ private:
 	float mMaxRotAcc;
 	float mMaxRotVel;
 	bool mShowTarget;
+
+	bool mDestroyed = false;
 
 	struct CollisionData
 	{

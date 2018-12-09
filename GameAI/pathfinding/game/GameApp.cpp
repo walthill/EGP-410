@@ -20,6 +20,7 @@
 #include "../game/AStarPathfinder.h"
 #include "../game/component steering/UnitManager.h"
 #include "Player.h"
+#include "CoinManager.h"
 
 #include "DepthFirstPathfinder.h"
 
@@ -136,26 +137,42 @@ bool GameApp::init()
 
 
 
-	//int numCoins = 10;
-	
-	for (size_t i = 0; i < mpGrid->getGridHeight()*mpGrid->getGridWidth(); i++)
+	int maxNumberOfCoins = 0;// = 10;
+
+
+	for (int i = 0; i < mpGrid->getGridHeight()*mpGrid->getGridWidth(); i++)
+	{
+		if (mpGrid->getValueAtIndex(i) != BLOCKING_VALUE)
+		{
+			maxNumberOfCoins++;
+		}
+	}
+
+	mCoinManager = new CoinManager();
+	mCoinManager->setMaxCoinCount(maxNumberOfCoins);
+	mCoinManager->initCoinCollection();
+
+
+	//place coin at every clear grid location to start game
+	for (int i = 0; i < mpGrid->getGridHeight()*mpGrid->getGridWidth(); i++)
 	{
 		if (mpGrid->getValueAtIndex(i) != BLOCKING_VALUE)
 		{
 			Vector2D coinPos =  mpGrid->getULCornerOfSquare(i);
 			coinPos.setX(coinPos.getX() + 16);
 			coinPos.setY(coinPos.getY() + 16);
+			
 			Unit* pUnit = mpUnitManager->createUnit(*pCoinSprite);
 			pUnit->getPositionComponent()->setPosition(coinPos);
 			
 			pUnit->getCollider()->initCollider(pUnit->getPositionComponent()->getPosition().getX(),
 									    	   pUnit->getPositionComponent()->getPosition().getY(),
 											   16, 16, COIN, pUnit);
-			
-			//mpGrid->setValueAtIndex(i, COIN_VALUE);
-			//cout << i << ": " << mpGrid->getValueAtIndex(i);
+			mCoinManager->trackCoin(pUnit);
 		}
 	}
+
+	
 
 	//spawn coins
 /*	for (size_t i = 0; i < numCoins; i++)
@@ -258,6 +275,7 @@ void GameApp::beginLoop()
 void GameApp::processLoop()
 {
 	mPlayer->process(mpUnitManager->getAllUnits());
+	mCoinManager->process();
 	
 	//get back buffer
 	GraphicsBuffer* pBackBuffer = mpGraphicsSystem->getBackBuffer();
