@@ -13,6 +13,12 @@
 #include "../game/Node.h"
 #include "../common/Grid.h"
 #include "../game/GameApp.h"
+#include "../game/IdleState.h"
+#include "../game/WanderState.h"
+#include "../game/ChaseState.h"
+#include"../game/FleeState.h"
+#include "../game/UnitStateMachine.h"
+
 
 Unit::Unit(const Sprite& sprite) 
 	:mSprite(sprite)
@@ -28,6 +34,26 @@ Unit::Unit(const Sprite& sprite)
 Unit::~Unit()
 {
 	mDestroyed = true;
+}
+
+void Unit::cleanup() 
+{
+	delete mUnitStateMachine->pIdleState;
+	delete mUnitStateMachine->pWanderState;
+	delete mUnitStateMachine->pChaseState;
+	delete mUnitStateMachine->pFleeState;
+
+	delete mUnitStateMachine->pToIdleTrans;
+	delete mUnitStateMachine->pToWanderTrans;
+	delete mUnitStateMachine->pToChaseTrans;
+	delete mUnitStateMachine->pToFleeTrans;
+
+	delete mUnitStateMachine;
+}
+
+void Unit::update(float elapsedTime)
+{
+	mUnitStateMachine->update();
 }
 
 void Unit::draw() const

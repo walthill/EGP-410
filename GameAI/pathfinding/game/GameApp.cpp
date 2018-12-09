@@ -241,6 +241,8 @@ void GameApp::cleanup()
 	}
 	gpPaths.clear();
 
+	
+
 	delete mpPathPool;
 	mpPathPool = NULL;
 	
@@ -261,6 +263,9 @@ void GameApp::cleanup()
 
 	delete mpDebugDisplay;
 	mpDebugDisplay = NULL;
+
+	delete mpUnitManager;
+	mpUnitManager = NULL;
 
 	
 //	delete mpInputSystem;

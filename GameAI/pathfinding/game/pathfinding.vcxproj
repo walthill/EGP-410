@@ -104,6 +104,7 @@
     <ClInclude Include="AStarPathfinder.h" />
     <ClInclude Include="CoinManager.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="ChaseState.h" />
     <ClInclude Include="component steering\AlignSteering.h" />
     <ClInclude Include="component steering\ArriveFace.h" />
     <ClInclude Include="component steering\ArriveSteering.h" />
@@ -122,12 +123,14 @@
     <ClInclude Include="DebugDisplay.h" />
     <ClInclude Include="DepthFirstPathfinder.h" />
     <ClInclude Include="DijkstraPathfinder.h" />
+    <ClInclude Include="FleeState.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameMessage.h" />
     <ClInclude Include="GameMessageManager.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="GridGraph.h" />
     <ClInclude Include="GridPathfinder.h" />
+    <ClInclude Include="IdleState.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="KeyDownMessage.h" />
     <ClInclude Include="Node.h" />
@@ -141,6 +144,11 @@
     <ClInclude Include="PathToMessage.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PriorityQueue.h" />
+    <ClInclude Include="state machine\BaseAction.h" />
+    <ClInclude Include="state machine\DecisionTreeHelpers.h" />
+    <ClInclude Include="state machine\StateMachine.h" />
+    <ClInclude Include="UnitStateMachine.h" />
+    <ClInclude Include="WanderState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Color.cpp" />
@@ -160,8 +168,6 @@
     <ClCompile Include="..\common\Sprite.cpp" />
     <ClCompile Include="..\common\SpriteManager.cpp" />
     <ClCompile Include="AStarPathfinder.cpp" />
-    <ClCompile Include="CoinManager.cpp" />
-    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="component steering\AlignSteering.cpp" />
     <ClCompile Include="component steering\ArriveFace.cpp" />
     <ClCompile Include="component steering\ArriveSteering.cpp" />
@@ -179,12 +185,14 @@
     <ClCompile Include="DebugDisplay.cpp" />
     <ClCompile Include="DepthFirstPathfinder.cpp" />
     <ClCompile Include="DijkstraPathfinder.cpp" />
+    <ClCompile Include="FleeState.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameMessage.cpp" />
     <ClCompile Include="GameMessageManager.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GridGraph.cpp" />
     <ClCompile Include="GridPathfinder.cpp" />
+    <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="KeyDownMessage.cpp" />
     <ClCompile Include="main.cpp" />
@@ -196,7 +204,6 @@
     <ClCompile Include="PathSmooth.cpp" />
     <ClCompile Include="PathSteering.cpp" />
     <ClCompile Include="PathToMessage.cpp" />
-    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
