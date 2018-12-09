@@ -240,6 +240,15 @@
     <ClInclude Include="UnitStateMachine.h">
       <Filter>State Machine\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CoinManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Game.cpp">
@@ -394,6 +403,39 @@
     </ClCompile>
     <ClCompile Include="PathSmooth.cpp">
       <Filter>Source Files\pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="IdleState.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FleeState.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CoinManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChaseState.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitStateMachine.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WanderState.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="state machine\BaseAction.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="state machine\DecisionTreeHelpers.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="state machine\StateMachine.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

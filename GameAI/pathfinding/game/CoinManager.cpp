@@ -15,7 +15,7 @@ CoinManager::CoinManager()
 
 CoinManager::~CoinManager()
 {
-
+	delete [] timeToSpawnList; //TODO: cleanup coin manager
 }
 
 void CoinManager::initCoinCollection()

@@ -168,6 +168,9 @@
     <ClCompile Include="..\common\Sprite.cpp" />
     <ClCompile Include="..\common\SpriteManager.cpp" />
     <ClCompile Include="AStarPathfinder.cpp" />
+    <ClCompile Include="ChaseState.cpp" />
+    <ClCompile Include="CoinManager.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="component steering\AlignSteering.cpp" />
     <ClCompile Include="component steering\ArriveFace.cpp" />
     <ClCompile Include="component steering\ArriveSteering.cpp" />
@@ -204,6 +207,12 @@
     <ClCompile Include="PathSmooth.cpp" />
     <ClCompile Include="PathSteering.cpp" />
     <ClCompile Include="PathToMessage.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="state machine\BaseAction.cpp" />
+    <ClCompile Include="state machine\DecisionTreeHelpers.cpp" />
+    <ClCompile Include="state machine\StateMachine.cpp" />
+    <ClCompile Include="UnitStateMachine.cpp" />
+    <ClCompile Include="WanderState.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
