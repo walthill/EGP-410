@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "ComponentManager.h"
 #include "GraphicsSystem.h"
+#include "../UnitStateMachine.h"
 
 UnitID UnitManager::msNextUnitID = PLAYER_UNIT_ID + 1;
 
@@ -18,16 +19,14 @@ UnitManager::UnitManager(Uint32 maxSize)
 
 UnitManager::~UnitManager()
 {
-	//why can't you delete a state machine????
-	
-	/*vector<Unit*> allUnits = getAllUnits();
+	vector<Unit*> allUnits = getAllUnits();
 	for (int i = 0; i < allUnits.size(); ++i)
 	{
 		if (allUnits[i] != NULL)
 		{
-			delete allUnits[i];
+			allUnits[i]->cleanup();
 		}
-	}*/
+	}
 }
 
 Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const PositionData& posData /*= ZERO_POSITION_DATA*/, const PhysicsData& physicsData /*= ZERO_PHYSICS_DATA*/, const UnitID& id)
@@ -66,7 +65,15 @@ Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const Posit
 		pUnit->mMaxAcc = MAX_ACC;
 		pUnit->mMaxRotAcc = MAX_ROT_ACC;
 		pUnit->mMaxRotVel = MAX_ROT_VEL;
-
+		
+		if(pUnit->mID == 0)
+		{
+			pUnit->mUnitStateMachine = new UnitStateMachine(0);
+		}
+		else
+		{
+			pUnit->mUnitStateMachine = new UnitStateMachine(1);
+		}
 	}
 
 	return pUnit;

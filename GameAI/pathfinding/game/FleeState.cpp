@@ -31,3 +31,8 @@ StateTransition* FleeState::update()
 	cout << "Tick...\n";
 	return NULL;//no transition
 }
+
+void FleeState::updateTarget(Unit* target)
+{
+	mTarget = target;
+}

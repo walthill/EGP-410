@@ -11,7 +11,6 @@ void WanderState::onEntrance()
 
 void WanderState::onExit()
 {
-	cout << "\nexitting TickState id:" << mID << endl;
 	//nothing real to do here
 }
 
@@ -29,6 +28,6 @@ StateTransition* WanderState::update()
 			return pTransition;
 		}
 	}
-	cout << "Tick...\n";
+	
 	return NULL;//no transition
 }

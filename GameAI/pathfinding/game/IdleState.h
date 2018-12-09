@@ -12,4 +12,6 @@ public:
 private:
 	int mFireCount;//how many frames need to pass from start until transition
 	int mStartingCount;//when did we start?
+	int frames;
+	int maxTime = 33;
 };

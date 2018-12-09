@@ -11,7 +11,6 @@
 #include "Sprite.h"
 #include "Steering.h"
 #include "../game/Path.h"
-#include "../game/UnitStateMachine.h"
 //#include "CircularQueue.h"
 //#include "Transaction.h"
 //#include "TransactionProcessor.h"
@@ -20,6 +19,7 @@ class PhysicsComponent;
 class SteeringComponent;
 class Sprite;
 class UnitManager;
+class UnitStateMachine;
 
 const Uint32 DEFAULT_QUEUE_CAPACITY = 8;
 
@@ -30,7 +30,8 @@ class Unit : public Trackable
 public:
 	void draw() const;
 	float getFacing() const;
-	void update(float elapsedTime){};
+	void update(float elapsedTime);
+	void cleanup();
 
 	PositionComponent* getPositionComponent() const;
 	PhysicsComponent* getPhysicsComponent() const;

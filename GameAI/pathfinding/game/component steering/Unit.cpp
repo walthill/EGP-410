@@ -17,7 +17,7 @@
 #include "../game/WanderState.h"
 #include "../game/ChaseState.h"
 #include"../game/FleeState.h"
-#include "../game/state machine/StateMachine.h"
+#include "../game/UnitStateMachine.h"
 
 
 Unit::Unit(const Sprite& sprite) 
@@ -28,22 +28,31 @@ Unit::Unit(const Sprite& sprite)
 	,mShowTarget(false)
 {
 	pathData = {};
-	
-	
-	if (mID == 0) //unit is player
-	{
-		mUnitStateMachine = new UnitStateMachine();
-	}
-	else //unit is enemy
-	{
-		mUnitStateMachine = new UnitStateMachine();
-	}
 }
 
 
 Unit::~Unit()
 {
+}
+
+void Unit::cleanup() 
+{
+	delete mUnitStateMachine->pIdleState;
+	delete mUnitStateMachine->pWanderState;
+	delete mUnitStateMachine->pChaseState;
+	delete mUnitStateMachine->pFleeState;
+
+	delete mUnitStateMachine->pToIdleTrans;
+	delete mUnitStateMachine->pToWanderTrans;
+	delete mUnitStateMachine->pToChaseTrans;
+	delete mUnitStateMachine->pToFleeTrans;
+
 	delete mUnitStateMachine;
+}
+
+void Unit::update(float elapsedTime)
+{
+	mUnitStateMachine->update();
 }
 
 void Unit::draw() const

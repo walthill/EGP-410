@@ -1,9 +1,11 @@
 #include "UnitStateMachine.h"
+#include "ChaseState.h"
+#include "FleeState.h"
 
-UnitStateMachine::UnitStateMachine()
+UnitStateMachine::UnitStateMachine(int machineType)
 {
 	//state machine
-	StateMachine* pStateMachine = new StateMachine();
+	//StateMachine* pStateMachine = new StateMachine();
 
 	//states
 	pIdleState = new IdleState(0, 10);
@@ -17,33 +19,37 @@ UnitStateMachine::UnitStateMachine()
 	pToChaseTrans = new StateTransition(CHASE_TRANSITION, 2);
 	pToFleeTrans = new StateTransition(FLEE_TRANSITION, 3);
 
-	//add Transitions
-	pIdleState->addTransition(pToIdleTrans);
-	pWanderState->addTransition(pToWanderTrans);
-	pChaseState->addTransition(pToChaseTrans);
-	pFleeState->addTransition(pToFleeTrans);
+	//add Idle transitions
+	pIdleState->addTransition(pToWanderTrans);
+	pIdleState->addTransition(pToChaseTrans);
+	pIdleState->addTransition(pToFleeTrans);
+
+	//add Wander transitions
+	pWanderState->addTransition(pToIdleTrans);
+	pWanderState->addTransition(pToChaseTrans);
+	pWanderState->addTransition(pToFleeTrans);
+
+	//add Chase transitions
+	pChaseState->addTransition(pToIdleTrans);
+
+	//add Flee transitions
+	pFleeState->addTransition(pToIdleTrans);
 
 	//add states to state machine
-	pStateMachine->addState(pIdleState);
-	pStateMachine->addState(pWanderState);
-	pStateMachine->addState(pChaseState);
-	pStateMachine->addState(pFleeState);
+	this->addState(pIdleState);
+	this->addState(pWanderState);
+	this->addState(pChaseState);
+	this->addState(pFleeState);
 
 	//set default dtate
-	pStateMachine->setInitialStateID(0);
+	this->setInitialStateID(0);
 }
 
-UnitStateMachine::~UnitStateMachine()
+void UnitStateMachine::updateTarget(Unit* target)
 {
-	delete pStateMachine;
-
-	delete pIdleState;
-	delete pWanderState;
-	delete pChaseState;
-	delete pFleeState;
-
-	delete pToIdleTrans;
-	delete pToWanderTrans;
-	delete pToChaseTrans;
-	delete pToFleeTrans;
+	ChaseState* pChaseState = dynamic_cast<ChaseState*>(pChaseState);
+	pChaseState->updateTarget(target);
+	FleeState* pFleeState = dynamic_cast<FleeState*>(pFleeState);
+	pFleeState->updateTarget(target);
+		
 }

@@ -4,16 +4,16 @@
 #include "WanderState.h"
 #include "ChaseState.h"
 #include "FleeState.h"
+#include "../game/component steering/Unit.h"
 
 class UnitStateMachine :public StateMachine
 {
 	
 public:
-	UnitStateMachine();
-	~UnitStateMachine();
+	UnitStateMachine(int machineType);
 
 	//state machine
-	StateMachine* pStateMachine;
+	//StateMachine* pStateMachine;
 	
 	//states
 	StateMachineState* pIdleState;
@@ -27,7 +27,8 @@ public:
 	StateTransition* pToChaseTrans;
 	StateTransition* pToFleeTrans;
 
+	void updateTarget(Unit* target);
+
 protected:
-	
 
 };

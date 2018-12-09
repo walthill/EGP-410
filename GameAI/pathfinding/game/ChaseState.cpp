@@ -31,3 +31,8 @@ StateTransition* ChaseState::update()
 	cout << "Tick...\n";
 	return NULL;//no transition
 }
+
+void ChaseState :: updateTarget(Unit* target)
+{
+	mTarget = target;
+}
