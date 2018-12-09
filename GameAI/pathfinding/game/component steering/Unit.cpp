@@ -118,8 +118,8 @@ void Unit::setPath(Path path)
 		{
 			pathData.mPathPositions[i-1] = gpGameApp->getGrid()->getULCornerOfSquare(pathData.mPath.peekNode(i-1)->getId());
 		
-			float x = pathData.mPathPositions[i - 1].getX()+16;
-			float y = pathData.mPathPositions[i - 1].getY()+16;
+			float x = pathData.mPathPositions[i - 1].getX() + 16;
+			float y = pathData.mPathPositions[i - 1].getY() + 16;
 
 			pathData.mPathPositions[i - 1].setX(x);
 			pathData.mPathPositions[i - 1].setY(y);
@@ -141,4 +141,54 @@ std::vector<Vector2D> Unit::getPathInScreenSpace()
 int Unit::getDestinationNode()
 {
 	return pathData.toNodeId;
+}
+
+
+
+bool Unit::checkCollision( Collider *colliderToCheck)
+{
+	//assert(mHasCollider); //you're checking for collisions w/o a collider
+
+	//if (b->getUnit()->isVisible())
+	{
+		//calculate sides of a
+		collisionData.mLeftA = collisionData.collider.getX();
+		collisionData.mRightA = collisionData.mLeftA + collisionData.collider.getW();
+		collisionData.mTopA = collisionData.collider.getY();
+		collisionData.mBottomA = collisionData.mTopA + collisionData.collider.getH();
+
+		//calculate sides of b
+		collisionData.mLeftB = colliderToCheck->getX();
+		collisionData.mRightB = collisionData.mLeftB + colliderToCheck->getW();
+		collisionData.mTopB = colliderToCheck->getY();
+		collisionData.mBottomB = collisionData.mTopB + colliderToCheck->getH();
+
+		//collision detection
+		if (collisionData.mBottomA <= collisionData.mTopB)
+		{
+			return false; //NO COLLUSION...i mean collision
+		}
+		if (collisionData.mTopA >= collisionData.mBottomB)
+		{
+			return false;
+		}
+		if (collisionData.mRightA <= collisionData.mLeftB)
+		{
+			return false;
+		}
+		if (collisionData.mLeftA >= collisionData.mRightB)
+		{
+			return false;
+		}
+
+		return true;
+
+	}
+	//	return false;
+
+}
+
+Collider* Unit::getCollider()
+{ 
+	return &collisionData.collider; 
 }

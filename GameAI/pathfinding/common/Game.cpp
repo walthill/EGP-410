@@ -21,7 +21,7 @@ Game* gpGame = NULL;
 
 const int WIDTH = 1024;
 const int HEIGHT = 768;
-const Uint32 MAX_UNITS = 100;
+const Uint32 MAX_UNITS = 1000;
 
 Game::Game()
 	:mpGraphicsSystem(NULL)
@@ -70,6 +70,7 @@ bool Game::init()
 	mpGraphicsBufferManager->loadBuffer(mBackgroundBufferID, "wallpaper.bmp");
 	mpGraphicsBufferManager->loadBuffer(mPlayerIconBufferID, "arrow.png");
 	mpGraphicsBufferManager->loadBuffer(mEnemyIconBufferID, "enemy-arrow.png");
+	mpGraphicsBufferManager->loadBuffer(mCoinIconBufferID, "coin.png");
 	mpGraphicsBufferManager->loadBuffer(mTargetBufferID, "target.png");
 
 	//load Font

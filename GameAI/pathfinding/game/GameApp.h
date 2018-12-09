@@ -24,6 +24,7 @@ class GridGraph;
 class GridPathfinder;
 class PathfindingDebugContent;
 class DebugDisplay;
+class Player;
 
 class GameApp: public Game
 {
@@ -62,6 +63,8 @@ private:
 	GridVisualizer* mpGridVisualizer;
 	InputManager* mpInput;
 	PathPool* mpPathPool;
+
+	Player* mPlayer;
 
 };
 

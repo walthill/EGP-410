@@ -19,6 +19,7 @@
 #include "PathfindingDebugContent.h"
 #include "../game/AStarPathfinder.h"
 #include "../game/component steering/UnitManager.h"
+#include "Player.h"
 
 #include "DepthFirstPathfinder.h"
 
@@ -90,6 +91,12 @@ bool GameApp::init()
 	{
 		pArrowSprite = mpSpriteManager->createAndManageSprite(PLAYER_ICON_SPRITE_ID, pPlayerBuffer, 0, 0, (float)pPlayerBuffer->getWidth(), (float)pPlayerBuffer->getHeight());
 	}
+	GraphicsBuffer* pCoinBuffer = mpGraphicsBufferManager->getBuffer(mCoinIconBufferID);
+	Sprite* pCoinSprite = NULL;
+	if (pCoinBuffer != NULL)
+	{
+		pCoinSprite = mpSpriteManager->createAndManageSprite(COIN_SPRITE_ID, pCoinBuffer, 0, 0, (float)pCoinBuffer->getWidth(), (float)pCoinBuffer->getHeight());
+	}
 
 	//Initializing player 
 
@@ -120,7 +127,75 @@ bool GameApp::init()
 			adjIndex = 0;
 		}
 	}
+
+	mPlayer = new Player();
+	mPlayer->hookPlayerUnit(pUnit);
+	mPlayer->getPlayerUnit()->getCollider()->initCollider(pUnit->getPositionComponent()->getPosition().getX(),
+														  pUnit->getPositionComponent()->getPosition().getY(),
+												    	  16, 16, PLAYER, pUnit);
+
+
+
+	//int numCoins = 10;
 	
+	for (size_t i = 0; i < mpGrid->getGridHeight()*mpGrid->getGridWidth(); i++)
+	{
+		if (mpGrid->getValueAtIndex(i) != BLOCKING_VALUE)
+		{
+			Vector2D coinPos =  mpGrid->getULCornerOfSquare(i);
+			coinPos.setX(coinPos.getX() + 16);
+			coinPos.setY(coinPos.getY() + 16);
+			Unit* pUnit = mpUnitManager->createUnit(*pCoinSprite);
+			pUnit->getPositionComponent()->setPosition(coinPos);
+			
+			pUnit->getCollider()->initCollider(pUnit->getPositionComponent()->getPosition().getX(),
+									    	   pUnit->getPositionComponent()->getPosition().getY(),
+											   16, 16, COIN, pUnit);
+			
+			//mpGrid->setValueAtIndex(i, COIN_VALUE);
+			//cout << i << ": " << mpGrid->getValueAtIndex(i);
+		}
+	}
+
+	//spawn coins
+/*	for (size_t i = 0; i < numCoins; i++)
+	{
+		Unit* pUnit = mpUnitManager->createRandomUnit(*pCoinSprite);
+	//	UnitID currentUnitID = pUnit->getUnitID();
+
+		float x = pUnit->getPositionComponent()->getPosition().getX();
+		float y = pUnit->getPositionComponent()->getPosition().getY();
+
+		//check if unit is within or adjacent to a wall tile, randomize its position until it is not
+		int squareIndex = mpGrid->getSquareIndexFromPixelXY(x, y);
+		std::vector<int> adjacencies = mpGrid->getAdjacentIndices(squareIndex);
+
+		for (unsigned int adjIndex = 0; adjIndex < adjacencies.size(); adjIndex++)
+		{
+			while (mpGrid->getValueAtIndex(adjacencies[adjIndex]) == BLOCKING_VALUE)
+			{
+				cout << "COINWALL" << endl;
+				pUnit->randomizePosition();
+				x = pUnit->getPositionComponent()->getPosition().getX();
+				y = pUnit->getPositionComponent()->getPosition().getY();
+
+				squareIndex = mpGrid->getSquareIndexFromPixelXY(x, y);
+
+				adjacencies = mpGrid->getAdjacentIndices(squareIndex);
+				adjIndex = 0;
+			}
+		}
+
+		/*if (mpGrid->getValueAtIndex(squareIndex) == COIN_VALUE)
+		{
+			cout << "delete coin" << endl;
+			mpUnitManager->deleteUnit(currentUnitID);
+		}
+		else
+		{
+			mpGrid->setValueAtIndex(squareIndex, COIN_VALUE);
+		}
+	}*/
 
 	//debug display
 	pContent = new PathfindingDebugContent( mpPathfinder );
@@ -139,6 +214,7 @@ bool GameApp::init()
 
 void GameApp::cleanup()
 {
+//	delete mPlayer;
 
 	int size = gpPaths.size();
 	for (int i = 0; i < size; i++)
@@ -181,14 +257,17 @@ void GameApp::beginLoop()
 
 void GameApp::processLoop()
 {
+	mPlayer->process(mpUnitManager->getAllUnits());
+	
 	//get back buffer
 	GraphicsBuffer* pBackBuffer = mpGraphicsSystem->getBackBuffer();
 	//copy to back buffer
 	mpGridVisualizer->draw( *pBackBuffer );
 #ifdef VISUALIZE_PATH
 	//show pathfinder visualizer
-	mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
+	//mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
 #endif
+	
 	mpDebugDisplay->draw( pBackBuffer );
 	
 	mpMessageManager->processMessagesForThisframe();
