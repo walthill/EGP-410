@@ -29,7 +29,7 @@ void PathToMessage::process()
 	{
 		GridPathfinder* pPathfinder = NULL;
 		//make this game's pathPool
-		if (pGame->pathfinderIndex == 0)
+		/*if (pGame->pathfinderIndex == 0)
 		{
 			pPathfinder = pGame->getPathPool()->getDepthPath(pGame->getPathPool()->queryPool(mOwner, mTo));
 		}
@@ -37,10 +37,10 @@ void PathToMessage::process()
 		{
 			pPathfinder = pGame->getPathPool()->getDijkstraPath(pGame->getPathPool()->queryPool(mOwner, mTo));
 		}
-		if (pGame->pathfinderIndex == 2)
-		{
+		if (pGame->pathfinderIndex == 2)*/
+		//{
 			pPathfinder = pGame->getPathPool()->getAStarPath(pGame->getPathPool()->queryPool(mOwner, mTo));
-		}
+		//}
 
 		GridGraph* pGridGraph = pGame->getGridGraph();
 		Grid* pGrid = pGame->getGrid();

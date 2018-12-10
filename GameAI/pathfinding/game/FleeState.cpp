@@ -6,12 +6,12 @@ using namespace std;
 
 void FleeState::onEntrance()
 {
-	cout << "\nEntering TickState id:" << mID << endl;
+	
 }
 
 void FleeState::onExit()
 {
-	cout << "\nexitting TickState id:" << mID << endl;
+	
 	//nothing real to do here
 }
 
@@ -28,7 +28,7 @@ StateTransition* FleeState::update()
 	//		return pTransition;
 	//	}
 	//}
-	cout << "Tick...\n";
+	
 	return NULL;//no transition
 }
 
