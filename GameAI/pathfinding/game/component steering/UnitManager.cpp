@@ -68,11 +68,11 @@ Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const Posit
 		
 		if(pUnit->mID == 0)
 		{
-			pUnit->mUnitStateMachine = new UnitStateMachine(0);
+			pUnit->mUnitStateMachine = new UnitStateMachine(0, 0);
 		}
 		else
 		{
-			pUnit->mUnitStateMachine = new UnitStateMachine(1);
+			pUnit->mUnitStateMachine = new UnitStateMachine(1, pUnit->mID);
 		}
 	}
 

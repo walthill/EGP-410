@@ -10,7 +10,7 @@ class UnitStateMachine :public StateMachine
 {
 	
 public:
-	UnitStateMachine(int machineType);
+	UnitStateMachine(int machineType, int unitID);
 
 	//state machine
 	//StateMachine* pStateMachine;

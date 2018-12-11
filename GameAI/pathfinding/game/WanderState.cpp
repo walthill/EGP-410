@@ -1,33 +1,66 @@
 #include "Game.h"
 #include "WanderState.h"
 #include <iostream>
+#include "GraphicsSystem.h"
+#include "../game/component steering/Unit.h"
+#include "../game/component steering/UnitManager.h"
+#include "../game/GridPathfinder.h"
+#include "GameApp.h"
+#include "Vector2D.h"
+#include "PathToMessage.h"
+#include "GameMessageManager.h"
+#include "../game/component steering/PositionComponent.h"
+#include "Grid.h"
 
 using namespace std;
 
 void WanderState::onEntrance()
 {
+	
+	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
+	
 	//pick a random point and pathfind to it
+	int posX = rand() % gpGame->getGraphicsSystem()->getWidth();
+	int posY = rand() % gpGame->getGraphicsSystem()->getHeight();
+	int index = gpGameApp->getGrid()->getSquareIndexFromPixelXY(posX, posY);
+	while (gpGameApp->getGrid()->getValueAtIndex(index) == BLOCKING_VALUE)
+	{
+		posX = rand() % gpGame->getGraphicsSystem()->getWidth();
+		posY = rand() % gpGame->getGraphicsSystem()->getHeight();
+		index = gpGameApp->getGrid()->getSquareIndexFromPixelXY(posX, posY);
+	}
+
+	gpGameApp->mpMessageManager->addMessage(new PathToMessage(pUnit, Vector2D(pUnit->getPositionComponent()->getPosition()), Vector2D(posX, posY)), 1);
 }
 
 void WanderState::onExit()
 {
-	//nothing real to do here
+	
 }
 
 StateTransition* WanderState::update()
 {
-	//find out if enough time has passed to transition
+	//override transition to chase/flee if player is near and powered/not powered
 
-	if (false)//destination reached
+	if (pUnit->getNumPathNodes() > 0)
 	{
-		//find the right transition
-		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(IDLE_TRANSITION);
-		if (iter != mTransitions.end())//found?
+		
+		if (pUnit->getPath()->peekNextNode() == pUnit->getPath()->peekNode(pUnit->getNumPathNodes() - 1))//destination reached
 		{
-			StateTransition* pTransition = iter->second;
-			return pTransition;
+			//find the right transition
+			map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(IDLE_TRANSITION);
+			if (iter != mTransitions.end())//found?
+			{
+				StateTransition* pTransition = iter->second;
+				return pTransition;
+			}
 		}
 	}
 	
 	return NULL;//no transition
+}
+
+void WanderState::updateTarget(Unit* target)
+{
+	pTarget = target;
 }
