@@ -8,6 +8,7 @@ class Vector2D;
 
 const int CLEAR_VALUE = 0;
 const int BLOCKING_VALUE = 1;
+const int COIN_VALUE = 2;
 
 class Grid:public Trackable
 {

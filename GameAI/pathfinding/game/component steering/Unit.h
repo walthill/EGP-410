@@ -85,7 +85,7 @@ private:
 		bool mHasCollided = false;
 		int mLeftA, mLeftB, mRightA, mRightB;
 		int mTopA, mTopB, mBottomA, mBottomB;
-	}collisionData;
+	}mCollisionData;
 
 	struct PathData
 	{

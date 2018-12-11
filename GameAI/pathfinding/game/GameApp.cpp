@@ -121,8 +121,9 @@ bool GameApp::init()
 
 			x = pUnit->getPositionComponent()->getPosition().getX();
 			y = pUnit->getPositionComponent()->getPosition().getY();
-
 			squareIndex = mpGrid->getSquareIndexFromPixelXY(x, y);
+
+			pUnit->getPositionComponent()->setPosition(mpGrid->getULCornerOfSquare(squareIndex));
 
 			adjacencies = mpGrid->getAdjacentIndices(squareIndex);
 			adjIndex = 0;
@@ -140,6 +141,7 @@ bool GameApp::init()
 	int maxNumberOfCoins = 0;// = 10;
 
 
+	//setup maximum possible coin value
 	for (int i = 0; i < mpGrid->getGridHeight()*mpGrid->getGridWidth(); i++)
 	{
 		if (mpGrid->getValueAtIndex(i) != BLOCKING_VALUE)
@@ -153,22 +155,31 @@ bool GameApp::init()
 	mCoinManager->initCoinCollection();
 
 
+	int intervalToSpawnCoin = 10; //TODO: make data driven
+	int intervalCounter = 0;
+	
 	//place coin at every clear grid location to start game
 	for (int i = 0; i < mpGrid->getGridHeight()*mpGrid->getGridWidth(); i++)
 	{
-		if (mpGrid->getValueAtIndex(i) != BLOCKING_VALUE)
-		{
-			Vector2D coinPos =  mpGrid->getULCornerOfSquare(i);
+		intervalCounter++;
+
+		if (intervalCounter >= intervalToSpawnCoin && mpGrid->getValueAtIndex(i) != BLOCKING_VALUE)
+		{	
+			Vector2D coinPos = mpGrid->getULCornerOfSquare(i);
 			coinPos.setX(coinPos.getX() + 16);
 			coinPos.setY(coinPos.getY() + 16);
-			
+
 			Unit* pUnit = mpUnitManager->createUnit(*pCoinSprite);
 			pUnit->getPositionComponent()->setPosition(coinPos);
-			
+
 			pUnit->getCollider()->initCollider(pUnit->getPositionComponent()->getPosition().getX(),
-									    	   pUnit->getPositionComponent()->getPosition().getY(),
-											   16, 16, COIN, pUnit);
+				pUnit->getPositionComponent()->getPosition().getY(),
+				16, 16, COIN, pUnit);
+				
 			mCoinManager->trackCoin(pUnit);
+			mpGrid->setValueAtIndex(i, COIN_VALUE);
+			intervalCounter = 0;
+			
 		}
 	}
 
@@ -267,8 +278,10 @@ void GameApp::cleanup()
 	delete mpUnitManager;
 	mpUnitManager = NULL;
 
-	
-//	delete mpInputSystem;
+//	mCoinManager->cleanup();
+	//delete mCoinManager;
+//	delete mPlayer;
+//	mPlayer = NULL;
 }
 
 void GameApp::beginLoop()

@@ -53,6 +53,11 @@ void Unit::cleanup()
 
 void Unit::update(float elapsedTime)
 {
+	//keep collider on top of the unit
+	mCollisionData.collider.setX(getPositionComponent()->getPosition().getX());
+	mCollisionData.collider.setY(getPositionComponent()->getPosition().getY());
+
+
 	mUnitStateMachine->update();
 }
 
@@ -182,31 +187,31 @@ bool Unit::checkCollision( Collider *colliderToCheck)
 	//if (b->getUnit()->isVisible())
 	{
 		//calculate sides of a
-		collisionData.mLeftA = collisionData.collider.getX();
-		collisionData.mRightA = collisionData.mLeftA + collisionData.collider.getW();
-		collisionData.mTopA = collisionData.collider.getY();
-		collisionData.mBottomA = collisionData.mTopA + collisionData.collider.getH();
+		mCollisionData.mLeftA = mCollisionData.collider.getX();
+		mCollisionData.mRightA = mCollisionData.mLeftA + mCollisionData.collider.getW();
+		mCollisionData.mTopA = mCollisionData.collider.getY();
+		mCollisionData.mBottomA = mCollisionData.mTopA + mCollisionData.collider.getH();
 
 		//calculate sides of b
-		collisionData.mLeftB = colliderToCheck->getX();
-		collisionData.mRightB = collisionData.mLeftB + colliderToCheck->getW();
-		collisionData.mTopB = colliderToCheck->getY();
-		collisionData.mBottomB = collisionData.mTopB + colliderToCheck->getH();
+		mCollisionData.mLeftB = colliderToCheck->getX();
+		mCollisionData.mRightB = mCollisionData.mLeftB + colliderToCheck->getW();
+		mCollisionData.mTopB = colliderToCheck->getY();
+		mCollisionData.mBottomB = mCollisionData.mTopB + colliderToCheck->getH();
 
 		//collision detection
-		if (collisionData.mBottomA <= collisionData.mTopB)
+		if (mCollisionData.mBottomA <= mCollisionData.mTopB)
 		{
 			return false; //NO COLLUSION...i mean collision
 		}
-		if (collisionData.mTopA >= collisionData.mBottomB)
+		if (mCollisionData.mTopA >= mCollisionData.mBottomB)
 		{
 			return false;
 		}
-		if (collisionData.mRightA <= collisionData.mLeftB)
+		if (mCollisionData.mRightA <= mCollisionData.mLeftB)
 		{
 			return false;
 		}
-		if (collisionData.mLeftA >= collisionData.mRightB)
+		if (mCollisionData.mLeftA >= mCollisionData.mRightB)
 		{
 			return false;
 		}
@@ -220,5 +225,5 @@ bool Unit::checkCollision( Collider *colliderToCheck)
 
 Collider* Unit::getCollider()
 { 
-	return &collisionData.collider; 
+	return &mCollisionData.collider;
 }

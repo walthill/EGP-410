@@ -40,7 +40,7 @@ void KeyDownMessage::initializePlayerPathing(Vector2D pos)
 	//y = mEvent.motion.y;
 //	Vector2D pos(0, 768 * 0.5); // middle left
 
-	cout << "player Pathfinding" << endl;
+//	cout << "player Pathfinding" << endl;
 	//pathfind for player player units
 	gpGame->getUnitManager()->getPlayerUnit()->generatePath(pos);
 
@@ -73,7 +73,7 @@ void KeyDownMessage::process()
 
 			bool test = clearPathRaycast(playerPos, farthestUp, posToStopAt);
 
-			cout << test << endl;
+			//cout << test << endl;
 			//TODO: raycast for position data to send to pathfinder 
 
 			//768 is max screen height, width - 1024
@@ -98,7 +98,7 @@ void KeyDownMessage::process()
 
 			bool test = clearPathRaycast(playerPos, farthestLeft, posToStopAt);
 
-			cout << test << endl;
+	//		cout << test << endl;
 			//TODO: raycast for position data to send to pathfinder 
 
 			//768 is max screen height, width - 1024
@@ -124,7 +124,7 @@ void KeyDownMessage::process()
 
 			bool test = clearPathRaycast(playerPos, farthestDown, posToStopAt);
 
-			cout << test << endl;
+		//	cout << test << endl;
 			//TODO: raycast for position data to send to pathfinder 
 
 			//768 is max screen height, width - 1024
