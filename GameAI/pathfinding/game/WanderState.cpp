@@ -10,6 +10,7 @@
 #include "PathToMessage.h"
 #include "GameMessageManager.h"
 #include "../game/component steering/PositionComponent.h"
+#include "Grid.h"
 
 using namespace std;
 
@@ -21,8 +22,14 @@ void WanderState::onEntrance()
 	//pick a random point and pathfind to it
 	int posX = rand() % gpGame->getGraphicsSystem()->getWidth();
 	int posY = rand() % gpGame->getGraphicsSystem()->getHeight();
-	
-	
+	int index = gpGameApp->getGrid()->getSquareIndexFromPixelXY(posX, posY);
+	while (gpGameApp->getGrid()->getValueAtIndex(index) == BLOCKING_VALUE)
+	{
+		posX = rand() % gpGame->getGraphicsSystem()->getWidth();
+		posY = rand() % gpGame->getGraphicsSystem()->getHeight();
+		index = gpGameApp->getGrid()->getSquareIndexFromPixelXY(posX, posY);
+	}
+
 	gpGameApp->mpMessageManager->addMessage(new PathToMessage(pUnit, Vector2D(pUnit->getPositionComponent()->getPosition()), Vector2D(posX, posY)), 1);
 }
 
