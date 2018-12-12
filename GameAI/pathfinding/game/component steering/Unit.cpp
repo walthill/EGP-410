@@ -57,7 +57,6 @@ void Unit::update(float elapsedTime)
 	mCollisionData.collider.setX(getPositionComponent()->getPosition().getX());
 	mCollisionData.collider.setY(getPositionComponent()->getPosition().getY());
 
-
 	mUnitStateMachine->update();
 }
 

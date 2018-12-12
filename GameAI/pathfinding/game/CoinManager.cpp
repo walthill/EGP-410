@@ -20,11 +20,10 @@ CoinManager::~CoinManager()
 void CoinManager::cleanup()
 {
 	//delete [] timeToSpawnList; //TODO: cleanup coin manager
-	if (timeToSpawnList != NULL)
+	//if (timeToSpawnList != NULL)
 	{
-	//	delete[] timeToSpawnList;
-
-	//	timeToSpawnList = NULL;
+		delete[] timeToSpawnList;
+		timeToSpawnList = NULL;
 	}
 }
 
@@ -51,6 +50,11 @@ void CoinManager::process()
 		{
 			//respawn timer is run when coin has been destroyed
 			timeToSpawnList[i]++;
+
+			if (i < currentCoinCount - numberOfPowerUps)
+				secondsUntilRespawn = powerUpRespawnTime;
+			else
+				secondsUntilRespawn = coinRespawnTime;
 
 			if (timeToSpawnList[i] > secondsUntilRespawn*FPS)
 			{

@@ -21,7 +21,7 @@
 #include "../game/component steering/UnitManager.h"
 #include "Player.h"
 #include "CoinManager.h"
-
+#include "simpleini-4.17\SimpleIni.h"
 #include "DepthFirstPathfinder.h"
 
 #include "InputManager.h"
@@ -56,7 +56,9 @@ bool GameApp::init()
 
 		return false;
 	}
-	//installListeners();
+
+	loadGameData();
+
 	mpMessageManager = new GameMessageManager();
 
 	mpInput = new InputManager();
@@ -69,11 +71,11 @@ bool GameApp::init()
 
 	//create the GridGraph for pathfinding
 	mpGridGraph = new GridGraph(mpGrid);
+	
 	//init the nodes and connections
 	mpGridGraph->init();
-//	mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
+	
 	mpPathfinder = new AStarPathfinder(mpGridGraph);
-	//mpPathfinder = 
 	pathfinderIndex = 2;
 
 	//load buffers
@@ -98,6 +100,21 @@ bool GameApp::init()
 	{
 		pCoinSprite = mpSpriteManager->createAndManageSprite(COIN_SPRITE_ID, pCoinBuffer, 0, 0, (float)pCoinBuffer->getWidth(), (float)pCoinBuffer->getHeight());
 	}
+
+	GraphicsBuffer* pHealthPowerBuffer = mpGraphicsBufferManager->getBuffer(mHealthIconBufferID);
+	Sprite* pHealthPowerSprite = NULL;
+	if (pHealthPowerBuffer != NULL)
+	{
+		pHealthPowerSprite = mpSpriteManager->createAndManageSprite(HEALTH_POWER_SPRITE_ID, pHealthPowerBuffer, 0, 0, (float)pHealthPowerBuffer->getWidth(), (float)pHealthPowerBuffer->getHeight());
+	}
+
+	GraphicsBuffer* pPowerBuffer = mpGraphicsBufferManager->getBuffer(mPowerIconBufferID);
+	Sprite* pPowerSprite = NULL;
+	if (pPowerBuffer != NULL)
+	{
+		pPowerSprite = mpSpriteManager->createAndManageSprite(POWER_SPRITE_ID, pPowerBuffer, 0, 0, (float)pPowerBuffer->getWidth(), (float)pPowerBuffer->getHeight());
+	}
+
 
 	//Initializing player 
 
@@ -154,76 +171,92 @@ bool GameApp::init()
 	mCoinManager->setMaxCoinCount(maxNumberOfCoins);
 	mCoinManager->initCoinCollection();
 
+	mCoinManager->setSecondsUntilCoinRespawn(mCoinSpawnTime);
+	mCoinManager->setSecondsUntilPowerupRespawn(mPowerSpawnTime);
+	
+	int maxPowerUps = mNumberOfPowerups + mNumberOfHealthPickups;
+	mCoinManager->setPowerupAmount(maxPowerUps);
 
-	int intervalToSpawnCoin = 10; //TODO: make data driven
-	int intervalCounter = 0;
+	if (mCoinSpacingStartIndex >= mCoinSpacing-1)
+		mCoinSpacingStartIndex = 0;
+
+	int intervalCounter = mCoinSpacingStartIndex;
 	
 	//place coin at every clear grid location to start game
 	for (int i = 0; i < mpGrid->getGridHeight()*mpGrid->getGridWidth(); i++)
 	{
-		intervalCounter++;
+		if (mpGrid->getValueAtIndex(i) != BLOCKING_VALUE)
+		{
+			intervalCounter++;
 
-		if (intervalCounter >= intervalToSpawnCoin && mpGrid->getValueAtIndex(i) != BLOCKING_VALUE)
-		{	
-			Vector2D coinPos = mpGrid->getULCornerOfSquare(i);
-			coinPos.setX(coinPos.getX() + 16);
-			coinPos.setY(coinPos.getY() + 16);
+			if (intervalCounter >= mCoinSpacing)
+			{
+				Vector2D coinPos = mpGrid->getULCornerOfSquare(i);
+				coinPos.setX(coinPos.getX() + 16);
+				coinPos.setY(coinPos.getY() + 16);
 
-			Unit* pUnit = mpUnitManager->createUnit(*pCoinSprite);
-			pUnit->getPositionComponent()->setPosition(coinPos);
+				Unit* pUnit = mpUnitManager->createUnit(*pCoinSprite);
+				pUnit->getPositionComponent()->setPosition(coinPos);
 
-			pUnit->getCollider()->initCollider(pUnit->getPositionComponent()->getPosition().getX(),
-				pUnit->getPositionComponent()->getPosition().getY(),
-				16, 16, COIN, pUnit);
-				
-			mCoinManager->trackCoin(pUnit);
-			mpGrid->setValueAtIndex(i, COIN_VALUE);
-			intervalCounter = 0;
-			
+				pUnit->getCollider()->initCollider(pUnit->getPositionComponent()->getPosition().getX(),
+					pUnit->getPositionComponent()->getPosition().getY(),
+					16 + 2, 16 + 2, COIN, pUnit);
+
+				mCoinManager->trackCoin(pUnit);
+				mpGrid->setValueAtIndex(i, COIN_VALUE);
+				intervalCounter = mCoinSpacingStartIndex;
+			}
 		}
 	}
-
 	
+	//power ups
+	int powerUpCounter = 0;
 
-	//spawn coins
-/*	for (size_t i = 0; i < numCoins; i++)
+	for (int i = 0; i < maxPowerUps; i++)
 	{
-		Unit* pUnit = mpUnitManager->createRandomUnit(*pCoinSprite);
-	//	UnitID currentUnitID = pUnit->getUnitID();
+		powerUpCounter++;
 
+		ColliderType tag;
+		Sprite* spriteToSpawn;
+		if (powerUpCounter <= mNumberOfHealthPickups)
+		{
+			spriteToSpawn = pHealthPowerSprite;
+			tag = HEALTH_POWER;
+		}
+		else if (powerUpCounter > mNumberOfHealthPickups && powerUpCounter <= maxPowerUps)
+		{
+			spriteToSpawn = pPowerSprite;
+			tag = POWERUP;
+		}
+
+		Unit* pUnit = mpUnitManager->createUnit(*spriteToSpawn);
+		pUnit->randomizePosition();
 		float x = pUnit->getPositionComponent()->getPosition().getX();
 		float y = pUnit->getPositionComponent()->getPosition().getY();
 
-		//check if unit is within or adjacent to a wall tile, randomize its position until it is not
 		int squareIndex = mpGrid->getSquareIndexFromPixelXY(x, y);
-		std::vector<int> adjacencies = mpGrid->getAdjacentIndices(squareIndex);
 
-		for (unsigned int adjIndex = 0; adjIndex < adjacencies.size(); adjIndex++)
+		while (mpGrid->getValueAtIndex(squareIndex) == BLOCKING_VALUE 
+			   || mpGrid->getValueAtIndex(squareIndex) == COIN_VALUE)
 		{
-			while (mpGrid->getValueAtIndex(adjacencies[adjIndex]) == BLOCKING_VALUE)
-			{
-				cout << "COINWALL" << endl;
-				pUnit->randomizePosition();
-				x = pUnit->getPositionComponent()->getPosition().getX();
-				y = pUnit->getPositionComponent()->getPosition().getY();
+			pUnit->randomizePosition();
+			x = pUnit->getPositionComponent()->getPosition().getX();
+			y = pUnit->getPositionComponent()->getPosition().getY();
 
-				squareIndex = mpGrid->getSquareIndexFromPixelXY(x, y);
-
-				adjacencies = mpGrid->getAdjacentIndices(squareIndex);
-				adjIndex = 0;
-			}
+			squareIndex = mpGrid->getSquareIndexFromPixelXY(x, y);
 		}
 
-		/*if (mpGrid->getValueAtIndex(squareIndex) == COIN_VALUE)
-		{
-			cout << "delete coin" << endl;
-			mpUnitManager->deleteUnit(currentUnitID);
-		}
-		else
-		{
-			mpGrid->setValueAtIndex(squareIndex, COIN_VALUE);
-		}
-	}*/
+		Vector2D pos = mpGrid->getULCornerOfSquare(squareIndex);
+
+		pUnit->getPositionComponent()->setPosition(pos);
+		
+		pUnit->getCollider()->initCollider(pUnit->getPositionComponent()->getPosition().getX(),
+											pUnit->getPositionComponent()->getPosition().getY(),
+											16+2, 16+2, tag, pUnit);
+
+		mCoinManager->trackCoin(pUnit);
+		mpGrid->setValueAtIndex(squareIndex, COIN_VALUE);
+	}
 
 	//debug display
 	pContent = new PathfindingDebugContent( mpPathfinder );
@@ -234,16 +267,36 @@ bool GameApp::init()
 	//THIS IS WHERE WE DECIDE HOW MANY PATHS ARE IN THE POOL!
 	mpPathPool = new PathPool(5);
 
-
 	mpMasterTimer->start();
 	return true;
 }
 
 
+void GameApp::loadGameData()
+{
+	cout << "Loading game data from " + mINI_FILE << endl;
+	//"section", "key",	default, "filename"
+	CSimpleIniA ini;
+	ini.SetUnicode();
+	ini.LoadFile(mINI_FILE.c_str());
+
+	const char * iniCoinSpacing = ini.GetValue("PICKUPVALUES", "coinspacing", "default");
+	const char * iniCoinTimer = ini.GetValue("PICKUPVALUES", "cointime", "default");
+	const char * iniPowerTimer = ini.GetValue("PICKUPVALUES", "powertime", "default");
+	const char * iniHealthPickups = ini.GetValue("PICKUPVALUES", "healthamount", "default");
+	const char * iniPowerupPickups = ini.GetValue("PICKUPVALUES", "powerupamount", "default");
+	const char * iniCoinSpaceStart = ini.GetValue("PICKUPVALUES", "coinspacestart", "default");
+
+	mCoinSpacingStartIndex = atoi(iniCoinSpaceStart);
+	mNumberOfHealthPickups = atoi(iniHealthPickups);
+	mNumberOfPowerups = atoi(iniPowerupPickups);
+	mCoinSpacing = atoi(iniCoinSpacing);
+	mPowerSpawnTime = atoi(iniPowerTimer);
+	mCoinSpawnTime= atoi(iniCoinTimer);
+}
+
 void GameApp::cleanup()
 {
-//	delete mPlayer;
-
 	int size = gpPaths.size();
 	for (int i = 0; i < size; i++)
 	{
@@ -251,8 +304,6 @@ void GameApp::cleanup()
 		gpPaths.erase(gpPaths.begin());
 	}
 	gpPaths.clear();
-
-	
 
 	delete mpPathPool;
 	mpPathPool = NULL;
@@ -278,10 +329,12 @@ void GameApp::cleanup()
 	delete mpUnitManager;
 	mpUnitManager = NULL;
 
-//	mCoinManager->cleanup();
-	//delete mCoinManager;
-//	delete mPlayer;
-//	mPlayer = NULL;
+	mCoinManager->cleanup();
+	delete mCoinManager;
+	mCoinManager = NULL;
+
+	delete mPlayer;
+	mPlayer = NULL;
 }
 
 void GameApp::beginLoop()
@@ -299,6 +352,7 @@ void GameApp::processLoop()
 	GraphicsBuffer* pBackBuffer = mpGraphicsSystem->getBackBuffer();
 	//copy to back buffer
 	mpGridVisualizer->draw( *pBackBuffer );
+
 #ifdef VISUALIZE_PATH
 	//show pathfinder visualizer
 	//mpPathfinder->drawVisualization(mpGrid, pBackBuffer);

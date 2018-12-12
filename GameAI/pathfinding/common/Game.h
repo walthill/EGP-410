@@ -34,6 +34,11 @@ const IDType AI_ICON_SPRITE_ID = 2;
 const IDType TARGET_SPRITE_ID = 3;
 const IDType COIN_SPRITE_ID = 4;
 
+
+
+const IDType HEALTH_POWER_SPRITE_ID = 5;
+const IDType POWER_SPRITE_ID = 6;
+
 //how long should each frame of execution take? 30fps = 33.3ms/frame
 const float LOOP_TARGET_TIME = 33.3f;
 
@@ -81,7 +86,8 @@ protected:
 	GraphicsBufferID mEnemyIconBufferID = "enemyarrow";
 	GraphicsBufferID mTargetBufferID = "target";
 	GraphicsBufferID mCoinIconBufferID = "coin";
-
+	GraphicsBufferID mHealthIconBufferID = "health";
+	GraphicsBufferID mPowerIconBufferID = "power";
 };
 
 float genRandomBinomial();//range -1:1 from "Artificial Intelligence for Games", Millington and Funge

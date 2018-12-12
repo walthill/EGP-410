@@ -21,7 +21,9 @@ class Player : public Trackable
 		Player();
 		~Player();
 
-		void process(std::vector<Unit*> mUnitMap);
+		void process(std::vector<Unit*> &unitMap);
+		void performCollisionChecks(std::vector<Unit*> &unitMap);
+
 
 		void hookPlayerUnit(Unit* playersUnit);
 		Unit* getPlayerUnit() { return playerUnit; };

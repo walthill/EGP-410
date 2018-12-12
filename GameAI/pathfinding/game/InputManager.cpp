@@ -26,24 +26,7 @@ void InputManager::process()
 			case SDL_MOUSEBUTTONDOWN:
 				if (mEvent.button.button == SDL_BUTTON_LEFT)
 				{	
-	/*				//clear pool
-					gpGameApp->getPathPool()->resetPathUse();
-					//clear gpPaths
-					int size = gpGameApp->gpPaths.size();
-					for (int i = 0; i < size; i++)
-					{
-						delete gpGameApp->gpPaths[0];
-						gpGameApp->gpPaths.erase(gpGameApp->gpPaths.begin());
-					}
-
-					x = mEvent.motion.x;
-					y = mEvent.motion.y;
-					Vector2D pos(0, 768 * 0.5); // middle left
-
-					cout << "player Pathfinding" << endl;
-					//pathfind for player player units
-					gpGame->getUnitManager()->getPlayerUnit()->generatePath(pos);
-*/				}
+				}
 				break;
 
 			case SDL_KEYDOWN:
