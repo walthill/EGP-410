@@ -20,6 +20,12 @@ void IdleState::onExit()
 
 StateTransition* IdleState::update()
 {
+	//health
+	if (pUnit->mUnitStateMachine->getHealth() <= 0)
+	{
+		gpGameApp->getUnitManager()->deleteUnit(pUnit->getUnitID());
+	}
+	
 	frames++;
 
 

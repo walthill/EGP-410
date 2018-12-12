@@ -8,6 +8,7 @@
 #include "UnitStateMachine.h"
 #include "Path.h"
 #include "Node.h"
+#include "../game/component steering/UnitManager.h"
 
 
 using namespace std;
@@ -25,6 +26,11 @@ void ChaseState::onExit()
 
 StateTransition* ChaseState::update()
 {
+	//health
+	if (pUnit->mUnitStateMachine->getHealth() <= 0)
+	{
+		gpGameApp->getUnitManager()->deleteUnit(pUnit->getUnitID());
+	}
 	++frames;
 
 	if (frames / 30 > 2)//pathfind to target every certain time
