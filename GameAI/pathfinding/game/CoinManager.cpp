@@ -69,7 +69,7 @@ void CoinManager::process()
 						cout << i << ": RESPAWN" << endl;
 
 						Sprite* coinSprite = gameHandle->getSpriteManager()->getSprite(COIN_SPRITE_ID);
-						Unit* pUnit = gameHandle->getUnitManager()->createUnit(*coinSprite);
+						Unit* pUnit = gameHandle->getUnitManager()->createUnit(COIN_UNIT, *coinSprite);
 
 						int randVal = rand() % emptyCoinIndexList.size();
 						int randomEmptyIndex = emptyCoinIndexList[randVal];

@@ -26,6 +26,7 @@ class PathfindingDebugContent;
 class DebugDisplay;
 class Player;
 class CoinManager;
+class EnemyPool;
 
 class GameApp: public Game
 {
@@ -58,6 +59,8 @@ public:
 
 	int pathfinderIndex;
 	std::vector<Path*> gpPaths;
+	int totalEnemies;
+	EnemyPool* mpEnemyPool;
 
 private:
 	Grid* mpGrid;

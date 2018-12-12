@@ -32,7 +32,7 @@ class Unit : public Trackable
 public:
 	void draw() const;
 	float getFacing() const;
-	void update(float elapsedTime);
+	void update();
 	void cleanup();
 
 	PositionComponent* getPositionComponent() const;
@@ -48,6 +48,7 @@ public:
 	void respawn() { mDestroyed = false; };
 	UnitID getUnitID() { return mID; };
 	void randomizePosition();
+	void setStateMachine(bool state) { hasState = state; };
 	
 	void generatePath(Vector2D posToReach);
 	void setPath(Path path);
@@ -64,6 +65,7 @@ public:
 	void setSteering(Steering::SteeringType type, Vector2D targetLoc = ZERO_VECTOR2D, UnitID targetUnitID = INVALID_UNIT_ID);
 
 private:
+	bool hasState;
 	UnitID mID;
 	ComponentID mPhysicsComponentID;
 	ComponentID mPositionComponentID;

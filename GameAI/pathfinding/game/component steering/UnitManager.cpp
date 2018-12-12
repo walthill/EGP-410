@@ -7,6 +7,8 @@
 #include "ComponentManager.h"
 #include "GraphicsSystem.h"
 #include "../UnitStateMachine.h"
+#include "../game/GameApp.h"
+#include "Grid.h"
 
 UnitID UnitManager::msNextUnitID = PLAYER_UNIT_ID + 1;
 
@@ -29,7 +31,7 @@ UnitManager::~UnitManager()
 	}
 }
 
-Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const PositionData& posData /*= ZERO_POSITION_DATA*/, const PhysicsData& physicsData /*= ZERO_PHYSICS_DATA*/, const UnitID& id)
+Unit* UnitManager::createUnit(unitType unitType, const Sprite& sprite, bool shouldWrap, const PositionData& posData /*= ZERO_POSITION_DATA*/, const PhysicsData& physicsData /*= ZERO_PHYSICS_DATA*/, const UnitID& id)
 {
 	Unit* pUnit = NULL;
 
@@ -66,13 +68,20 @@ Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const Posit
 		pUnit->mMaxRotAcc = MAX_ROT_ACC;
 		pUnit->mMaxRotVel = MAX_ROT_VEL;
 		
-		if(pUnit->mID == 0)
+		if(unitType == PLAYER_UNIT)
 		{
-			pUnit->mUnitStateMachine = new UnitStateMachine(0, 0);
+			pUnit->mUnitStateMachine = new UnitStateMachine(0, pUnit->mID);
+			pUnit->setStateMachine(false);
 		}
-		else
+		if(unitType == ENEMY_UNIT)
 		{
 			pUnit->mUnitStateMachine = new UnitStateMachine(1, pUnit->mID);
+			pUnit->setStateMachine(true);
+		}
+		if (unitType == COIN_UNIT)
+		{
+			pUnit->mUnitStateMachine = NULL;
+			pUnit->setStateMachine(false);
 		}
 	}
 
@@ -82,18 +91,31 @@ Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const Posit
 
 Unit* UnitManager::createPlayerUnit(const Sprite& sprite, bool shouldWrap /*= true*/, const PositionData& posData /*= ZERO_POSITION_DATA*/, const PhysicsData& physicsData /*= ZERO_PHYSICS_DATA*/)
 {
-	return createUnit(sprite, false, posData, physicsData, PLAYER_UNIT_ID);
+	return createUnit(PLAYER_UNIT, sprite, false, posData, physicsData, PLAYER_UNIT_ID);
 }
 
-Unit* UnitManager::createRandomUnit(const Sprite& sprite)
+
+//the one we want to call at this point
+Unit* UnitManager::createRandomUnit(unitType unitType, const Sprite& sprite)
 {
 	int posX = rand() % gpGame->getGraphicsSystem()->getWidth();
 	int posY = rand() % gpGame->getGraphicsSystem()->getHeight();
 
-	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0));
+	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
+	int index = gpGameApp->getGrid()->getSquareIndexFromPixelXY(posX, posY);
+	while (gpGameApp->getGrid()->getValueAtIndex(index) == BLOCKING_VALUE)
+	{
+		posX = rand() % gpGame->getGraphicsSystem()->getWidth();
+		posY = rand() % gpGame->getGraphicsSystem()->getHeight();
+		index = gpGameApp->getGrid()->getSquareIndexFromPixelXY(posX, posY);
+	}
+	
+	Unit* pUnit = createUnit(unitType, sprite, true, PositionData(gpGameApp->getGrid()->getULCornerOfSquare(index), 0)); //Spawning a unit of type unitType
 
 	if (pUnit != NULL)
 		pUnit->setSteering(Steering::PATH_STEER, Vector2D(gpGame->getGraphicsSystem()->getWidth() / 2, gpGame->getGraphicsSystem()->getHeight() / 2));
+
+
 
 	mIsNewUnit = true;
 	mCallCount = 0; //track unit creation for flocking
@@ -101,12 +123,12 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite)
 	return pUnit;
 }
 
-Unit* UnitManager::createRandomUnit(const Sprite& sprite, const UnitID& targetId)
+Unit* UnitManager::createRandomUnit(unitType unitType, const Sprite& sprite, const UnitID& targetId)
 {
 	int posX = rand() % gpGame->getGraphicsSystem()->getWidth();
 	int posY = rand() % gpGame->getGraphicsSystem()->getHeight();
 
-	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0));
+	Unit* pUnit = createUnit(unitType, sprite, true, PositionData(Vector2D(posX, posY), 0));//Spawning an Enemy
 	//pUnit->setShowTarget(true);
 	if (pUnit != NULL)
 		pUnit->setSteering(Steering::FLOCK, Vector2D(gpGame->getGraphicsSystem()->getWidth()/2, gpGame->getGraphicsSystem()->getHeight()/2));
@@ -213,7 +235,7 @@ void UnitManager::updateAll(float elapsedTime)
 {
 	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
 	{
-		it->second->update(elapsedTime);
+		it->second->update();
 	}
 }
 

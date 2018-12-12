@@ -66,6 +66,7 @@ Steering* PathSteering::getSteering()
 	//reset values if new path has been set or current path reached
 	if (toNodeId != oldToNodeId)
 	{
+		oldToNodeId = toNodeId;
 		nextLocationIndex = 0;
 		once = true;
 		if (hasArrived)

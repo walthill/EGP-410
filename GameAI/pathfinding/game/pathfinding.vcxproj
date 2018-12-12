@@ -123,6 +123,8 @@
     <ClInclude Include="DebugDisplay.h" />
     <ClInclude Include="DepthFirstPathfinder.h" />
     <ClInclude Include="DijkstraPathfinder.h" />
+    <ClInclude Include="EmptyState.h" />
+    <ClInclude Include="EnemyPool.h" />
     <ClInclude Include="FleeState.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameMessage.h" />
@@ -188,6 +190,8 @@
     <ClCompile Include="DebugDisplay.cpp" />
     <ClCompile Include="DepthFirstPathfinder.cpp" />
     <ClCompile Include="DijkstraPathfinder.cpp" />
+    <ClCompile Include="EmptyState.cpp" />
+    <ClCompile Include="EnemyPool.cpp" />
     <ClCompile Include="FleeState.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameMessage.cpp" />

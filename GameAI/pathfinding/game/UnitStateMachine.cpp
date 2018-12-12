@@ -2,6 +2,7 @@
 #include "ChaseState.h"
 #include "FleeState.h"
 #include "WanderState.h"
+#include "EmptyState.h"
 #include "GameApp.h"
 #include "../game/component steering/UnitManager.h"
 
@@ -12,10 +13,17 @@ UnitStateMachine::UnitStateMachine(int machineType, int unitID)
 	Unit* pUnit = gpGameApp->getUnitManager()->getUnit(unitID);
 
 
-	//states
-	pIdleState = new IdleState(0, 10);
 	if (machineType == 0)
 	{
+		pIdleState = new EmptyState(0);
+		this->addState(pIdleState);
+		this->setInitialStateID(0);
+	}
+
+	if (machineType == 1)
+	{
+		//states
+		pIdleState = new IdleState(0, 10);
 		pWanderState = new WanderState(1, pUnit);
 		pChaseState = new ChaseState(2);
 		pFleeState = new FleeState(3);
@@ -52,10 +60,10 @@ UnitStateMachine::UnitStateMachine(int machineType, int unitID)
 		//set default dtate
 		this->setInitialStateID(0);
 	}
-	else//dummy state for coins
+	if(machineType == 2)//dummy state for coins
 	{
-		pFleeState = new FleeState(0);
-		this->addState(pFleeState);
+		pIdleState = new EmptyState(0);
+		this->addState(pIdleState);
 		this->setInitialStateID(0);
 	}
 }

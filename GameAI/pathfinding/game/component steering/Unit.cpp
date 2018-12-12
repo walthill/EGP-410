@@ -51,9 +51,10 @@ void Unit::cleanup()
 	delete mUnitStateMachine;
 }
 
-void Unit::update(float elapsedTime)
+void Unit::update()
 {
-	mUnitStateMachine->update();
+	if(hasState)
+		mUnitStateMachine->update();
 }
 
 void Unit::draw() const

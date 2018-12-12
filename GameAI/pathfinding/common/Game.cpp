@@ -69,7 +69,7 @@ bool Game::init()
 	//load buffers
 	mpGraphicsBufferManager->loadBuffer(mBackgroundBufferID, "wallpaper.bmp");
 	mpGraphicsBufferManager->loadBuffer(mPlayerIconBufferID, "arrow.png");
-	mpGraphicsBufferManager->loadBuffer(mEnemyIconBufferID, "enemy-arrow.png");
+	mpGraphicsBufferManager->loadBuffer(mEnemyIconBufferID, "enemyFullHealth.png");
 	mpGraphicsBufferManager->loadBuffer(mCoinIconBufferID, "coin.png");
 	mpGraphicsBufferManager->loadBuffer(mTargetBufferID, "target.png");
 
@@ -92,7 +92,7 @@ bool Game::init()
 	Sprite* pEnemyArrow = NULL;
 	if (pAIBuffer != NULL)
 	{
-		pEnemyArrow = mpSpriteManager->createAndManageSprite(AI_ICON_SPRITE_ID, pAIBuffer, 0, 0, (float)pAIBuffer->getWidth(), (float)pAIBuffer->getHeight());
+		pEnemyArrow = mpSpriteManager->createAndManageSprite(ENEMY_SPRITE_ID, pAIBuffer, 0, 0, (float)pAIBuffer->getWidth(), (float)pAIBuffer->getHeight());
 	}
 
 	GraphicsBuffer* pTargetBuffer = mpGraphicsBufferManager->getBuffer(mTargetBufferID);

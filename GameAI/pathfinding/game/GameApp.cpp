@@ -21,6 +21,7 @@
 #include "../game/component steering/UnitManager.h"
 #include "Player.h"
 #include "CoinManager.h"
+#include "EnemyPool.h"
 
 #include "DepthFirstPathfinder.h"
 
@@ -29,6 +30,7 @@
 #include <SDL.h>
 #include <fstream>
 #include <vector>
+#include <time.h>
 
 const int GRID_SQUARE_SIZE = 32;
 const std::string gFileName = "pathgrid.txt";
@@ -58,7 +60,6 @@ bool GameApp::init()
 	}
 	//installListeners();
 	mpMessageManager = new GameMessageManager();
-
 	mpInput = new InputManager();
 
 	//create and load the Grid, GridBuffer, and GridRenderer
@@ -105,6 +106,12 @@ bool GameApp::init()
 	pUnit->setShowTarget(false);
 	pUnit->setSteering(Steering::PATH_STEER, ZERO_VECTOR2D);
 
+	srand(unsigned(time(NULL)));
+
+	//Add enemies
+	totalEnemies = 10;										//Make this data driven
+	mpEnemyPool = new EnemyPool();
+
 	float x = pUnit->getPositionComponent()->getPosition().getX();
 	float y = pUnit->getPositionComponent()->getPosition().getY();
 
@@ -137,40 +144,40 @@ bool GameApp::init()
 
 
 
-	int maxNumberOfCoins = 0;// = 10;
+	//int maxNumberOfCoins = 0;// = 10;
 
 
-	for (int i = 0; i < mpGrid->getGridHeight()*mpGrid->getGridWidth(); i++)
-	{
-		if (mpGrid->getValueAtIndex(i) != BLOCKING_VALUE)
-		{
-			maxNumberOfCoins++;
-		}
-	}
+	//for (int i = 0; i < mpGrid->getGridHeight()*mpGrid->getGridWidth(); i++)
+	//{
+	//	if (mpGrid->getValueAtIndex(i) != BLOCKING_VALUE)
+	//	{
+	//		maxNumberOfCoins++;
+	//	}
+	//}
 
-	mCoinManager = new CoinManager();
-	mCoinManager->setMaxCoinCount(maxNumberOfCoins);
-	mCoinManager->initCoinCollection();
+	//mCoinManager = new CoinManager();
+	//mCoinManager->setMaxCoinCount(maxNumberOfCoins);
+	//mCoinManager->initCoinCollection();
 
 
-	//place coin at every clear grid location to start game
-	for (int i = 0; i < mpGrid->getGridHeight()*mpGrid->getGridWidth(); i++)
-	{
-		if (mpGrid->getValueAtIndex(i) != BLOCKING_VALUE)
-		{
-			Vector2D coinPos =  mpGrid->getULCornerOfSquare(i);
-			coinPos.setX(coinPos.getX() + 16);
-			coinPos.setY(coinPos.getY() + 16);
-			
-			Unit* pUnit = mpUnitManager->createUnit(*pCoinSprite);
-			pUnit->getPositionComponent()->setPosition(coinPos);
-			
-			pUnit->getCollider()->initCollider(pUnit->getPositionComponent()->getPosition().getX(),
-									    	   pUnit->getPositionComponent()->getPosition().getY(),
-											   16, 16, COIN, pUnit);
-			mCoinManager->trackCoin(pUnit);
-		}
-	}
+	////place coin at every clear grid location to start game
+	//for (int i = 0; i < mpGrid->getGridHeight()*mpGrid->getGridWidth(); i++)
+	//{
+	//	if (mpGrid->getValueAtIndex(i) != BLOCKING_VALUE)
+	//	{
+	//		Vector2D coinPos =  mpGrid->getULCornerOfSquare(i);
+	//		coinPos.setX(coinPos.getX() + 16);
+	//		coinPos.setY(coinPos.getY() + 16);
+	//		
+	//		Unit* pUnit = mpUnitManager->createUnit(COIN_UNIT, *pCoinSprite);
+	//		pUnit->getPositionComponent()->setPosition(coinPos);
+	//		
+	//		pUnit->getCollider()->initCollider(pUnit->getPositionComponent()->getPosition().getX(),
+	//								    	   pUnit->getPositionComponent()->getPosition().getY(),
+	//										   16, 16, COIN, pUnit);
+	//		mCoinManager->trackCoin(pUnit);
+	//	}
+	//}
 
 	
 
@@ -221,7 +228,7 @@ bool GameApp::init()
 
 
 	//THIS IS WHERE WE DECIDE HOW MANY PATHS ARE IN THE POOL!
-	mpPathPool = new PathPool(5);
+	mpPathPool = new PathPool(15);
 
 
 	mpMasterTimer->start();
@@ -279,8 +286,8 @@ void GameApp::beginLoop()
 
 void GameApp::processLoop()
 {
-	mPlayer->process(mpUnitManager->getAllUnits());
-	mCoinManager->process();
+	//mPlayer->process(mpUnitManager->getAllUnits());                                          !
+	//mCoinManager->process();
 	
 	//get back buffer
 	GraphicsBuffer* pBackBuffer = mpGraphicsSystem->getBackBuffer();
@@ -288,7 +295,7 @@ void GameApp::processLoop()
 	mpGridVisualizer->draw( *pBackBuffer );
 #ifdef VISUALIZE_PATH
 	//show pathfinder visualizer
-	//mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
+	mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
 #endif
 	
 	mpDebugDisplay->draw( pBackBuffer );

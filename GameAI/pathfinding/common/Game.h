@@ -30,7 +30,7 @@ extern Game* gpGame;
 
 const IDType BACKGROUND_SPRITE_ID = 0;
 const IDType PLAYER_ICON_SPRITE_ID = 1;
-const IDType AI_ICON_SPRITE_ID = 2;
+const IDType ENEMY_SPRITE_ID = 2;
 const IDType TARGET_SPRITE_ID = 3;
 const IDType COIN_SPRITE_ID = 4;
 
@@ -78,7 +78,7 @@ protected:
 
 	GraphicsBufferID mBackgroundBufferID = "background";
 	GraphicsBufferID mPlayerIconBufferID = "arrow";
-	GraphicsBufferID mEnemyIconBufferID = "enemyarrow";
+	GraphicsBufferID mEnemyIconBufferID = "enemy";
 	GraphicsBufferID mTargetBufferID = "target";
 	GraphicsBufferID mCoinIconBufferID = "coin";
 
