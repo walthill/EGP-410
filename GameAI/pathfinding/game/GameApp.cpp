@@ -134,7 +134,7 @@ bool GameApp::init()
 	float y = pUnit->getPositionComponent()->getPosition().getY();
 
 	//check if unit is within or adjacent to a wall tile, randomize its position until it is not
-	int squareIndex = mpGrid->getSquareIndexFromPixelXY(x, y);
+	int squareIndex = mpGrid->getSquareIndexFromPixelXY((int)x, (int)y);
 	std::vector<int> adjacencies = mpGrid->getAdjacentIndices(squareIndex);
 
 	for (unsigned int adjIndex = 0; adjIndex < adjacencies.size(); adjIndex++)
@@ -146,7 +146,7 @@ bool GameApp::init()
 
 			x = pUnit->getPositionComponent()->getPosition().getX();
 			y = pUnit->getPositionComponent()->getPosition().getY();
-			squareIndex = mpGrid->getSquareIndexFromPixelXY(x, y);
+			squareIndex = mpGrid->getSquareIndexFromPixelXY((int)x, (int)y);
 
 			pUnit->getPositionComponent()->setPosition(mpGrid->getULCornerOfSquare(squareIndex));
 
@@ -163,8 +163,7 @@ bool GameApp::init()
 
 
 
-	//int maxNumberOfCoins = 0;// = 10;
-
+	int maxNumberOfCoins = 0;// = 10;
 
 	//setup maximum possible coin value
 	for (int i = 0; i < mpGrid->getGridHeight()*mpGrid->getGridWidth(); i++)
@@ -203,7 +202,7 @@ bool GameApp::init()
 				coinPos.setX(coinPos.getX() + 16);
 				coinPos.setY(coinPos.getY() + 16);
 
-				Unit* pUnit = mpUnitManager->createUnit(*pCoinSprite);
+				Unit* pUnit = mpUnitManager->createUnit(COIN_UNIT, *pCoinSprite);
 				pUnit->getPositionComponent()->setPosition(coinPos);
 
 				pUnit->getCollider()->initCollider(pUnit->getPositionComponent()->getPosition().getX(),
@@ -237,12 +236,12 @@ bool GameApp::init()
 			tag = POWERUP;
 		}
 
-		Unit* pUnit = mpUnitManager->createUnit(*spriteToSpawn);
+		Unit* pUnit = mpUnitManager->createUnit(COIN_UNIT, *spriteToSpawn);
 		pUnit->randomizePosition();
 		float x = pUnit->getPositionComponent()->getPosition().getX();
 		float y = pUnit->getPositionComponent()->getPosition().getY();
 
-		int squareIndex = mpGrid->getSquareIndexFromPixelXY(x, y);
+		int squareIndex = mpGrid->getSquareIndexFromPixelXY((int)x, (int)y);
 
 		while (mpGrid->getValueAtIndex(squareIndex) == BLOCKING_VALUE 
 			   || mpGrid->getValueAtIndex(squareIndex) == COIN_VALUE)
@@ -251,7 +250,7 @@ bool GameApp::init()
 			x = pUnit->getPositionComponent()->getPosition().getX();
 			y = pUnit->getPositionComponent()->getPosition().getY();
 
-			squareIndex = mpGrid->getSquareIndexFromPixelXY(x, y);
+			squareIndex = mpGrid->getSquareIndexFromPixelXY((int)x, (int)y);
 		}
 
 		Vector2D pos = mpGrid->getULCornerOfSquare(squareIndex);
@@ -349,13 +348,15 @@ void GameApp::beginLoop()
 {
 	//should be the first thing done
 	Game::beginLoop();
+
 }
 
 void GameApp::processLoop()
 {
-	//mPlayer->process(mpUnitManager->getAllUnits());                                          !
-	//mCoinManager->process();
 	
+	mPlayer->process(mpUnitManager->getAllUnits());
+	mCoinManager->process();
+
 	//get back buffer
 	GraphicsBuffer* pBackBuffer = mpGraphicsSystem->getBackBuffer();
 	//copy to back buffer
@@ -363,7 +364,7 @@ void GameApp::processLoop()
 
 #ifdef VISUALIZE_PATH
 	//show pathfinder visualizer
-	mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
+	//mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
 #endif
 	
 	mpDebugDisplay->draw( pBackBuffer );
