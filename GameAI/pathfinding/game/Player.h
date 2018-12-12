@@ -28,6 +28,7 @@ class Player : public Trackable
 		Unit* getPlayerUnit() { return playerUnit; };
 
 		void setHealth(int health) { mHealth = health; };
+		int getHealth() { return mHealth; };
 };
 
 #endif // !PLAYER_H

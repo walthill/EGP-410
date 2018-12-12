@@ -306,12 +306,18 @@ void GameApp::loadGameData()
 	const char * iniHealthPickups = ini.GetValue("PICKUPVALUES", "healthamount", "default");
 	const char * iniPowerupPickups = ini.GetValue("PICKUPVALUES", "powerupamount", "default");
 	const char * iniCoinSpaceStart = ini.GetValue("PICKUPVALUES", "coinspacestart", "default");
+	const char * iniHealValue = ini.GetValue("PICKUPVALUES", "healthpackheal", "default");
+
 	const char * iniBadGuyAmount = ini.GetValue("GAME", "numbadguys", "default");
 	const char * iniFlavorText = ini.GetValue("GAME", "flavortext", "default");
 	const char * iniLoseText = ini.GetValue("GAME", "losetext", "default");
 	const char * iniPowerupValue = ini.GetValue("GAME", "powerupscore", "default");
 	const char * iniCoinValue = ini.GetValue("GAME", "coinscore", "default");
-	const char * iniPlayerHealth = ini.GetValue("GAME", "playerhealth", "default");
+	const char * iniPlayerHealth = ini.GetValue("GAME", "playerhp", "default");
+	const char * iniPlayerDamageRadius = ini.GetValue("GAME", "playerdmgradius", "default");
+	const char * iniEnemyDamageRadius = ini.GetValue("GAME", "enemydmgradius", "default");
+	const char * iniEnemyTimer = ini.GetValue("GAME", "enemyspawntime", "default");
+	const char * iniEnemyHealth = ini.GetValue("GAME", "enemyhp", "default");
 
 	mCoinSpacingStartIndex = atoi(iniCoinSpaceStart);
 	mNumberOfHealthPickups = atoi(iniHealthPickups);
@@ -325,6 +331,11 @@ void GameApp::loadGameData()
 	mCoinScoreValue = atoi(iniCoinValue);
 	mPowerupScoreValue = atoi(iniPowerupValue);
 	mPlayerHealth = atoi(iniPlayerHealth);
+	mEnemyHealth = atoi(iniEnemyHealth);
+	mHealValue = atoi(iniHealValue);
+	mPlayerDmgRadius = atoi(iniPlayerDamageRadius);
+	mEnemyDmgRadius = atoi(iniEnemyDamageRadius);
+	mEnemySpawnTime = atoi(iniEnemyTimer);
 }
 
 void GameApp::cleanup()
@@ -449,4 +460,24 @@ void GameApp::addPowerupScore()
 {
 	mScore += mPowerupScoreValue;
 	pContent->setScoreDisplay(mScore);
+}
+
+int GameApp::heal()
+{
+	return mHealValue;
+}
+
+void GameApp::PlayerPowerUp()
+{
+	playerPoweredUp = true;
+}
+
+void GameApp::PlayerPowerDown()
+{
+	playerPoweredUp = false;
+}
+
+bool GameApp::isPlayerPoweredUp()
+{
+	return playerPoweredUp;
 }

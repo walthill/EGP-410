@@ -49,7 +49,10 @@ public:
 	void tickSurvivalTimer();
 	void addCoinScore();
 	void addPowerupScore();
-
+	int heal();
+	void PlayerPowerUp();
+	void PlayerPowerDown();
+	bool isPlayerPoweredUp();
 
 	//accessors
 	inline GameMessageManager* getMessageManager() { return mpMessageManager; };
@@ -63,7 +66,6 @@ public:
 	GridPathfinder* mpPathfinder;
 	GridGraph* mpGridGraph;
 	GameMessageManager* mpMessageManager;
-//	PathfindingDebugContent *pContent;
 	ScoreboardContent *pContent;
 	DebugDisplay* mpDebugDisplay;
 
@@ -82,17 +84,18 @@ private:
 	CoinManager* mCoinManager;
 
 	bool lost = false;
-
+	bool playerPoweredUp = false;
 	//data driven variables
 	const string mINI_FILE = "data.ini";
 
 	int mCoinSpawnTime, mPowerSpawnTime, mCoinSpacing, mCoinSpacingStartIndex;
-	int mNumberOfHealthPickups, mNumberOfPowerups, mNumberOfEnemies, mCoinScoreValue, mPowerupScoreValue;
-	int mPlayerHealth, mEnemyHealth;
+	int mNumberOfHealthPickups, mNumberOfPowerups, mNumberOfEnemies;
+	int mPlayerHealth, mEnemyHealth, mHealValue, mCoinScoreValue, mPowerupScoreValue;
+	int mPlayerDmgRadius, mEnemyDmgRadius, mEnemySpawnTime;
+
 	int mScore = 0, mTime = 0, timer = 0;
 	string mFlavorText, mLostText;
 
 	double millisec = 0;
 	int sec = 0, min = 0;
 };
-
