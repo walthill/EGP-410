@@ -36,3 +36,8 @@ void FleeState::updateTarget(Unit* target)
 {
 	mTarget = target;
 }
+
+void FleeState::setAggroRange(int range)
+{
+	aggroRange = range;
+}

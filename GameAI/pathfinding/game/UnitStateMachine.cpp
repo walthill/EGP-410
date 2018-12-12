@@ -12,6 +12,7 @@ UnitStateMachine::UnitStateMachine(int machineType, int unitID)
 	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
 	Unit* pUnit = gpGameApp->getUnitManager()->getUnit(unitID);
 
+	player = gpGameApp->getUnitManager()->getPlayerUnit();
 
 	if (machineType == 0)
 	{
@@ -25,8 +26,8 @@ UnitStateMachine::UnitStateMachine(int machineType, int unitID)
 		//states
 		pIdleState = new IdleState(0, 10);
 		pWanderState = new WanderState(1, pUnit);
-		pChaseState = new ChaseState(2);
-		pFleeState = new FleeState(3);
+		pChaseState = new ChaseState(2, pUnit);
+		pFleeState = new FleeState(3, pUnit);
 
 
 		//transitions
@@ -68,6 +69,16 @@ UnitStateMachine::UnitStateMachine(int machineType, int unitID)
 	}
 }
 
+bool UnitStateMachine::isPowered()
+{
+	return powered;
+}
+
+void UnitStateMachine::setPowered(bool power)
+{
+	powered = power;
+}
+
 void UnitStateMachine::updateTarget(Unit* target)
 {
 	ChaseState* pChaseState = dynamic_cast<ChaseState*>(pChaseState);
@@ -76,4 +87,14 @@ void UnitStateMachine::updateTarget(Unit* target)
 	pFleeState->updateTarget(target);
 	WanderState* pWanderState = dynamic_cast<WanderState*>(pWanderState);
 	pWanderState->updateTarget(target);
+}
+
+void UnitStateMachine::setAggroRange(int range)
+{
+	ChaseState* pChaseState = dynamic_cast<ChaseState*>(pChaseState);
+	pChaseState->setAggroRange(range);
+	WanderState* pWanderState = dynamic_cast<WanderState*>(pWanderState);
+	pWanderState->setAggroRange(range);
+	FleeState* pFleeState = dynamic_cast<FleeState*>(pFleeState);
+	pFleeState->setAggroRange(range);
 }
