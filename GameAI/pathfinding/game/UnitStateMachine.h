@@ -28,7 +28,14 @@ public:
 	StateTransition* pToFleeTrans;
 
 	void updateTarget(Unit* target);
+	bool isPowered();
+	void setPowered(bool power);
+	void setAggroRange(int range);
+	Unit* getPlayer() { return player; };
 
 protected:
-
+	int health = 100;
+	bool powered;
+	int aggroRange;
+	Unit* player;
 };

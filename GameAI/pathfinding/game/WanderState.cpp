@@ -5,7 +5,6 @@
 #include "../game/component steering/Unit.h"
 #include "../game/component steering/UnitManager.h"
 #include "../game/GridPathfinder.h"
-#include "GameApp.h"
 #include "Vector2D.h"
 #include "PathToMessage.h"
 #include "GameMessageManager.h"
@@ -13,14 +12,12 @@
 #include "Grid.h"
 #include "Path.h"
 #include "Node.h"
+#include "UnitStateMachine.h"
 
 using namespace std;
 
 void WanderState::onEntrance()
 {
-	
-	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
-	
 	//pick a random point and pathfind to it
 	int posX = rand() % gpGame->getGraphicsSystem()->getWidth();
 	int posY = rand() % gpGame->getGraphicsSystem()->getHeight();
@@ -47,25 +44,60 @@ void WanderState::onExit()
 
 StateTransition* WanderState::update()
 {
-	//override transition to chase/flee if player is near and powered/not powered
-	cout << pUnit->getPath() << endl;
+	//Health transitions =================================
+
+
+
+	//Player transitions =================================
+
+	float distance = (pUnit->mUnitStateMachine->getPlayer()->getPositionComponent()->getPosition() - pUnit->getPositionComponent()->getPosition()).getLength();
+
+	if (distance > aggroRange && !pUnit->mUnitStateMachine->getPlayer()->mUnitStateMachine->isPowered())//player in range and not powered
+	{
+		pUnit->mUnitStateMachine->updateTarget(pUnit->mUnitStateMachine->getPlayer());
+		//find the right transition
+		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(CHASE_TRANSITION);
+		if (iter != mTransitions.end())//found?
+		{
+			StateTransition* pTransition = iter->second;
+			return pTransition;
+		}
+	}
+	if (distance > aggroRange && gpGameApp->getUnitManager()->getPlayerUnit()->mUnitStateMachine->isPowered())//player in range and powered
+	{
+		pUnit->mUnitStateMachine->updateTarget(pUnit->mUnitStateMachine->getPlayer());
+		//find the right transition
+		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(FLEE_TRANSITION);
+		if (iter != mTransitions.end())//found?
+		{
+			StateTransition* pTransition = iter->second;
+			return pTransition;
+		}
+	}
+	
+	
+	
+	
+
+	//destination reached==============================
+	
 	if (pUnit->getNumPathNodes() == 0)
 	{
 		onEntrance();
 	}
-
-		GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
-		if (gpGameApp->getGrid()->getSquareIndexFromPixelXY(pUnit->getPositionComponent()->getPosition().getX(), 
-			pUnit->getPositionComponent()->getPosition().getY()) == pUnit->getPath()->peekNextNode()->getId())//destination reached
+	if (gpGameApp->getGrid()->getSquareIndexFromPixelXY(pUnit->getPositionComponent()->getPosition().getX(),
+		pUnit->getPositionComponent()->getPosition().getY()) == pUnit->getPath()->peekNextNode()->getId())
+	{
+		//find the right transition
+		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(IDLE_TRANSITION);
+		if (iter != mTransitions.end())//found?
 		{
-			//find the right transition
-			map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(IDLE_TRANSITION);
-			if (iter != mTransitions.end())//found?
-			{
-				StateTransition* pTransition = iter->second;
-				return pTransition;
-			}
+			StateTransition* pTransition = iter->second;
+			return pTransition;
 		}
+	}
+
+	
 	
 	
 	return NULL;//no transition
@@ -74,4 +106,9 @@ StateTransition* WanderState::update()
 void WanderState::updateTarget(Unit* target)
 {
 	pTarget = target;
+}
+
+void WanderState::setAggroRange(int range)
+{
+	aggroRange = range;
 }
