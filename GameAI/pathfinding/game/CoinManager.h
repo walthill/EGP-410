@@ -7,34 +7,36 @@
 class Unit;
 class Sprite;
 class GrpahicsBuffer;
+class GameApp;
 
 class CoinManager : public Trackable
 {
 	private:
+		GameApp * gameHandle;
+
 		Unit** coinCollection;
 		int* timeToSpawnList;
-		std::vector<int> emptyCoinIndexList;
+		//std::vector<int> emptyCoinIndexList;
 
 		//Sprite mCoinSprite;
 
-		int maxNumCoins, currentCoinCount;
+		int maximumCoinsPossible, currentCoinCount;
 		int secondsUntilRespawn = 10;
 		const int FPS = 30;
 		const int COIN_SPRITE_SIZE = 16;
 
-		bool firstUpdate = true;
-
 	public:
 		CoinManager();
-	//	CoinManager(Sprite& coinSprite);
 		~CoinManager();
-
+		void cleanup();
+		
 		void trackCoin(Unit* coin);
 		void initCoinCollection();
 
 		void process();
 		
-		void setMaxCoinCount(int max) { maxNumCoins = max; };
+		void setMaxCoinCount(int max) { maximumCoinsPossible = max; };
+		void setSecondsUntilRespawn(int seconds) { secondsUntilRespawn = seconds; };
 };
 
 #endif // !COIN_MAN_H
