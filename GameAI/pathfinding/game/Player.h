@@ -14,7 +14,7 @@ class Player : public Trackable
 		Unit* playerUnit;
 		GameApp* gameHandle;
 
-		int health;
+		int mHealth;
 		float coinCaptureRadius;
 
 	public:
@@ -24,9 +24,10 @@ class Player : public Trackable
 		void process(std::vector<Unit*> &unitMap);
 		void performCollisionChecks(std::vector<Unit*> &unitMap);
 
-
 		void hookPlayerUnit(Unit* playersUnit);
 		Unit* getPlayerUnit() { return playerUnit; };
+
+		void setHealth(int health) { mHealth = health; };
 };
 
 #endif // !PLAYER_H

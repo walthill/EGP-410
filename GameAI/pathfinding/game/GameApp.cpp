@@ -139,6 +139,7 @@ bool GameApp::init()
 	mPlayer->getPlayerUnit()->getCollider()->initCollider(pUnit->getPositionComponent()->getPosition().getX(),
 														  pUnit->getPositionComponent()->getPosition().getY(),
 												    	  16, 16, PLAYER, pUnit);
+	mPlayer->setHealth(mPlayerHealth);
 
 	//init coins, powerups, and health
 	initItemPickups();	
@@ -310,6 +311,7 @@ void GameApp::loadGameData()
 	const char * iniLoseText = ini.GetValue("GAME", "losetext", "default");
 	const char * iniPowerupValue = ini.GetValue("GAME", "powerupscore", "default");
 	const char * iniCoinValue = ini.GetValue("GAME", "coinscore", "default");
+	const char * iniPlayerHealth = ini.GetValue("GAME", "playerhealth", "default");
 
 	mCoinSpacingStartIndex = atoi(iniCoinSpaceStart);
 	mNumberOfHealthPickups = atoi(iniHealthPickups);
@@ -322,6 +324,7 @@ void GameApp::loadGameData()
 	mLostText = iniLoseText;
 	mCoinScoreValue = atoi(iniCoinValue);
 	mPowerupScoreValue = atoi(iniPowerupValue);
+	mPlayerHealth = atoi(iniPlayerHealth);
 }
 
 void GameApp::cleanup()
@@ -377,30 +380,35 @@ void GameApp::beginLoop()
 
 void GameApp::processLoop()
 {
-	tickSurvivalTimer();
+	if (!lost)
+	{
+		tickSurvivalTimer();
 
-	mPlayer->process(mpUnitManager->getAllUnits());
-	//mCoinManager->process();
+		mPlayer->process(mpUnitManager->getAllUnits());
+		//mCoinManager->process();
 
-	//get back buffer
-	GraphicsBuffer* pBackBuffer = mpGraphicsSystem->getBackBuffer();
-	//copy to back buffer
-	mpGridVisualizer->draw( *pBackBuffer );
+		//get back buffer
+		GraphicsBuffer* pBackBuffer = mpGraphicsSystem->getBackBuffer();
+		//copy to back buffer
+		mpGridVisualizer->draw(*pBackBuffer);
 
-#ifdef VISUALIZE_PATH
-	//show pathfinder visualizer
-	//mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
-#endif
-	
-	mpDebugDisplay->draw( pBackBuffer );
-	
+		#ifdef VISUALIZE_PATH
+		//show pathfinder visualizer
+		//mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
+		#endif
+
+		mpDebugDisplay->draw(pBackBuffer);
+
+
+		mpPathPool->process();
+
+		//should be last thing in processLoop
+		Game::processLoop();
+	}
+
 	mpMessageManager->processMessagesForThisframe();
 	mpInput->process();
 
-	mpPathPool->process();
-
-	//should be last thing in processLoop
-	Game::processLoop();
 }
 
 bool GameApp::endLoop()
@@ -408,6 +416,11 @@ bool GameApp::endLoop()
 	return Game::endLoop();
 }
 
+void GameApp::lose()
+{
+	lost = true;
+	pContent->setTextDisplay(mLostText);
+}
 
 void GameApp::tickSurvivalTimer()
 {

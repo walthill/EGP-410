@@ -77,6 +77,12 @@ Unit* UnitManager::createUnit(unitType unitType, const Sprite& sprite, bool shou
 		{
 			pUnit->mUnitStateMachine = new UnitStateMachine(1, pUnit->mID);
 			pUnit->setStateMachine(true);
+
+			//set max's
+			pUnit->mMaxSpeed = 176.0f;
+			pUnit->mMaxAcc = 200.0f; //200 == 80%
+			pUnit->mMaxRotAcc = MAX_ROT_ACC;
+			pUnit->mMaxRotVel = MAX_ROT_VEL;
 		}
 		if (unitType == COIN_UNIT)
 		{

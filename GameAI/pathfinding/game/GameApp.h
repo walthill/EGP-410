@@ -45,6 +45,7 @@ public:
 	virtual void processLoop();
 	virtual bool endLoop();
 
+	void lose();
 	void tickSurvivalTimer();
 	void addCoinScore();
 	void addPowerupScore();
@@ -80,11 +81,14 @@ private:
 	Player* mPlayer;
 	CoinManager* mCoinManager;
 
+	bool lost = false;
+
 	//data driven variables
 	const string mINI_FILE = "data.ini";
 
 	int mCoinSpawnTime, mPowerSpawnTime, mCoinSpacing, mCoinSpacingStartIndex;
 	int mNumberOfHealthPickups, mNumberOfPowerups, mNumberOfEnemies, mCoinScoreValue, mPowerupScoreValue;
+	int mPlayerHealth, mEnemyHealth;
 	int mScore = 0, mTime = 0, timer = 0;
 	string mFlavorText, mLostText;
 
