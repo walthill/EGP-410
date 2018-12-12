@@ -41,8 +41,7 @@ int main(int argc, char **argv)
 	}
 
 	//cleanup
-	gpGame->cleanup();
-	delete gpGame;
+	delete gpGame; //calls gpGame->cleanup();
 	delete gpPerformanceTracker;
 
 	MemoryTracker::getInstance()->reportAllocations( std::cout );

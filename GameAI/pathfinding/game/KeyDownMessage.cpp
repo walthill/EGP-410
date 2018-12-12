@@ -36,12 +36,6 @@ void KeyDownMessage::initializePlayerPathing(Vector2D pos)
 		gpGameApp->gpPaths.erase(gpGameApp->gpPaths.begin());
 	}
 
-	//x = mEvent.motion.x;
-	//y = mEvent.motion.y;
-//	Vector2D pos(0, 768 * 0.5); // middle left
-
-//	cout << "player Pathfinding" << endl;
-	//pathfind for player player units
 	gpGame->getUnitManager()->getPlayerUnit()->generatePath(pos);
 
 }
@@ -72,12 +66,7 @@ void KeyDownMessage::process()
 			Vector2D posToStopAt;
 
 			bool test = clearPathRaycast(playerPos, farthestUp, posToStopAt);
-
-			//cout << test << endl;
-			//TODO: raycast for position data to send to pathfinder 
-
-			//768 is max screen height, width - 1024
-			//toY - raycast right until blocking path if none, then path to screen bounds
+	
 			if (test)
 				initializePlayerPathing(farthestUp);
 			else
@@ -98,11 +87,6 @@ void KeyDownMessage::process()
 
 			bool test = clearPathRaycast(playerPos, farthestLeft, posToStopAt);
 
-	//		cout << test << endl;
-			//TODO: raycast for position data to send to pathfinder 
-
-			//768 is max screen height, width - 1024
-			//toY - raycast right until blocking path if none, then path to screen bounds
 			if (test)
 				initializePlayerPathing(farthestLeft);
 			else
@@ -124,11 +108,6 @@ void KeyDownMessage::process()
 
 			bool test = clearPathRaycast(playerPos, farthestDown, posToStopAt);
 
-		//	cout << test << endl;
-			//TODO: raycast for position data to send to pathfinder 
-
-			//768 is max screen height, width - 1024
-			//toY - raycast right until blocking path if none, then path to screen bounds
 			if (test)
 				initializePlayerPathing(farthestDown);
 			else
@@ -149,11 +128,6 @@ void KeyDownMessage::process()
 
 			bool test = clearPathRaycast(playerPos, farthestRight, posToStopAt);
 			
-		//	cout << test << endl;
-			//TODO: raycast for position data to send to pathfinder 
-
-			//768 is max screen height, width - 1024
-			//toY - raycast right until blocking path if none, then path to screen bounds
 			if(test)
 				initializePlayerPathing(farthestRight);
 			else

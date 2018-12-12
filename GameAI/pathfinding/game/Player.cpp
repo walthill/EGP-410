@@ -14,49 +14,51 @@ Player::~Player()
 {
 }
 
-void Player::process(std::vector<Unit*> mUnitMap)
+void Player::process(std::vector<Unit*> &unitMap)
 {
-	//update collider to follow unit
-	playerUnit->getCollider()->setX(playerUnit->getPositionComponent()->getPosition().getX());
-	playerUnit->getCollider()->setY(playerUnit->getPositionComponent()->getPosition().getY());
+	performCollisionChecks(unitMap);
+}
 
+void Player::performCollisionChecks(std::vector<Unit*> &unitMap)
+{
 	//perform collision checks
-	for (size_t i = 0; i < mUnitMap.size(); i++)
+	for (size_t i = 0; i < unitMap.size(); i++)
 	{
-		if (playerUnit->checkCollision(mUnitMap[i]->getCollider())
-			&& mUnitMap[i]->getCollider()->getTag() == COIN)
+		bool hasCollided = playerUnit->checkCollision(unitMap[i]->getCollider());
+
+		if (hasCollided)
 		{
-			//destroy coin, increase score
-			int unitId = mUnitMap[i]->getUnitID();
-			
-			gameHandle->getUnitManager()->deleteUnit(unitId);
-			
-			//cout << "X: " << mUnitMap[i]->getPositionComponent()->getPosition().getX() << endl;
-			//cout << "Y: " << mUnitMap[i]->getPositionComponent()->getPosition().getY() << endl;
-			cout << "COLLUSION" << endl;
-		}
-		else
-		{
+			ColliderType otherTag = unitMap[i]->getCollider()->getTag();;
+
+			if (otherTag == COIN)
+			{
+				//destroy coin, increase score
+				int unitId = unitMap[i]->getUnitID();
+
+				gameHandle->getUnitManager()->deleteUnit(unitId);
+
+				cout << "COLLUSION" << endl;
+			}
+			else if (otherTag == HEALTH_POWER)
+			{
+				//destroy coin, increase health
+				int unitId = unitMap[i]->getUnitID();
+
+				gameHandle->getUnitManager()->deleteUnit(unitId);
+
+				cout << "HEALTH COLLUSION" << endl;
+			}
+			else if (otherTag == POWERUP)
+			{
+				//destroy coin, POWERUPPPP
+				int unitId = unitMap[i]->getUnitID();
+
+				gameHandle->getUnitManager()->deleteUnit(unitId);
+
+				cout << "POWERUP COLLUSION" << endl;
+			}
 		}
 	}
-
-
-	/*Vector2D currentLocation = playerUnit->getPositionComponent()->getPosition();
-	Vector2D targetLoc;
-	targetLoc.setX(currentLocation.getX() + 16);
-	targetLoc.setY(currentLocation.getY() + 16);
-
-	Vector2D direction = targetLoc - currentLocation;
-	float directionToCoin = direction.getLength();
-
-	//
-
-	if (directionToCoin < coinCaptureRadius)
-	{
-		//increase score, delete coin
-	}*/
-
-
 }
 
 void Player::hookPlayerUnit(Unit* playersUnit)

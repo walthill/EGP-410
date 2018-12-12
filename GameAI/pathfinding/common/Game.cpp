@@ -72,6 +72,8 @@ bool Game::init()
 	mpGraphicsBufferManager->loadBuffer(mEnemyIconBufferID, "enemyFullHealth.png");
 	mpGraphicsBufferManager->loadBuffer(mCoinIconBufferID, "coin.png");
 	mpGraphicsBufferManager->loadBuffer(mTargetBufferID, "target.png");
+	mpGraphicsBufferManager->loadBuffer(mHealthIconBufferID, "health.png");
+	mpGraphicsBufferManager->loadBuffer(mPowerIconBufferID, "power.png");
 
 	//load Font
 	mpFont = new Font("cour.ttf", 24);

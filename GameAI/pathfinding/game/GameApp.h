@@ -37,6 +37,8 @@ public:
 	virtual bool init();
 	virtual void cleanup();
 
+	void loadGameData();
+
 	//game loop
 	virtual void beginLoop();
 	virtual void processLoop();
@@ -71,5 +73,10 @@ private:
 	Player* mPlayer;
 	CoinManager* mCoinManager;
 
+	//data driven variables
+	const string mINI_FILE = "data.ini";
+
+	int mCoinSpawnTime, mPowerSpawnTime, mCoinSpacing, mCoinSpacingStartIndex;
+	int mNumberOfHealthPickups, mNumberOfPowerups;
 };
 

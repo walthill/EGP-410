@@ -19,9 +19,10 @@ class CoinManager : public Trackable
 		//std::vector<int> emptyCoinIndexList;
 
 		//Sprite mCoinSprite;
-
+		int numberOfPowerUps = 4;
+		int powerUpRespawnTime = 10, coinRespawnTime = 10;
 		int maximumCoinsPossible, currentCoinCount;
-		int secondsUntilRespawn = 10;
+		int secondsUntilRespawn;
 		const int FPS = 30;
 		const int COIN_SPRITE_SIZE = 16;
 
@@ -36,7 +37,9 @@ class CoinManager : public Trackable
 		void process();
 		
 		void setMaxCoinCount(int max) { maximumCoinsPossible = max; };
-		void setSecondsUntilRespawn(int seconds) { secondsUntilRespawn = seconds; };
+		void setPowerupAmount(int amount) { numberOfPowerUps = amount; };
+		void setSecondsUntilCoinRespawn(int seconds) { coinRespawnTime = seconds; };
+		void setSecondsUntilPowerupRespawn(int seconds) { powerUpRespawnTime = seconds; };
 };
 
 #endif // !COIN_MAN_H

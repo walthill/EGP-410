@@ -14,7 +14,8 @@ enum ColliderType
 	PLAYER,
 	COIN,
 	ENEMY,
-	POWERUP
+	POWERUP,
+	HEALTH_POWER
 };
 
 class Collider

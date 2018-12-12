@@ -20,11 +20,10 @@ CoinManager::~CoinManager()
 void CoinManager::cleanup()
 {
 	//delete [] timeToSpawnList; //TODO: cleanup coin manager
-	if (timeToSpawnList != NULL)
+	//if (timeToSpawnList != NULL)
 	{
-	//	delete[] timeToSpawnList;
-
-	//	timeToSpawnList = NULL;
+		delete[] timeToSpawnList;
+		timeToSpawnList = NULL;
 	}
 }
 
@@ -52,16 +51,21 @@ void CoinManager::process()
 			//respawn timer is run when coin has been destroyed
 			timeToSpawnList[i]++;
 
+			if (i < currentCoinCount - numberOfPowerUps)
+				secondsUntilRespawn = powerUpRespawnTime;
+			else
+				secondsUntilRespawn = coinRespawnTime;
+
 			if (timeToSpawnList[i] > secondsUntilRespawn*FPS)
 			{
 				//randomize new coin position
 				coinCollection[i]->randomizePosition();
 
-				int x, y;
+				float x, y;
 				x = coinCollection[i]->getPositionComponent()->getPosition().getX();
 				y = coinCollection[i]->getPositionComponent()->getPosition().getY();
 				
-				int squareIndex = gameHandle->getGrid()->getSquareIndexFromPixelXY(x, y);
+				int squareIndex = gameHandle->getGrid()->getSquareIndexFromPixelXY((int)x, (int)y);
 
 				//check that new coin position is not a wall or occupied by another coin
 				while(gameHandle->getGrid()->getValueAtIndex(squareIndex) == BLOCKING_VALUE || 
@@ -74,18 +78,18 @@ void CoinManager::process()
 					x = coinCollection[i]->getPositionComponent()->getPosition().getX();
 					y = coinCollection[i]->getPositionComponent()->getPosition().getY();
 
-					squareIndex = gameHandle->getGrid()->getSquareIndexFromPixelXY(x, y);
+					squareIndex = gameHandle->getGrid()->getSquareIndexFromPixelXY((int)x, (int)y);
 				}
 
 				//Spawn new coin
 				Sprite* coinSprite = gameHandle->getSpriteManager()->getSprite(COIN_SPRITE_ID);
-				Unit* pUnit = gameHandle->getUnitManager()->createUnit(*coinSprite);
+				Unit* pUnit = gameHandle->getUnitManager()->createUnit(COIN_UNIT, *coinSprite);
 				Vector2D coinSpawnLoc = gameHandle->getGrid()->getULCornerOfSquare(squareIndex);
 
 				pUnit->getPositionComponent()->setPosition(coinSpawnLoc);
 
-				pUnit->getCollider()->initCollider(pUnit->getPositionComponent()->getPosition().getX(),
-												   pUnit->getPositionComponent()->getPosition().getY(),
+				pUnit->getCollider()->initCollider((int)pUnit->getPositionComponent()->getPosition().getX(),
+												   (int)pUnit->getPositionComponent()->getPosition().getY(),
 												   COIN_SPRITE_SIZE, COIN_SPRITE_SIZE, COIN, pUnit);
 
 				//add new coin to collection
