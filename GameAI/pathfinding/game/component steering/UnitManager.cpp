@@ -24,10 +24,15 @@ UnitManager::~UnitManager()
 	vector<Unit*> allUnits = getAllUnits();
 	for (int i = 0; i < allUnits.size(); ++i)
 	{
-		if (allUnits[i] != NULL)
+		if (allUnits[i]->getUnitID() == 0)
 		{
 			allUnits[i]->cleanup();
 		}
+		else if(allUnits[i]->hasState)
+		{
+			allUnits[i]->cleanup();
+		}
+		
 	}
 }
 

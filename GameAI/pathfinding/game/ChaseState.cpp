@@ -15,6 +15,7 @@ using namespace std;
 void ChaseState::onEntrance()
 {
 	frames = 0;
+	gpGameApp->mpMessageManager->addMessage(new PathToMessage(pUnit, pUnit->getPositionComponent()->getPosition(), mTarget->getPositionComponent()->getPosition()), 0);
 }
 
 void ChaseState::onExit()
@@ -64,15 +65,18 @@ StateTransition* ChaseState::update()
 	{
 		onEntrance();
 	}
-	if (gpGameApp->getGrid()->getSquareIndexFromPixelXY(pUnit->getPositionComponent()->getPosition().getX(),
-		pUnit->getPositionComponent()->getPosition().getY()) == pUnit->getPath()->peekNextNode()->getId())
+	if (mTarget != pUnit->mUnitStateMachine->getPlayer())
 	{
-		//find the right transition
-		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(IDLE_TRANSITION);
-		if (iter != mTransitions.end())//found?
+		if (gpGameApp->getGrid()->getSquareIndexFromPixelXY(pUnit->getPositionComponent()->getPosition().getX(),
+			pUnit->getPositionComponent()->getPosition().getY()) == pUnit->getPath()->peekNextNode()->getId())
 		{
-			StateTransition* pTransition = iter->second;
-			return pTransition;
+			//find the right transition
+			map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(IDLE_TRANSITION);
+			if (iter != mTransitions.end())//found?
+			{
+				StateTransition* pTransition = iter->second;
+				return pTransition;
+			}
 		}
 	}
 

@@ -52,7 +52,7 @@ StateTransition* WanderState::update()
 
 	float distance = (pUnit->mUnitStateMachine->getPlayer()->getPositionComponent()->getPosition() - pUnit->getPositionComponent()->getPosition()).getLength();
 
-	if (distance > aggroRange && !pUnit->mUnitStateMachine->getPlayer()->mUnitStateMachine->isPowered())//player in range and not powered
+	if (distance < aggroRange && !pUnit->mUnitStateMachine->getPlayer()->mUnitStateMachine->isPowered())//player in range and not powered
 	{
 		pUnit->mUnitStateMachine->updateTarget(pUnit->mUnitStateMachine->getPlayer());
 		//find the right transition
@@ -63,7 +63,7 @@ StateTransition* WanderState::update()
 			return pTransition;
 		}
 	}
-	if (distance > aggroRange && gpGameApp->getUnitManager()->getPlayerUnit()->mUnitStateMachine->isPowered())//player in range and powered
+	if (distance < aggroRange && gpGameApp->getUnitManager()->getPlayerUnit()->mUnitStateMachine->isPowered())//player in range and powered
 	{
 		pUnit->mUnitStateMachine->updateTarget(pUnit->mUnitStateMachine->getPlayer());
 		//find the right transition

@@ -380,7 +380,7 @@ void GameApp::processLoop()
 	tickSurvivalTimer();
 
 	mPlayer->process(mpUnitManager->getAllUnits());
-	//mCoinManager->process();
+	mCoinManager->process();
 
 	//get back buffer
 	GraphicsBuffer* pBackBuffer = mpGraphicsSystem->getBackBuffer();

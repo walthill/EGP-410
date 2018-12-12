@@ -1,12 +1,16 @@
 #include "Game.h"
 #include "FleeState.h"
 #include <iostream>
+#include "../game/component steering/Unit.h"
+#include "UnitStateMachine.h"
+#include "../game/component steering/UnitManager.h"
+#include "../game/component steering/PositionComponent.h"
 
 using namespace std;
 
 void FleeState::onEntrance()
 {
-	
+	frames = 0;
 }
 
 void FleeState::onExit()
@@ -17,6 +21,17 @@ void FleeState::onExit()
 
 StateTransition* FleeState::update()
 {
+	if (gpGameApp.isPlayerPoweredUp())
+	{
+		pUnit->mUnitStateMachine->setPowered(false);
+
+		frames++;
+
+		if (frames / 30 > 1)
+		{
+			pUnit->mUnitStateMachine->setHealth(pUnit->mUnitStateMachine->getHealth() - 26);
+		}
+	}
 	////find out if enough time has passed to transitions
 	//if ((gpGame->getFrameCount() - mStartingCount) >= mFireCount)
 	//{

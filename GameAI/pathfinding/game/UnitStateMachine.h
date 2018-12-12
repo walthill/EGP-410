@@ -16,22 +16,24 @@ public:
 	//StateMachine* pStateMachine;
 	
 	//states
-	StateMachineState* pIdleState;
-	StateMachineState* pWanderState;
-	StateMachineState* pChaseState;
-	StateMachineState* pFleeState;
+	StateMachineState* pIdleState = NULL;
+	StateMachineState* pWanderState = NULL;
+	StateMachineState* pChaseState = NULL;
+	StateMachineState* pFleeState = NULL;
 
 	//transitions
-	StateTransition* pToIdleTrans;
-	StateTransition* pToWanderTrans;
-	StateTransition* pToChaseTrans;
-	StateTransition* pToFleeTrans;
+	StateTransition* pToIdleTrans = NULL;
+	StateTransition* pToWanderTrans = NULL;
+	StateTransition* pToChaseTrans = NULL;
+	StateTransition* pToFleeTrans = NULL;
 
 	void updateTarget(Unit* target);
 	bool isPowered();
 	void setPowered(bool power);
 	void setAggroRange(int range);
 	Unit* getPlayer() { return player; };
+	void setHealth(int newhealth) { health = newhealth; };
+	int getHealth() { return health; };
 
 protected:
 	int health = 100;

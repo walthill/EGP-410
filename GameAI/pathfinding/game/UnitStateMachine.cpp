@@ -19,12 +19,13 @@ UnitStateMachine::UnitStateMachine(int machineType, int unitID)
 		pIdleState = new EmptyState(0);
 		this->addState(pIdleState);
 		this->setInitialStateID(0);
+		powered = false;
 	}
 
 	if (machineType == 1)
 	{
 		//states
-		pIdleState = new IdleState(0, 10);
+		pIdleState = new IdleState(0, 10, pUnit);
 		pWanderState = new WanderState(1, pUnit);
 		pChaseState = new ChaseState(2, pUnit);
 		pFleeState = new FleeState(3, pUnit);
@@ -60,13 +61,17 @@ UnitStateMachine::UnitStateMachine(int machineType, int unitID)
 
 		//set default dtate
 		this->setInitialStateID(0);
+
+		powered = true;
 	}
 	if(machineType == 2)//dummy state for coins
 	{
 		pIdleState = new EmptyState(0);
 		this->addState(pIdleState);
 		this->setInitialStateID(0);
+		powered = false;
 	}
+
 }
 
 bool UnitStateMachine::isPowered()
@@ -81,20 +86,20 @@ void UnitStateMachine::setPowered(bool power)
 
 void UnitStateMachine::updateTarget(Unit* target)
 {
-	ChaseState* pChaseState = dynamic_cast<ChaseState*>(pChaseState);
-	pChaseState->updateTarget(target);
-	FleeState* pFleeState = dynamic_cast<FleeState*>(pFleeState);
-	pFleeState->updateTarget(target);
-	WanderState* pWanderState = dynamic_cast<WanderState*>(pWanderState);
-	pWanderState->updateTarget(target);
+	ChaseState* gpChaseState = dynamic_cast<ChaseState*>(pChaseState);
+	gpChaseState->updateTarget(target);
+	FleeState* gpFleeState = dynamic_cast<FleeState*>(pFleeState);
+	gpFleeState->updateTarget(target);
+	WanderState* gpWanderState = dynamic_cast<WanderState*>(pWanderState);
+	gpWanderState->updateTarget(target);
 }
 
 void UnitStateMachine::setAggroRange(int range)
 {
-	ChaseState* pChaseState = dynamic_cast<ChaseState*>(pChaseState);
-	pChaseState->setAggroRange(range);
-	WanderState* pWanderState = dynamic_cast<WanderState*>(pWanderState);
-	pWanderState->setAggroRange(range);
-	FleeState* pFleeState = dynamic_cast<FleeState*>(pFleeState);
-	pFleeState->setAggroRange(range);
+	ChaseState* gpChaseState = dynamic_cast<ChaseState*>(pChaseState);
+	gpChaseState->setAggroRange(range);
+	WanderState* gpWanderState = dynamic_cast<WanderState*>(pWanderState);
+	gpWanderState->setAggroRange(range);
+	FleeState* gpFleeState = dynamic_cast<FleeState*>(pFleeState);
+	gpFleeState->setAggroRange(range);
 }
