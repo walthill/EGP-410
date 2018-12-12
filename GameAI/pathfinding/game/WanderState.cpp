@@ -11,6 +11,8 @@
 #include "GameMessageManager.h"
 #include "../game/component steering/PositionComponent.h"
 #include "Grid.h"
+#include "Path.h"
+#include "Node.h"
 
 using namespace std;
 
@@ -29,8 +31,13 @@ void WanderState::onEntrance()
 		posY = rand() % gpGame->getGraphicsSystem()->getHeight();
 		index = gpGameApp->getGrid()->getSquareIndexFromPixelXY(posX, posY);
 	}
-
-	gpGameApp->mpMessageManager->addMessage(new PathToMessage(pUnit, Vector2D(pUnit->getPositionComponent()->getPosition()), Vector2D(posX, posY)), 1);
+	cout << "x: " << posX << " y: " << posY << endl;
+	
+	cout << gpGameApp->getGrid()->getValueAtIndex(index) << endl;
+	int playerIndex = gpGameApp->getGrid()->getSquareIndexFromPixelXY(pUnit->getPositionComponent()->getPosition().getX(), pUnit->getPositionComponent()->getPosition().getY());
+	gpGameApp->mpMessageManager->addMessage(new PathToMessage(pUnit, gpGameApp->getGrid()->getULCornerOfSquare(playerIndex), gpGameApp->getGrid()->getULCornerOfSquare(index)), 0);
+	cout << "path" << endl;
+	
 }
 
 void WanderState::onExit()
@@ -41,11 +48,15 @@ void WanderState::onExit()
 StateTransition* WanderState::update()
 {
 	//override transition to chase/flee if player is near and powered/not powered
-
-	if (pUnit->getNumPathNodes() > 0)
+	cout << pUnit->getPath() << endl;
+	if (pUnit->getNumPathNodes() == 0)
 	{
-		
-		if (pUnit->getPath()->peekNextNode() == pUnit->getPath()->peekNode(pUnit->getNumPathNodes() - 1))//destination reached
+		onEntrance();
+	}
+
+		GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
+		if (gpGameApp->getGrid()->getSquareIndexFromPixelXY(pUnit->getPositionComponent()->getPosition().getX(), 
+			pUnit->getPositionComponent()->getPosition().getY()) == pUnit->getPath()->peekNextNode()->getId())//destination reached
 		{
 			//find the right transition
 			map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(IDLE_TRANSITION);
@@ -55,7 +66,7 @@ StateTransition* WanderState::update()
 				return pTransition;
 			}
 		}
-	}
+	
 	
 	return NULL;//no transition
 }

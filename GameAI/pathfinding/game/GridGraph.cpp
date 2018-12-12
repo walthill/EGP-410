@@ -68,7 +68,7 @@ void GridGraph::init()
 					}
 					else
 					{
-						pConnection = new Connection(pFromNode, pToNode, 1.41421356f);//create a connection
+						pConnection = new Connection(pFromNode, pToNode, 100000.41421356f);//create a connection
 					}
 
 

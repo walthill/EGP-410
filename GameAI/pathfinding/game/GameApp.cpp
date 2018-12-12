@@ -21,6 +21,8 @@
 #include "../game/component steering/UnitManager.h"
 #include "Player.h"
 #include "CoinManager.h"
+#include "EnemyPool.h"
+
 #include "simpleini-4.17\SimpleIni.h"
 #include "DepthFirstPathfinder.h"
 
@@ -29,6 +31,7 @@
 #include <SDL.h>
 #include <fstream>
 #include <vector>
+#include <time.h>
 
 const int GRID_SQUARE_SIZE = 32;
 const std::string gFileName = "pathgrid.txt";
@@ -60,7 +63,6 @@ bool GameApp::init()
 	loadGameData();
 
 	mpMessageManager = new GameMessageManager();
-
 	mpInput = new InputManager();
 
 	//create and load the Grid, GridBuffer, and GridRenderer
@@ -122,6 +124,12 @@ bool GameApp::init()
 	pUnit->setShowTarget(false);
 	pUnit->setSteering(Steering::PATH_STEER, ZERO_VECTOR2D);
 
+	srand(unsigned(time(NULL)));
+
+	//Add enemies
+	totalEnemies = 10;										//Make this data driven
+	mpEnemyPool = new EnemyPool();
+
 	float x = pUnit->getPositionComponent()->getPosition().getX();
 	float y = pUnit->getPositionComponent()->getPosition().getY();
 
@@ -155,7 +163,7 @@ bool GameApp::init()
 
 
 
-	int maxNumberOfCoins = 0;// = 10;
+	//int maxNumberOfCoins = 0;// = 10;
 
 
 	//setup maximum possible coin value
@@ -265,7 +273,7 @@ bool GameApp::init()
 
 
 	//THIS IS WHERE WE DECIDE HOW MANY PATHS ARE IN THE POOL!
-	mpPathPool = new PathPool(5);
+	mpPathPool = new PathPool(15);
 
 	mpMasterTimer->start();
 	return true;
@@ -345,8 +353,8 @@ void GameApp::beginLoop()
 
 void GameApp::processLoop()
 {
-	mPlayer->process(mpUnitManager->getAllUnits());
-	mCoinManager->process();
+	//mPlayer->process(mpUnitManager->getAllUnits());                                          !
+	//mCoinManager->process();
 	
 	//get back buffer
 	GraphicsBuffer* pBackBuffer = mpGraphicsSystem->getBackBuffer();
@@ -355,7 +363,7 @@ void GameApp::processLoop()
 
 #ifdef VISUALIZE_PATH
 	//show pathfinder visualizer
-	//mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
+	mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
 #endif
 	
 	mpDebugDisplay->draw( pBackBuffer );

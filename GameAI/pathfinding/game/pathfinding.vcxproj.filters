@@ -249,6 +249,12 @@
     <ClInclude Include="CoinManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EmptyState.h">
+      <Filter>State Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Game.cpp">
@@ -435,6 +441,12 @@
       <Filter>State Machine\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EmptyState.cpp">
+      <Filter>State Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

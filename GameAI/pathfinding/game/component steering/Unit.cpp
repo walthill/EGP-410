@@ -51,13 +51,15 @@ void Unit::cleanup()
 	delete mUnitStateMachine;
 }
 
-void Unit::update(float elapsedTime)
+void Unit::update()
 {
+	if(hasState)
+		mUnitStateMachine->update();
+
 	//keep collider on top of the unit
 	mCollisionData.collider.setX(getPositionComponent()->getPosition().getX());
 	mCollisionData.collider.setY(getPositionComponent()->getPosition().getY());
 
-	mUnitStateMachine->update();
 }
 
 void Unit::draw() const

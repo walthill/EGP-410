@@ -71,7 +71,7 @@ void CoinManager::process()
 				while(gameHandle->getGrid()->getValueAtIndex(squareIndex) == BLOCKING_VALUE || 
   					  gameHandle->getGrid()->getValueAtIndex(squareIndex) == COIN_VALUE)
 				{
-					cout << "COINWALL" << endl;
+
 
 					coinCollection[i]->randomizePosition();
 
