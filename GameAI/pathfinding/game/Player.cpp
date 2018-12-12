@@ -2,6 +2,7 @@
 #include "Collider.h"
 #include "../game/component steering/Unit.h"
 #include "component steering/UnitManager.h"
+#include "ScoreboardContent.h"
 #include "GameApp.h"
 
 Player::Player()
@@ -36,8 +37,7 @@ void Player::performCollisionChecks(std::vector<Unit*> &unitMap)
 				int unitId = unitMap[i]->getUnitID();
 
 				gameHandle->getUnitManager()->deleteUnit(unitId);
-
-				cout << "COLLUSION" << endl;
+				gameHandle->addCoinScore();
 			}
 			else if (otherTag == HEALTH_POWER)
 			{
@@ -45,8 +45,6 @@ void Player::performCollisionChecks(std::vector<Unit*> &unitMap)
 				int unitId = unitMap[i]->getUnitID();
 
 				gameHandle->getUnitManager()->deleteUnit(unitId);
-
-				cout << "HEALTH COLLUSION" << endl;
 			}
 			else if (otherTag == POWERUP)
 			{
@@ -54,8 +52,7 @@ void Player::performCollisionChecks(std::vector<Unit*> &unitMap)
 				int unitId = unitMap[i]->getUnitID();
 
 				gameHandle->getUnitManager()->deleteUnit(unitId);
-
-				cout << "POWERUP COLLUSION" << endl;
+				gameHandle->addPowerupScore();
 			}
 		}
 	}

@@ -35,27 +35,32 @@ void InputManager::process()
 					GameMessage* pMessage = new KeyDownMessage(ESCAPE_KEY);
 					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
 				}
-				if (mEvent.key.keysym.sym == SDLK_w)
+				else if (mEvent.key.keysym.sym == SDLK_w)
 				{
 					
 					GameMessage* pMessage = new KeyDownMessage(W_KEY);
 					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
 				}
-				if (mEvent.key.keysym.sym == SDLK_a)
+				else if (mEvent.key.keysym.sym == SDLK_a)
 				{
 					
 					GameMessage* pMessage = new KeyDownMessage(A_KEY);
 					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
 				}
-				if (mEvent.key.keysym.sym == SDLK_s)
+				else if (mEvent.key.keysym.sym == SDLK_s)
 				{
 					
 					GameMessage* pMessage = new KeyDownMessage(S_KEY);
 					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
 				}
-				if (mEvent.key.keysym.sym == SDLK_d)
+				else if (mEvent.key.keysym.sym == SDLK_d)
 				{
 					GameMessage* pMessage = new KeyDownMessage(D_KEY);
+					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
+				}
+				else if (mEvent.key.keysym.sym == SDLK_r)
+				{
+					GameMessage* pMessage = new KeyDownMessage(R_KEY);
 					gpGameApp->mpMessageManager->addMessage(pMessage, 1);
 				}
 			break;

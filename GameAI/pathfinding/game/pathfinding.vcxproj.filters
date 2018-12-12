@@ -255,6 +255,9 @@
     <ClInclude Include="EnemyPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ScoreboardContent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Game.cpp">
@@ -447,6 +450,9 @@
       <Filter>State Machine\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EnemyPool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreboardContent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

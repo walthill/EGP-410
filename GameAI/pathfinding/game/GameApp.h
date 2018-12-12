@@ -22,7 +22,7 @@ class Grid;
 class GridVisualizer;
 class GridGraph;
 class GridPathfinder;
-class PathfindingDebugContent;
+class ScoreboardContent;
 class DebugDisplay;
 class Player;
 class CoinManager;
@@ -37,12 +37,18 @@ public:
 	virtual bool init();
 	virtual void cleanup();
 
+	void initItemPickups();
 	void loadGameData();
 
 	//game loop
 	virtual void beginLoop();
 	virtual void processLoop();
 	virtual bool endLoop();
+
+	void tickSurvivalTimer();
+	void addCoinScore();
+	void addPowerupScore();
+
 
 	//accessors
 	inline GameMessageManager* getMessageManager() { return mpMessageManager; };
@@ -56,7 +62,8 @@ public:
 	GridPathfinder* mpPathfinder;
 	GridGraph* mpGridGraph;
 	GameMessageManager* mpMessageManager;
-	PathfindingDebugContent *pContent;
+//	PathfindingDebugContent *pContent;
+	ScoreboardContent *pContent;
 	DebugDisplay* mpDebugDisplay;
 
 	int pathfinderIndex;
@@ -69,7 +76,7 @@ private:
 	GridVisualizer* mpGridVisualizer;
 	InputManager* mpInput;
 	PathPool* mpPathPool;
-
+	Timer* survivalTimer;
 	Player* mPlayer;
 	CoinManager* mCoinManager;
 
@@ -77,6 +84,11 @@ private:
 	const string mINI_FILE = "data.ini";
 
 	int mCoinSpawnTime, mPowerSpawnTime, mCoinSpacing, mCoinSpacingStartIndex;
-	int mNumberOfHealthPickups, mNumberOfPowerups;
+	int mNumberOfHealthPickups, mNumberOfPowerups, mNumberOfEnemies, mCoinScoreValue, mPowerupScoreValue;
+	int mScore = 0, mTime = 0, timer = 0;
+	string mFlavorText, mLostText;
+
+	double millisec = 0;
+	int sec = 0, min = 0;
 };
 

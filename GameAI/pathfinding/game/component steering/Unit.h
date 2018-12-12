@@ -55,6 +55,7 @@ public:
 	Path* getPath() { return &pathData.mPath; };
 	std::vector<Vector2D> getPathInScreenSpace();
 	int getNumPathNodes() { return pathData.numNodes; };
+	bool stateMachineActive() { return hasState; };
 	int getDestinationNode();
 	
 	UnitStateMachine* mUnitStateMachine;

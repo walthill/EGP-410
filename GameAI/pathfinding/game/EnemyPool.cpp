@@ -14,6 +14,10 @@ EnemyPool::EnemyPool()
 	for (int i = 0; i < totalEnemies; ++i)
 	{
 		Unit* pUnit = gpGameApp->getUnitManager()->createRandomUnit(ENEMY_UNIT, *enemySprite);
+		
+		pUnit->getCollider()->initCollider(pUnit->getPositionComponent()->getPosition().getX(),
+																	pUnit->getPositionComponent()->getPosition().getY(),
+																	16, 16, ENEMY, pUnit);
 		enemies[i] = pUnit;
 	}
 }

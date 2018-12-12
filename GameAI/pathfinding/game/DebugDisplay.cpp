@@ -21,6 +21,6 @@ DebugDisplay::~DebugDisplay()
 void DebugDisplay::draw( GraphicsBuffer* pBuffer )
 {
 	string toDisplay = mpContent->getDebugString();
-	gpGame->getGraphicsSystem()->writeText(*pBuffer, *(gpGame->getFont()), mPos.getX(), mPos.getY(), toDisplay, BLACK_COLOR);
+	gpGame->getGraphicsSystem()->writeText(*pBuffer, *(gpGame->getFont()), mPos.getX(), mPos.getY(), toDisplay, WHITE_COLOR);
 
 }

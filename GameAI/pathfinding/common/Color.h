@@ -23,6 +23,7 @@ private:
 	size_t mHash;
 };
 
+const Color WHITE_COLOR = Color(255, 255, 255);
 const Color BLACK_COLOR = Color(0, 0, 0);
 const Color RED_COLOR = Color(255, 0, 0);
 const Color YELLOW_COLOR = Color(255, 255, 0);
