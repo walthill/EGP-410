@@ -18,6 +18,11 @@ Player::~Player()
 void Player::process(std::vector<Unit*> &unitMap)
 {
 	performCollisionChecks(unitMap);
+
+	if (mHealth <= 0)
+	{
+		gameHandle->lose();
+	}
 }
 
 void Player::performCollisionChecks(std::vector<Unit*> &unitMap)
@@ -45,6 +50,7 @@ void Player::performCollisionChecks(std::vector<Unit*> &unitMap)
 				int unitId = unitMap[i]->getUnitID();
 
 				gameHandle->getUnitManager()->deleteUnit(unitId);
+				mHealth += gameHandle->heal();
 			}
 			else if (otherTag == POWERUP)
 			{
@@ -53,6 +59,7 @@ void Player::performCollisionChecks(std::vector<Unit*> &unitMap)
 
 				gameHandle->getUnitManager()->deleteUnit(unitId);
 				gameHandle->addPowerupScore();
+				gameHandle->PlayerPowerUp();
 			}
 		}
 	}
