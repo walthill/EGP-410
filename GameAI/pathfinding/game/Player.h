@@ -29,6 +29,7 @@ class Player : public Trackable
 
 		void setHealth(int health) { mHealth = health; };
 		int getHealth() { return mHealth; };
+		void damage();
 };
 
 #endif // !PLAYER_H

@@ -4,6 +4,8 @@
 #include "component steering/UnitManager.h"
 #include "ScoreboardContent.h"
 #include "GameApp.h"
+#include "../game/component steering/Unit.h"
+#include "../game/component steering/UnitManager.h"
 
 Player::Player()
 {
@@ -23,6 +25,11 @@ void Player::process(std::vector<Unit*> &unitMap)
 	{
 		gameHandle->lose();
 	}
+}
+
+void Player::damage()
+{
+	mHealth -= 20;
 }
 
 void Player::performCollisionChecks(std::vector<Unit*> &unitMap)

@@ -39,6 +39,13 @@ StateTransition* ChaseState::update()
 		gpGameApp->mpMessageManager->addMessage(new PathToMessage(pUnit, pUnit->getPositionComponent()->getPosition(), mTarget->getPositionComponent()->getPosition()), 0);
 		
 	}
+
+	float distance = (pUnit->mUnitStateMachine->getPlayer()->getPositionComponent()->getPosition() - pUnit->getPositionComponent()->getPosition()).getLength();
+	if (distance < damageRange)//player within damage range
+	{
+		//damage player
+
+	}
 	
 
 	//player transitions ==================================
