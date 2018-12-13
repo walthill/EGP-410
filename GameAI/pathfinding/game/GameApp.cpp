@@ -206,7 +206,9 @@ void GameApp::initItemPickups()
 	mCoinManager->setSecondsUntilPowerupRespawn(mPowerSpawnTime);
 
 	int maxPowerUps = mNumberOfPowerups + mNumberOfHealthPickups;
-	mCoinManager->setPowerupAmount(maxPowerUps);
+	mCoinManager->setHealthItemCount(mNumberOfHealthPickups);
+	mCoinManager->setPowerupItemCount(mNumberOfPowerups);
+	mCoinManager->setNumberOfPickups(maxPowerUps);
 
 	// COINS
 	if (mCoinSpacingStartIndex >= mCoinSpacing - 1)

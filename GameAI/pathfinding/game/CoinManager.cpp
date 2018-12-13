@@ -50,11 +50,28 @@ void CoinManager::process()
 		{
 			//respawn timer is run when coin has been destroyed
 			timeToSpawnList[i]++;
-
-			if (i < currentCoinCount - numberOfPowerUps)
-				secondsUntilRespawn = powerUpRespawnTime;
-			else
+			
+			Sprite* spriteToSpawn;
+			ColliderType colliderTag;
+			if (i < currentCoinCount - numberOfPickups)
+			{
+				colliderTag = COIN;
+				spriteToSpawn = gameHandle->getSpriteManager()->getSprite(COIN_SPRITE_ID);
 				secondsUntilRespawn = coinRespawnTime;
+			}
+			else if(i > currentCoinCount-numberOfPickups && i < currentCoinCount- numberOfHealth)
+			{
+				colliderTag = HEALTH_POWER;
+				spriteToSpawn = gameHandle->getSpriteManager()->getSprite(HEALTH_POWER_SPRITE_ID);
+				secondsUntilRespawn = powerUpRespawnTime;
+			}
+			else
+			{
+				colliderTag = POWERUP;
+				spriteToSpawn = gameHandle->getSpriteManager()->getSprite(POWER_SPRITE_ID);
+				secondsUntilRespawn = powerUpRespawnTime;
+			}
+
 
 			if (timeToSpawnList[i] > secondsUntilRespawn*FPS)
 			{
@@ -82,15 +99,15 @@ void CoinManager::process()
 				}
 
 				//Spawn new coin
-				Sprite* coinSprite = gameHandle->getSpriteManager()->getSprite(COIN_SPRITE_ID);
-				Unit* pUnit = gameHandle->getUnitManager()->createUnit(COIN_UNIT, *coinSprite);
+				//Sprite* coinSprite = gameHandle->getSpriteManager()->getSprite(COIN_SPRITE_ID);
+				Unit* pUnit = gameHandle->getUnitManager()->createUnit(COIN_UNIT, *spriteToSpawn);
 				Vector2D coinSpawnLoc = gameHandle->getGrid()->getULCornerOfSquare(squareIndex);
 
 				pUnit->getPositionComponent()->setPosition(coinSpawnLoc);
 
 				pUnit->getCollider()->initCollider((int)pUnit->getPositionComponent()->getPosition().getX(),
 												   (int)pUnit->getPositionComponent()->getPosition().getY(),
-												   COIN_SPRITE_SIZE, COIN_SPRITE_SIZE, COIN, pUnit);
+												   COIN_SPRITE_SIZE+2, COIN_SPRITE_SIZE+2, colliderTag, pUnit);
 
 				//add new coin to collection
 				coinCollection[i] = pUnit;
