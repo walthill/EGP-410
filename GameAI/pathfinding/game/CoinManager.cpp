@@ -118,7 +118,6 @@ void CoinManager::process()
 					timeToSpawnList[j] = 0;
 				}
 				
-				cout << "Respawning" << endl;
 			}
 		}
 	}

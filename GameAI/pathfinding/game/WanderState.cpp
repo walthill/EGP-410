@@ -29,12 +29,9 @@ void WanderState::onEntrance()
 		posY = rand() % gpGame->getGraphicsSystem()->getHeight();
 		index = gpGameApp->getGrid()->getSquareIndexFromPixelXY(posX, posY);
 	}
-	cout << "x: " << posX << " y: " << posY << endl;
-	
-	cout << gpGameApp->getGrid()->getValueAtIndex(index) << endl;
 	int playerIndex = gpGameApp->getGrid()->getSquareIndexFromPixelXY(pUnit->getPositionComponent()->getPosition().getX(), pUnit->getPositionComponent()->getPosition().getY());
 	gpGameApp->mpMessageManager->addMessage(new PathToMessage(pUnit, gpGameApp->getGrid()->getULCornerOfSquare(playerIndex), gpGameApp->getGrid()->getULCornerOfSquare(index)), 0);
-	cout << "path" << endl;
+	
 	
 }
 

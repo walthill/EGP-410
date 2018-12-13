@@ -9,6 +9,8 @@
 #include "Path.h"
 #include "Node.h"
 #include "../game/component steering/UnitManager.h"
+#include "../game/component steering/PositionComponent.h"
+#include "GridGraph.h"
 
 
 using namespace std;
@@ -27,11 +29,7 @@ void ChaseState::onExit()
 
 StateTransition* ChaseState::update()
 {
-	//health
-	if (pUnit->mUnitStateMachine->getHealth() <= 0)
-	{
-		gpGameApp->getUnitManager()->deleteUnit(pUnit->getUnitID());
-	}
+	
 	++frames;
 
 	if (frames / 30 > 2)//pathfind to target every certain time
@@ -46,8 +44,14 @@ StateTransition* ChaseState::update()
 
 	if (mTarget->getUnitID() == 0 && (pUnit->getPositionComponent()->getPosition() - mTarget->getPositionComponent()->getPosition()).getLength() > aggroRange)//player left aggro
 	{
+		cout << "out of chase" << endl;
+		Path tempPath = Path();
+		tempPath.addNode(gpGameApp->getGridGraph()->getNode(gpGameApp->getGrid()->getSquareIndexFromPixelXY(pUnit->getPositionComponent()->getPosition().getX(), 
+																											pUnit->getPositionComponent()->getPosition().getY())));
+
+		pUnit->setPath(tempPath);
 		//find the right transition
-		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(WANDER_TRANSITION);
+		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(IDLE_TRANSITION);
 		if (iter != mTransitions.end())//found?
 		{
 			StateTransition* pTransition = iter->second;
@@ -69,14 +73,10 @@ StateTransition* ChaseState::update()
 	
 
 	//arrived ========================================
-	if (pUnit->getNumPathNodes() == 0)
-	{
-		onEntrance();
-	}
+	
 	if (mTarget != pUnit->mUnitStateMachine->getPlayer())
 	{
-		if (gpGameApp->getGrid()->getSquareIndexFromPixelXY(pUnit->getPositionComponent()->getPosition().getX(),
-			pUnit->getPositionComponent()->getPosition().getY()) == pUnit->getPath()->peekNextNode()->getId())
+		if (pUnit->getPath()->getNumNodes() == 0)
 		{
 			//find the right transition
 			map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(IDLE_TRANSITION);

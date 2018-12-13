@@ -161,7 +161,7 @@ bool GameApp::init()
 	survivalTimer->start();
 	mpMasterTimer->start();
 	
-	MemoryTracker::getInstance()->reportAllocations(std::cout);
+	//MemoryTracker::getInstance()->reportAllocations(std::cout);
 
 	return true;
 }
