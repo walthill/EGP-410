@@ -20,6 +20,7 @@ void ChaseState::onEntrance()
 	cout << "idle" << endl;
 	frames = 0;
 	gpGameApp->mpMessageManager->addMessage(new PathToMessage(pUnit, pUnit->getPositionComponent()->getPosition(), mTarget->getPositionComponent()->getPosition()), 0);
+	pUnit->mUnitStateMachine->setPowered(true);
 }
 
 void ChaseState::onExit()
@@ -60,7 +61,7 @@ StateTransition* ChaseState::update()
 		}
 	}
 
-	if (mTarget->getUnitID() == 0 && mTarget->mUnitStateMachine->isPowered())//player becomes powered
+	if (mTarget->getUnitID() == 0 && gpGameApp->isPlayerPoweredUp())//player becomes powered
 	{
 		//find the right transition
 		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(FLEE_TRANSITION);

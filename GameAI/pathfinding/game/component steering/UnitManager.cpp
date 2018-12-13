@@ -189,6 +189,12 @@ void UnitManager::deleteUnit(const UnitID& id)
 	{
 		Unit* pUnit = it->second;//hold for later
 
+		if (pUnit->hasState)
+		{
+			pUnit->cleanup();
+		}
+		
+
 		//remove from map
 		mUnitMap.erase(it);
 
@@ -245,10 +251,22 @@ void UnitManager::drawAll() const
 
 void UnitManager::updateAll(float elapsedTime)
 {
+	int deletable = NULL;
+	bool deleteFlag = false;
 	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
 	{
 		it->second->update();
+		if (it->second->canDelete)
+		{
+			deletable = it->second->getUnitID();
+			deleteFlag = true;
+		}
 	}
+	if (deleteFlag)
+	{
+		deleteUnit(deletable);
+	}
+	
 }
 
 int UnitManager::size()

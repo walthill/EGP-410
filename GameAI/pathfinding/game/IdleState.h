@@ -20,5 +20,5 @@ private:
 
 	Unit* pUnit;
 	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);
-	float aggroRange = 100;
+	float aggroRange = 150;
 };

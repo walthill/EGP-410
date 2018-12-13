@@ -12,6 +12,7 @@ void FleeState::onEntrance()
 {
 	cout << "flee" << endl;
 	frames = 0;
+	pUnit->mUnitStateMachine->setPowered(false);
 }
 
 void FleeState::onExit()
@@ -22,18 +23,14 @@ void FleeState::onExit()
 
 StateTransition* FleeState::update()
 {
-	//Health
-	if (pUnit->mUnitStateMachine->getHealth() <= 0)
-	{
-		gpGameApp->getUnitManager()->deleteUnit(pUnit->getUnitID());
-	}
+	
 	
 	if (gpGameApp->isPlayerPoweredUp())
 	{
 		float distance = (pUnit->mUnitStateMachine->getPlayer()->getPositionComponent()->getPosition() - pUnit->getPositionComponent()->getPosition()).getLength();
 		if (distance < aggroRange)
 		{
-			pUnit->mUnitStateMachine->setPowered(false);
+			
 
 			frames++;
 
@@ -55,7 +52,13 @@ StateTransition* FleeState::update()
 		}
 
 	}
-	
+
+	//Health
+	if (pUnit->mUnitStateMachine->getHealth() <= 0)
+	{
+		//gpGameApp->getUnitManager()->deleteUnit(pUnit->getUnitID());
+		pUnit->canDelete = true;
+	}
 	
 	return NULL;//no transition
 }

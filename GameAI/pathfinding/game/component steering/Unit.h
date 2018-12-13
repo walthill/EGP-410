@@ -57,6 +57,7 @@ public:
 	int getNumPathNodes() { return pathData.numNodes; };
 	bool stateMachineActive() { return hasState; };
 	int getDestinationNode();
+	bool canDelete = false;
 	
 	UnitStateMachine* mUnitStateMachine;
 
