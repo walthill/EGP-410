@@ -44,6 +44,11 @@ void WanderState::onExit()
 
 StateTransition* WanderState::update()
 {
+	//health
+	if (pUnit->mUnitStateMachine->getHealth() <= 0)
+	{
+		gpGameApp->getUnitManager()->deleteUnit(pUnit->getUnitID());
+	}
 	//Health transitions =================================
 
 

@@ -21,7 +21,12 @@ void FleeState::onExit()
 
 StateTransition* FleeState::update()
 {
-	if (gpGameApp.isPlayerPoweredUp())
+	if (pUnit->mUnitStateMachine->getHealth() <= 0)
+	{
+		gpGameApp->getUnitManager()->deleteUnit(pUnit->getUnitID());
+	}
+	
+	if (gpGameApp->isPlayerPoweredUp())
 	{
 		pUnit->mUnitStateMachine->setPowered(false);
 
@@ -29,6 +34,7 @@ StateTransition* FleeState::update()
 
 		if (frames / 30 > 1)
 		{
+			cout << "damage" << endl;
 			pUnit->mUnitStateMachine->setHealth(pUnit->mUnitStateMachine->getHealth() - 26);
 		}
 	}
