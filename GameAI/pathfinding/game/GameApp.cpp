@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "MemoryTracker.h"
 #include "GameApp.h"
 #include "GameMessageManager.h"
 #include "PathToMessage.h"
@@ -159,6 +160,9 @@ bool GameApp::init()
 	survivalTimer = new Timer;
 	survivalTimer->start();
 	mpMasterTimer->start();
+	
+	MemoryTracker::getInstance()->reportAllocations(std::cout);
+
 	return true;
 }
 
@@ -344,6 +348,9 @@ void GameApp::cleanup()
 {
 	delete survivalTimer;
 	survivalTimer = NULL;
+
+	delete mpEnemyPool;
+	mpEnemyPool = NULL;
 
 	int size = gpPaths.size();
 	for (int i = 0; i < size; i++)
