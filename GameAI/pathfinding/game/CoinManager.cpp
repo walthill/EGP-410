@@ -59,7 +59,7 @@ void CoinManager::process()
 				spriteToSpawn = gameHandle->getSpriteManager()->getSprite(COIN_SPRITE_ID);
 				secondsUntilRespawn = coinRespawnTime;
 			}
-			else if(i > currentCoinCount-numberOfPickups && i < currentCoinCount- numberOfHealth)
+			else if(i >= currentCoinCount-numberOfPickups && i < currentCoinCount- numberOfHealth)
 			{
 				colliderTag = HEALTH_POWER;
 				spriteToSpawn = gameHandle->getSpriteManager()->getSprite(HEALTH_POWER_SPRITE_ID);

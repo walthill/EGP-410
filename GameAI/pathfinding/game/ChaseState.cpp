@@ -15,6 +15,7 @@ using namespace std;
 
 void ChaseState::onEntrance()
 {
+	cout << "idle" << endl;
 	frames = 0;
 	gpGameApp->mpMessageManager->addMessage(new PathToMessage(pUnit, pUnit->getPositionComponent()->getPosition(), mTarget->getPositionComponent()->getPosition()), 0);
 }
@@ -50,6 +51,7 @@ StateTransition* ChaseState::update()
 		if (iter != mTransitions.end())//found?
 		{
 			StateTransition* pTransition = iter->second;
+			cout << "transition out" << endl;
 			return pTransition;
 		}
 	}

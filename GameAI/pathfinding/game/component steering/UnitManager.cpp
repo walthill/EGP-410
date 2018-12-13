@@ -75,8 +75,9 @@ Unit* UnitManager::createUnit(unitType unitType, const Sprite& sprite, bool shou
 		
 		if(unitType == PLAYER_UNIT)
 		{
-			pUnit->mUnitStateMachine = new UnitStateMachine(0, pUnit->mID);
+			pUnit->mUnitStateMachine = new UnitStateMachine(1, pUnit->mID);
 			pUnit->setStateMachine(false);
+			pUnit->mUnitStateMachine->setPowered(false);
 		}
 		if(unitType == ENEMY_UNIT)
 		{

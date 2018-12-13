@@ -18,6 +18,7 @@ using namespace std;
 
 void WanderState::onEntrance()
 {
+	cout << "wander" << endl;
 	//pick a random point and pathfind to it
 	int posX = rand() % gpGame->getGraphicsSystem()->getWidth();
 	int posY = rand() % gpGame->getGraphicsSystem()->getHeight();
@@ -44,11 +45,7 @@ void WanderState::onExit()
 
 StateTransition* WanderState::update()
 {
-	//health
-	if (pUnit->mUnitStateMachine->getHealth() <= 0)
-	{
-		gpGameApp->getUnitManager()->deleteUnit(pUnit->getUnitID());
-	}
+	
 	//Health transitions =================================
 
 

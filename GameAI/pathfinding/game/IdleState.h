@@ -16,7 +16,7 @@ private:
 	int mFireCount;//how many frames need to pass from start until transition
 	int mStartingCount;//when did we start?
 	int frames;
-	int maxTime = 33;
+	int maxTime = 5;
 
 	Unit* pUnit;
 	GameApp* gpGameApp = dynamic_cast<GameApp*>(gpGame);

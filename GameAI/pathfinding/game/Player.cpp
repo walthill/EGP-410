@@ -56,7 +56,7 @@ void Player::performCollisionChecks(std::vector<Unit*> &unitMap)
 			{
 				//destroy coin, POWERUPPPP
 				int unitId = unitMap[i]->getUnitID();
-
+				cout << "powered" << endl;
 				gameHandle->getUnitManager()->deleteUnit(unitId);
 				gameHandle->addPowerupScore();
 				gameHandle->PlayerPowerUp();

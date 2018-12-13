@@ -10,6 +10,7 @@ using namespace std;
 
 void IdleState::onEntrance()
 {
+	cout << "idle" << endl;
 	frames = 0;
 }
 
@@ -20,12 +21,6 @@ void IdleState::onExit()
 
 StateTransition* IdleState::update()
 {
-	//health
-	if (pUnit->mUnitStateMachine->getHealth() <= 0)
-	{
-		gpGameApp->getUnitManager()->deleteUnit(pUnit->getUnitID());
-	}
-	
 	frames++;
 
 
@@ -59,8 +54,6 @@ StateTransition* IdleState::update()
 
 	//transition when timer is done =======================
 
-
-	//find out if enough time has passed to transitions
 	if ((frames / 30) > maxTime)
 	{
 		//find the right transition

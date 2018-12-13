@@ -10,6 +10,7 @@ using namespace std;
 
 void FleeState::onEntrance()
 {
+	cout << "flee" << endl;
 	frames = 0;
 }
 
@@ -21,6 +22,7 @@ void FleeState::onExit()
 
 StateTransition* FleeState::update()
 {
+	//Health
 	if (pUnit->mUnitStateMachine->getHealth() <= 0)
 	{
 		gpGameApp->getUnitManager()->deleteUnit(pUnit->getUnitID());
@@ -28,27 +30,32 @@ StateTransition* FleeState::update()
 	
 	if (gpGameApp->isPlayerPoweredUp())
 	{
-		pUnit->mUnitStateMachine->setPowered(false);
-
-		frames++;
-
-		if (frames / 30 > 1)
+		float distance = (pUnit->mUnitStateMachine->getPlayer()->getPositionComponent()->getPosition() - pUnit->getPositionComponent()->getPosition()).getLength();
+		if (distance < aggroRange)
 		{
-			cout << "damage" << endl;
-			pUnit->mUnitStateMachine->setHealth(pUnit->mUnitStateMachine->getHealth() - 26);
+			pUnit->mUnitStateMachine->setPowered(false);
+
+			frames++;
+
+			if (frames / 30 > 1)
+			{
+				cout << "damage" << endl;
+				pUnit->mUnitStateMachine->setHealth(pUnit->mUnitStateMachine->getHealth() - 26);
+			}
 		}
 	}
-	////find out if enough time has passed to transitions
-	//if ((gpGame->getFrameCount() - mStartingCount) >= mFireCount)
-	//{
-	//	//find the right transition
-	//	map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(KABOOM_TRANSITION);
-	//	if (iter != mTransitions.end())//found?
-	//	{
-	//		StateTransition* pTransition = iter->second;
-	//		return pTransition;
-	//	}
-	//}
+	else
+	{
+		//find the right transition
+		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(IDLE_TRANSITION);
+		if (iter != mTransitions.end())//found?
+		{
+			StateTransition* pTransition = iter->second;
+			return pTransition;
+		}
+
+	}
+	
 	
 	return NULL;//no transition
 }
